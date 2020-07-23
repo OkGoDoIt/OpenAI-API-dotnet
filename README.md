@@ -1,6 +1,6 @@
 # C#/.NET SDK for accessing the OpenAI GPT-3 API 
 
-A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.
+A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
 ## Requirements
 
@@ -56,9 +56,9 @@ Every single class, method, and property has extensive XML documentation, so it 
 ```csharp
 var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
 
-var result = await api.Completions.CreateCompletionAsync("One Two Three Four Five Six Seven Eight Nine One Two Three Four Five Six Seven Eight", temperature: 0.1);
+var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
 Console.WriteLine(result.ToString());
-// should print something that starts with "Nine"
+// should print something starting with "Three"
 ```
 
 ```csharp
