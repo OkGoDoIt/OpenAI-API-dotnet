@@ -20,9 +20,8 @@ namespace OpenAI_Tests
 			var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
 
 			Assert.IsNotNull(api.Completions);
-			api.Completions.DefaultCompletionRequestArgs = new CompletionRequest() { Temperature = 0, MaxTokens = 10 };
-
-			var results = api.Completions.CreateCompletionsAsync(new CompletionRequest("One Two Three Four Five Six Seven Eight ", temperature: 0), 5).Result;
+			
+			var results = api.Completions.CreateCompletionsAsync(new CompletionRequest("One Two Three Four Five Six Seven Eight Nine One Two Three Four Five Six Seven Eight", temperature: 0.1, max_tokens: 5), 5).Result;
 			Assert.IsNotNull(results);
 			Assert.NotNull(results.Completions);
 			Assert.NotZero(results.Completions.Count);
