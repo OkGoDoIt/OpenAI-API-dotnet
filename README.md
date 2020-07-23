@@ -41,7 +41,7 @@ You can get all results as a dictionary using `GetSearchResultsAsync(SearchReque
 
 You can get only the best match using `GetBestMatchAsync(...)`
 
-nd if you only want the best match but still want to know the score, use `GetBestMatchWithScoreAsync(...)`
+And if you only want the best match but still want to know the score, use `GetBestMatchWithScoreAsync(...)`
 
 ## Documentation
 
@@ -54,7 +54,7 @@ var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
 
 var result = await api.Completions.CreateCompletionAsync("One Two Three Four Five Six Seven Eight Nine One Two Three Four Five Six Seven Eight", temperature: 0.1);
 Console.WriteLine(result.ToString());
-// should print "Nine"
+// should print something that starts with "Nine"
 ```
 
 ```csharp
