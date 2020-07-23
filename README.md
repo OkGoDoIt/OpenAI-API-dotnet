@@ -9,7 +9,11 @@ This library is based on .NET Standard 2.0, so it should work across .NET Framew
 ## Getting started
 
 ### Install from NuGet
-(Coming soon)
+
+Install package `OpenAI` from Nuget.  Via commandline:
+```powershell
+Install-Package OpenAI
+```
 
 ### Authentication
 There are 3 ways to provide your API keys, in order of precedence:
