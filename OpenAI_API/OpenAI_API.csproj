@@ -13,11 +13,12 @@
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>Initial release of SDK.  An OpenAI API account is required (still in closed beta)</PackageReleaseNotes>
+		<PackageReleaseNotes>Added additional API debugging metadata and improved the readme. An OpenAI API account is required (still in closed beta)</PackageReleaseNotes>
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>okgodoit-signing.pfx</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
 		<PackageId>OpenAI</PackageId>
+		<Version>1.1.0</Version>
 	</PropertyGroup>
 
 	<ItemGroup>
