@@ -45,10 +45,16 @@ namespace OpenAI_API
 			if (response.IsSuccessStatusCode)
 			{
 				string resultAsString = await response.Content.ReadAsStringAsync();
-				//System.Diagnostics.Debug.WriteLine(resultAsString);
-				// TODO
 				var res = JsonConvert.DeserializeObject<SearchResponse>(resultAsString);
-				//Console.WriteLine(res.Completions.Count);
+
+				try
+				{
+					res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
+					res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
+					res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
+				}
+				catch (Exception) { }
+
 				if (res.Results == null || res.Results.Count == 0)
 					throw new HttpRequestException("API returnes no search results.  HTTP status code: " + response.StatusCode.ToString() + ". Response body: " + resultAsString);
 

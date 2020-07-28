@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -50,10 +51,17 @@ namespace OpenAI_API
 			if (response.IsSuccessStatusCode)
 			{
 				string resultAsString = await response.Content.ReadAsStringAsync();
-				//System.Diagnostics.Debug.WriteLine(resultAsString);
-				// TODO
+
 				var res = JsonConvert.DeserializeObject<CompletionResult>(resultAsString);
-				//Console.WriteLine(res.Completions.Count);
+				try
+				{
+					res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
+					res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
+					res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
+				}
+				catch (Exception) { }
+
+
 				return res;
 			}
 			else
@@ -173,6 +181,14 @@ namespace OpenAI_API
 							{
 								index++;
 								var res = JsonConvert.DeserializeObject<CompletionResult>(line.Trim());
+								try
+								{
+									res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
+									res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
+									res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
+								}
+								catch (Exception) { }
+
 								resultHandler(index, res);
 							}
 						}

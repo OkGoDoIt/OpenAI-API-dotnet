@@ -2,6 +2,24 @@
 
 A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
+## Examples
+
+```csharp
+var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+
+var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
+Console.WriteLine(result.ToString());
+// should print something starting with "Three"
+```
+
+```csharp
+var api = new OpenAI_API.OpenAIAPI("sk-mysecretkeyhere"););
+
+var result = await api.Search.GetBestMatchAsync("Washington DC", "Canada", "China", "USA", "Spain");
+Console.WriteLine(result);
+// should print "USA"
+```
+
 ## Requirements
 
 This library is based on .NET Standard 2.0, so it should work across .NET Framework >=4.7.2 and .NET Core >= 3.0.  It should work across console apps, winforms, wpf, asp.net, etc (although I have not yet tested with asp.net).  It should work across Windows, Linux, and Mac, although I have only tested on Windows so far.
@@ -10,7 +28,7 @@ This library is based on .NET Standard 2.0, so it should work across .NET Framew
 
 ### Install from NuGet
 
-Install package `OpenAI` from Nuget.  Via commandline:
+Install package [`OpenAI` from Nuget](https://www.nuget.org/packages/OpenAI/).  Here's how via commandline:
 ```powershell
 Install-Package OpenAI
 ```
@@ -90,7 +108,9 @@ var request = new SearchRequest()
 	Query = "Washington DC",
 	Documents = new List<string> { "Canada", "China", "USA", "Spain" }
 };
-var result = api.Search.GetBestMatchAsync(request);
+var result = await api.Search.GetSearchResultsAsync(request);
+// result["USA"] == 294.22
+// result["Spain"] == 73.81
 ```
 
 The returned dictionary maps documents to scores.  You can create your `SearchRequest` ahead of time or use one of the helper overloads for convenience, such as
@@ -98,7 +118,7 @@ The returned dictionary maps documents to scores.  You can create your `SearchRe
 GetSearchResultsAsync(string query, params string[] documents)
 
 // for example
-var result = await api.Search.GetBestMatchAsync("Washington DC", "Canada", "China", "USA", "Spain");
+var result = await api.Search.GetSearchResultsAsync("Washington DC", "Canada", "China", "USA", "Spain");
 ```
 
 You can get only the best match using
@@ -110,30 +130,17 @@ And if you only want the best match but still want to know the score, use
 ```csharp
 GetBestMatchWithScoreAsync(request)
 ```
+Each of those methods has similar convenience overloads to specify the request inline.
 
+### Finetuning
+I don't yet have access to finetuning, but once I do I will add it to this SDK.  Subscribe to this repo if you want to be alerted.
 
 
 ## Documentation
 
 Every single class, method, and property has extensive XML documentation, so it should show up automatically in IntelliSense.  That combined with the official OpenAI documentation should be enough to get started.  Feel free to ping me on Twitter [@OkGoDoIt](https://twitter.com/OkGoDoIt) if you have any questions.  Better documentation may come later.
 
-## Examples
+## License
+![CC-0 Public Domain](https://licensebuttons.net/p/zero/1.0/88x31.png)
 
-```csharp
-var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
-
-var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
-Console.WriteLine(result.ToString());
-// should print something starting with "Three"
-```
-
-```csharp
-var api = new OpenAI_API.OpenAIAPI(engine: Engine.Curie);
-
-var result = await api.Search.GetBestMatchAsync("Washington DC", "Canada", "China", "USA", "Spain");
-Console.WriteLine(result);
-// should print "USA"
-```
-
-## Finetuning
-I don't yet have access to finetuning, but once I do I will add it to this sdk.  Subscribe to this repo if you want to be alerted.
+This library is licensed CC-0, in the public domain.  You can use it for whatever you want, publicly or privately, without worrying about permission or licensing or whatever.  It's just a wrapper around the OpenAI API, so you still need to get access to OpenAI from them directly.  I am not affiliated with OpenAI and this library is not endorsed by them, I just have beta access and wanted to make a C# library to access it more easily.  Hopefully others find this useful as well.  Feel free to open a PR if there's anything you want to contribute.
