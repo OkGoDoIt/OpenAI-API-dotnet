@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,6 +40,11 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Choices"/> property for the completions.</returns>
 		public async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request)
 		{
+			if (Api.Auth?.GetKey() is null)
+			{
+				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
+			}
+
 			request.Stream = false;
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.GetKey());
@@ -147,6 +153,11 @@ namespace OpenAI_API
 		/// <param name="resultHandler">An action to be called as each new result arrives, which includes the index of the result in the overall result set.</param>
 		public async Task StreamCompletionAsync(CompletionRequest request, Action<int, CompletionResult> resultHandler)
 		{
+			if (Api.Auth?.GetKey() is null)
+			{
+				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
+			}
+
 			request = new CompletionRequest(request) { Stream = true };
 			HttpClient client = new HttpClient();
 
@@ -220,6 +231,11 @@ namespace OpenAI_API
 		/// <returns>An async enumerable with each of the results as they come in.  See <seealso cref="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#asynchronous-streams"/> for more deatils on how to consume an async enumerable.</returns>
 		public async IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
 		{
+			if (Api.Auth?.GetKey() is null)
+			{
+				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
+			}
+
 			request = new CompletionRequest(request) { Stream = true };
 			HttpClient client = new HttpClient();
 

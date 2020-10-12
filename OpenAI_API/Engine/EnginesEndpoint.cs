@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Net.Http;
 using System.Runtime.CompilerServices;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -77,6 +78,11 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns the <see cref="Engine"/> with all available properties</returns>
 		public static async Task<Engine> RetrieveEngineDetailsAsync(string id, APIAuthentication auth = null)
 		{
+			if (auth.ThisOrDefault()?.GetKey() is null)
+			{
+				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
+			}
+
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().GetKey());
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");

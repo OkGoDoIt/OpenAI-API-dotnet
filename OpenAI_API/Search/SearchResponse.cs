@@ -8,7 +8,7 @@ namespace OpenAI_API
 	/// <summary>
 	/// Used internally to deserialize a result from the Document Search API
 	/// </summary>
-	public class SerachResult
+	public class SearchResult
 	{
 		/// <summary>
 		/// The index of the document as originally supplied
@@ -33,7 +33,7 @@ namespace OpenAI_API
 		/// The list of results
 		/// </summary>
 		[JsonProperty("data")]
-		public List<SerachResult> Results { get; set; }
+		public List<SearchResult> Results { get; set; }
 
 		/// <summary>
 		/// The server-side processing time as reported by the API.  This can be useful for debugging where a delay occurs.

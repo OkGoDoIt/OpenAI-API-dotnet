@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,11 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns a Dictionary mapping each document to the score for that document.  The similarity score is a positive score that usually ranges from 0 to 300 (but can sometimes go higher), where a score above 200 usually means the document is semantically similar to the query.</returns>
 		public async Task<Dictionary<string, double>> GetSearchResultsAsync(SearchRequest request)
 		{
+			if (Api.Auth?.GetKey() is null)
+			{
+				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
+			}
+
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.GetKey());
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
