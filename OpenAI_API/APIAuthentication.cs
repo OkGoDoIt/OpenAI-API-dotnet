@@ -112,7 +112,7 @@ namespace OpenAI_API
 		/// <param name="directory">The directory to look in, or <see langword="null"/> for the current directory</param>
 		/// <param name="filename">The filename of the config file</param>
 		/// <param name="searchUp">Whether to recursively traverse up the directory tree if the <paramref name="filename"/> is not found in the <paramref name="directory"/></param>
-		/// <returns>Returns the loaded <see cref="APIAuthentication"/> any api keys were found, or <see langword="null"/> if it was not successful in finding a config (or if the config file didn't contain corrently formatted API keys)</returns>
+		/// <returns>Returns the loaded <see cref="APIAuthentication"/> any api keys were found, or <see langword="null"/> if it was not successful in finding a config (or if the config file didn't contain correctly formatted API keys)</returns>
 		public static APIAuthentication LoadFromPath(string directory = null, string filename = ".openai", bool searchUp = true)
 		{
 			if (directory == null)

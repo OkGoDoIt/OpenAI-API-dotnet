@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace OpenAI_API
 {
 	/// <summary>
-	/// Enterypoint to the OpenAPI API, handling auth and allowing access to the various API endpoints
+	/// Entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
 	/// </summary>
 	public class OpenAIAPI
 	{
@@ -25,9 +25,9 @@ namespace OpenAI_API
 		public Engine UsingEngine { get; set; } = Engine.Default;
 
 		/// <summary>
-		/// Creates a new enterypoint to the OpenAPI API, handling auth and allowing access to the various API endpoints
+		/// Creates a new entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
 		/// </summary>
-		/// <param name="apiKeys">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environemnt vars or from a config file.</param>
+		/// <param name="apiKeys">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.</param>
 		/// <param name="engine">The <see cref="Engine"/>/model to use for API calls, defaulting to <see cref="Engine.Davinci"/> if not specified.</param>
 		public OpenAIAPI(APIAuthentication apiKeys = null, Engine engine = null)
 		{

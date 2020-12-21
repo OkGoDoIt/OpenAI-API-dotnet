@@ -8,7 +8,7 @@ using System.Text;
 namespace OpenAI_API
 {
 	/// <summary>
-	/// Represents a request to the Completions API.  Mostly matches the parameters in <see href="https://beta.openai.com/api-ref#create-completion-post">the OpenAI docs</see>, although some have been renames or expanded into single/multiple properites for ease of use.
+	/// Represents a request to the Completions API.  Mostly matches the parameters in <see href="https://beta.openai.com/api-ref#create-completion-post">the OpenAI docs</see>, although some have been renames or expanded into single/multiple properties for ease of use.
 	/// </summary>
 	public class CompletionRequest
 	{

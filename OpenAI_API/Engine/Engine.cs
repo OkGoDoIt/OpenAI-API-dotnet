@@ -19,7 +19,7 @@ namespace OpenAI_API
 		public string EngineName { get; set; }
 
 		/// <summary>
-		/// Allows an engine to be inplicity cast to the string of its <see cref="EngineName"/>
+		/// Allows an engine to be implicitly cast to the string of its <see cref="EngineName"/>
 		/// </summary>
 		/// <param name="engine">The <see cref="Engine"/> to cast to a string.</param>
 		public static implicit operator string(Engine engine)
@@ -28,7 +28,7 @@ namespace OpenAI_API
 		}
 
 		/// <summary>
-		/// Allows a string to be implicity cast as an <see cref="Engine"/> with that <see cref="EngineName"/>
+		/// Allows a string to be implicitly cast as an <see cref="Engine"/> with that <see cref="EngineName"/>
 		/// </summary>
 		/// <param name="name">The id/<see cref="EngineName"/> to use</param>
 		public static implicit operator Engine(string name)
@@ -41,7 +41,7 @@ namespace OpenAI_API
 		/// </summary>
 		/// <param name="name">The id/<see cref="EngineName"/> to use.
 		///						If the <paramref name="name"/> contains a colon (as is the case in the API's <see cref="CompletionResult.Model"/> response),
-		///						the part before the colon is trated at the id/<see cref="EngineName"/> and the following portion is considered the<see cref="ModelRevision"/>
+		///						the part before the colon is treated as the id/<see cref="EngineName"/> and the following portion is considered the<see cref="ModelRevision"/>
 		///	</param>
 		public Engine(string name)
 		{
