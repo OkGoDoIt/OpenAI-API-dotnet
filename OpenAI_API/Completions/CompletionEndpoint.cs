@@ -111,7 +111,7 @@ namespace OpenAI_API
 			double? presencePenalty = null,
 			double? frequencyPenalty = null,
 			int? logProbs = null,
-			bool? echo = null,
+			bool? echo = false,
 			params string[] stopSequences
 			)
 		{

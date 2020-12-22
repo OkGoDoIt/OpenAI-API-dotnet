@@ -99,7 +99,7 @@ namespace OpenAI_API
 		/// Echo back the prompt in addition to the completion
 		/// </summary>
 		[JsonProperty("echo")]
-		public bool? Echo { get; set; }
+		public bool? Echo { get; set; } = false;
 
 		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
