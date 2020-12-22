@@ -9,9 +9,9 @@ namespace OpenAI_Tests
 		[SetUp]
 		public void Setup()
 		{
-			File.WriteAllText(".openai", "OPENAI_KEY=pk-test12" + Environment.NewLine + "OPENAI_SECRET_KEY: sk-test34");
+			File.WriteAllText(".openai", "OPENAI_KEY=pk-test12");
 			Environment.SetEnvironmentVariable("OPENAI_KEY", "pk-test-env");
-			Environment.SetEnvironmentVariable("OPENAI_SECRET_KEY", "sk-test-env");
+			//Environment.SetEnvironmentVariable("OPENAI_SECRET_KEY", "sk-test-env");
 		}
 
 		[Test]
@@ -19,14 +19,9 @@ namespace OpenAI_Tests
 		{
 			var auth = OpenAI_API.APIAuthentication.LoadFromEnv();
 			Assert.IsNotNull(auth);
-			Assert.IsNotNull(auth.APIKey);
-			Assert.IsNotEmpty(auth.APIKey);
-			Assert.AreEqual("pk-test-env", auth.APIKey);
-
-			Assert.IsNotNull(auth.Secretkey);
-			Assert.IsNotEmpty(auth.Secretkey);
-			Assert.AreEqual("sk-test-env", auth.Secretkey);
-
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.IsNotEmpty(auth.ApiKey);
+			Assert.AreEqual("pk-test-env", auth.ApiKey);
 		}
 
 		[Test]
@@ -34,10 +29,8 @@ namespace OpenAI_Tests
 		{
 			var auth = OpenAI_API.APIAuthentication.LoadFromPath();
 			Assert.IsNotNull(auth);
-			Assert.IsNotNull(auth.APIKey);
-			Assert.AreEqual("pk-test12", auth.APIKey);
-			Assert.IsNotNull(auth.Secretkey);
-			Assert.AreEqual("sk-test34", auth.Secretkey);
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.AreEqual("pk-test12", auth.ApiKey);
 		}
 
 
@@ -55,10 +48,8 @@ namespace OpenAI_Tests
 			var auth = OpenAI_API.APIAuthentication.Default;
 			var envAuth = OpenAI_API.APIAuthentication.LoadFromEnv();
 			Assert.IsNotNull(auth);
-			Assert.IsNotNull(auth.APIKey);
-			Assert.AreEqual(envAuth.APIKey, auth.APIKey);
-			Assert.IsNotNull(auth.Secretkey);
-			Assert.AreEqual(envAuth.Secretkey, auth.Secretkey);
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.AreEqual(envAuth.ApiKey, auth.ApiKey);
 		}
 
 
@@ -67,57 +58,42 @@ namespace OpenAI_Tests
 		public void testHelper()
 		{
 			OpenAI_API.APIAuthentication defaultAuth = OpenAI_API.APIAuthentication.Default;
-			OpenAI_API.APIAuthentication manualAuth = new OpenAI_API.APIAuthentication("pk-testAA", "sk-testBB");
+			OpenAI_API.APIAuthentication manualAuth = new OpenAI_API.APIAuthentication("pk-testAA");
 			OpenAI_API.OpenAIAPI api = new OpenAI_API.OpenAIAPI();
 			OpenAI_API.APIAuthentication shouldBeDefaultAuth = api.Auth;
 			Assert.IsNotNull(shouldBeDefaultAuth);
-			Assert.IsNotNull(shouldBeDefaultAuth.APIKey);
-			Assert.AreEqual(defaultAuth.APIKey, shouldBeDefaultAuth.APIKey);
-			Assert.IsNotNull(shouldBeDefaultAuth.Secretkey);
-			Assert.AreEqual(defaultAuth.Secretkey, shouldBeDefaultAuth.Secretkey);
+			Assert.IsNotNull(shouldBeDefaultAuth.ApiKey);
+			Assert.AreEqual(defaultAuth.ApiKey, shouldBeDefaultAuth.ApiKey);
 
-			OpenAI_API.APIAuthentication.Default = new OpenAI_API.APIAuthentication("pk-testAA", "sk-testBB");
+			OpenAI_API.APIAuthentication.Default = new OpenAI_API.APIAuthentication("pk-testAA");
 			api = new OpenAI_API.OpenAIAPI();
 			OpenAI_API.APIAuthentication shouldBeManualAuth = api.Auth;
 			Assert.IsNotNull(shouldBeManualAuth);
-			Assert.IsNotNull(shouldBeManualAuth.APIKey);
-			Assert.AreEqual(manualAuth.APIKey, shouldBeManualAuth.APIKey);
-			Assert.IsNotNull(shouldBeManualAuth.Secretkey);
-			Assert.AreEqual(manualAuth.Secretkey, shouldBeManualAuth.Secretkey);
+			Assert.IsNotNull(shouldBeManualAuth.ApiKey);
+			Assert.AreEqual(manualAuth.ApiKey, shouldBeManualAuth.ApiKey);
 		}
 
 		[Test]
 		public void GetKey()
 		{
-			var auth = new OpenAI_API.APIAuthentication("pk-testAA", "sk-testBB");
-			Assert.IsNotNull(auth.GetKey());
-			Assert.AreEqual("sk-testBB", auth.GetKey());
-
-			auth = new OpenAI_API.APIAuthentication("pk-testAA", null);
-			Assert.IsNotNull(auth.GetKey());
-			Assert.AreEqual("pk-testAA", auth.GetKey());
+			var auth = new OpenAI_API.APIAuthentication("pk-testAA");
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.AreEqual("pk-testAA", auth.ApiKey);
 		}
 
 		[Test]
 		public void ParseKey()
 		{
 			var auth = new OpenAI_API.APIAuthentication("pk-testAA");
-			Assert.IsNotNull(auth.APIKey);
-			Assert.IsNull(auth.Secretkey);
-			Assert.AreEqual("pk-testAA", auth.APIKey);
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.AreEqual("pk-testAA", auth.ApiKey);
 			auth = "pk-testCC";
-			Assert.IsNotNull(auth.APIKey);
-			Assert.IsNull(auth.Secretkey);
-			Assert.AreEqual("pk-testCC", auth.APIKey);
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.AreEqual("pk-testCC", auth.ApiKey);
 
 			auth = new OpenAI_API.APIAuthentication("sk-testBB");
-			Assert.IsNotNull(auth.Secretkey);
-			Assert.IsNull(auth.APIKey);
-			Assert.AreEqual("sk-testBB", auth.Secretkey);
-			auth = "sk-testDD";
-			Assert.IsNotNull(auth.Secretkey);
-			Assert.IsNull(auth.APIKey);
-			Assert.AreEqual("sk-testDD", auth.Secretkey);
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.AreEqual("sk-testBB", auth.ApiKey);
 		}
 
 	}

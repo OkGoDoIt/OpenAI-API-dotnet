@@ -36,19 +36,18 @@ Install-Package OpenAI
 ### Authentication
 There are 3 ways to provide your API keys, in order of precedence:
 1.  Pass keys directly to `APIAuthentication(string key)` constructor
-2.  Set environment vars for OPENAI_KEY and/or OPENAI_SECRET_KEY
+2.  Set environment var for OPENAI_KEY
 3.  Include a config file in the local directory or in your user directory named `.openai` and containing one or both lines:
 ```shell
-OPENAI_KEY=pk-aaaabbbbbccccddddd
-OPENAI_SECRET_KEY=sk-aaaabbbbbccccddddd
+OPENAI_KEY=sk-aaaabbbbbccccddddd
 ```
 
 You use the `APIAuthentication` when you initialize the API as shown:
 ```csharp
 // for example
-OpenAIAPI api = new OpenAIAPI("sk-mysecretkeyhere"); // shorthand
+OpenAIAPI api = new OpenAIAPI("sk-mykeyhere"); // shorthand
 // or
-OpenAIAPI api = new OpenAIAPI(new APIAuthentication("pk-publishkey","sk-secretkey")); // specify manually
+OpenAIAPI api = new OpenAIAPI(new APIAuthentication("sk-secretkey")); // create object manually
 // or
 OpenAIAPI api = new OpenAIAPI(APIAuthentication LoadFromEnv()); // use env vars
 // or
@@ -74,7 +73,7 @@ You can create your `CompletionRequest` ahead of time or use one of the helper o
 #### Streaming
 Streaming allows you to get results are they are generated, which can help your application feel more responsive, especially on slow models like Davinci.
 
-Using the new C# 8.0 async interators:
+Using the new C# 8.0 async iterators:
 ```csharp
 IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
 
