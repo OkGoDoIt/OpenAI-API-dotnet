@@ -14,54 +14,26 @@ namespace OpenAI_API
 	public class APIAuthentication
 	{
 		/// <summary>
-		/// The publishable API key.  Some of the API endpoints do not appear to work with the public API key, so this is only used as a fallback if there is no <see cref="Secretkey"/> provided.  When better guidance is provided by OpenAI, this behavior may change.
+		/// The API key, required to access the API endpoint.
 		/// </summary>
-		public string APIKey { get; set; }
-
-		/// <summary>
-		/// The secret API key.  Some of the API endpoints appear to require a secret API key.
-		/// </summary>
-		public string Secretkey { get; set; }
+		public string ApiKey { get; set; }
 
 		/// <summary>
 		/// Allows implicit casting from a string, so that a simple string API key can be provided in place of an instance of <see cref="APIAuthentication"/>
 		/// </summary>
-		/// <param name="key">The API key to convert into a <see cref="APIAuthentication"/>.  If the key starts with "pk-" then it is interpreted as a publishable <see cref="APIKey"/>, otherwise it is interpreted as a <see cref="Secretkey"/>.</param>
+		/// <param name="key">The API key to convert into a <see cref="APIAuthentication"/>.</param>
 		public static implicit operator APIAuthentication(string key)
 		{
 			return new APIAuthentication(key);
 		}
 
 		/// <summary>
-		/// Instantiates a new Authentication object with the given <paramref name="apiKey"/> and/or <paramref name="secretKey"/>, either of which may be <see langword="null"/>.
+		/// Instantiates a new Authentication object with the given <paramref name="apiKey"/>, which may be <see langword="null"/>.
 		/// </summary>
-		/// <param name="apiKey">The publishable API key.  Some of the API endpoints do not appear to work with the public API key, so this is only used as a fallback if there is no <paramref name="secretKey"/> provided.  When better guidance is provided by OpenAI, this behavior may change.</param>
-		/// <param name="secretKey">The secret API key.  Some of the API endpoints appear to require a secret API key.</param>
-		public APIAuthentication(string apiKey, string secretKey)
+		/// <param name="apiKey">The API key, required to access the API endpoint.</param>
+		public APIAuthentication(string apiKey)
 		{
-			this.APIKey = apiKey;
-			this.Secretkey = secretKey;
-		}
-
-		/// <summary>
-		/// Instantiates a new Authentication object with the given key.
-		/// </summary>
-		/// <param name="key">If the key starts with "pk-" then it is interpreted as a publishable <see cref="APIKey"/>, otherwise it is interpreted as a <see cref="Secretkey"/></param>
-		public APIAuthentication(string key)
-		{
-			if (key != null && key.StartsWith("pk-"))
-				this.APIKey = key;
-			else
-				this.Secretkey = key;
-		}
-
-		/// <summary>
-		/// Gets a usable API key, preferring the <see cref="Secretkey"/> if there is one.
-		/// </summary>
-		/// <returns></returns>
-		public string GetKey()
-		{
-			return Secretkey ?? APIKey;
+			this.ApiKey = apiKey;
 		}
 
 		private static APIAuthentication cachedDefault = null;
@@ -92,18 +64,20 @@ namespace OpenAI_API
 		}
 
 		/// <summary>
-		/// Attempts to load api keys from environment variables, as "OPENAI_KEY" and/or "OPENAI_SECRET_KEY"
+		/// Attempts to load api keys from environment variables, as "OPENAI_KEY" (or "OPENAI_SECRET_KEY", for backwards compatibility)
 		/// </summary>
 		/// <returns>Returns the loaded <see cref="APIAuthentication"/> any api keys were found, or <see langword="null"/> if there were no matching environment vars.</returns>
 		public static APIAuthentication LoadFromEnv()
 		{
-			var secretKey = Environment.GetEnvironmentVariable("OPENAI_SECRET_KEY");
 			var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
-
-			if (string.IsNullOrEmpty(key) && string.IsNullOrEmpty(secretKey))
+			
+			if (string.IsNullOrEmpty(key))
+				key = Environment.GetEnvironmentVariable("OPENAI_SECRET_KEY");
+			
+			if (string.IsNullOrEmpty(key))
 				return null;
 
-			return new APIAuthentication(key, secretKey);
+			return new APIAuthentication(key);
 		}
 
 		/// <summary>
@@ -118,11 +92,10 @@ namespace OpenAI_API
 			if (directory == null)
 				directory = Environment.CurrentDirectory;
 
-			string secretKey = null;
 			string key = null;
 			var curDirectory = new DirectoryInfo(directory);
 
-			while (secretKey == null && key == null && curDirectory.Parent != null)
+			while (key == null && curDirectory.Parent != null)
 			{
 				if (File.Exists(Path.Combine(curDirectory.FullName, filename)))
 				{
@@ -138,7 +111,7 @@ namespace OpenAI_API
 									key = parts[1].Trim();
 									break;
 								case "OPENAI_SECRET_KEY":
-									secretKey = parts[1].Trim();
+									key = parts[1].Trim();
 									break;
 								default:
 									break;
@@ -157,10 +130,10 @@ namespace OpenAI_API
 				}
 			}
 
-			if (string.IsNullOrEmpty(key) && string.IsNullOrEmpty(secretKey))
+			if (string.IsNullOrEmpty(key))
 				return null;
 
-			return new APIAuthentication(key, secretKey);
+			return new APIAuthentication(key);
 		}
 
 

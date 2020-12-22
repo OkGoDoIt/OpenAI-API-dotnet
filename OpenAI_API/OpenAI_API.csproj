@@ -6,19 +6,21 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>OkGoDoIt (Roger Pincombe)</Authors>
 		<Product>OpenAI API</Product>
-		<Description>A simple C# / .NET wrapper library to use with OpenAI's GPT-3 API (currently in beta).  Independently developed, this is not an official library and I am not affiliated with OpenAI.</Description>
+		<Description>A simple C# / .NET wrapper library to use with OpenAI's GPT-3 API (currently in beta).  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI API account is required.</Description>
 		<Copyright></Copyright>
 		<PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>Added additional API debugging metadata and improved the readme. An OpenAI API account is required (still in closed beta)</PackageReleaseNotes>
+		<PackageReleaseNotes>Added support for "echo" parameter, which echos back the prompt in responses (thanks to @GotMike!)  Removed support for publishable API keys (and renamed secret keys to simply API keys) since OpenAI no longer supports publishable keys.  Also fixed various typos in the documentation.</PackageReleaseNotes>
 		<SignAssembly>false</SignAssembly>
 		<AssemblyOriginatorKeyFile>okgodoit-signing.pfx</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.1.0</Version>
+		<Version>1.2.0</Version>
+		<AssemblyVersion>1.2.0.0</AssemblyVersion>
+		<FileVersion>1.2.0.0</FileVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

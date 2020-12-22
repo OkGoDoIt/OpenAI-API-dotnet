@@ -40,14 +40,14 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Choices"/> property for the completions.</returns>
 		public async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request)
 		{
-			if (Api.Auth?.GetKey() is null)
+			if (Api.Auth?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
 
 			request.Stream = false;
 			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.GetKey());
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
 
 			string jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
@@ -157,7 +157,7 @@ namespace OpenAI_API
 		/// <param name="resultHandler">An action to be called as each new result arrives, which includes the index of the result in the overall result set.</param>
 		public async Task StreamCompletionAsync(CompletionRequest request, Action<int, CompletionResult> resultHandler)
 		{
-			if (Api.Auth?.GetKey() is null)
+			if (Api.Auth?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
@@ -171,7 +171,7 @@ namespace OpenAI_API
 			using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, $"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/completions"))
 			{
 				req.Content = stringContent;
-				req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.GetKey()); ;
+				req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey); ;
 				req.Headers.Add("User-Agent", "okgodoit/dotnet_openai_api");
 
 				var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
@@ -235,7 +235,7 @@ namespace OpenAI_API
 		/// <returns>An async enumerable with each of the results as they come in.  See <seealso cref="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#asynchronous-streams"/> for more details on how to consume an async enumerable.</returns>
 		public async IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
 		{
-			if (Api.Auth?.GetKey() is null)
+			if (Api.Auth?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
@@ -249,7 +249,7 @@ namespace OpenAI_API
 			using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, $"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/completions"))
 			{
 				req.Content = stringContent;
-				req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.GetKey()); ;
+				req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey); ;
 				req.Headers.Add("User-Agent", "okgodoit/dotnet_openai_api");
 
 				var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);

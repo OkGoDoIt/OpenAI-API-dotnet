@@ -53,7 +53,7 @@ namespace OpenAI_API
 		public static async Task<List<Engine>> GetEnginesAsync(APIAuthentication auth = null)
 		{
 			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().GetKey());
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines");
@@ -78,13 +78,13 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns the <see cref="Engine"/> with all available properties</returns>
 		public static async Task<Engine> RetrieveEngineDetailsAsync(string id, APIAuthentication auth = null)
 		{
-			if (auth.ThisOrDefault()?.GetKey() is null)
+			if (auth.ThisOrDefault()?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
 
 			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().GetKey());
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines/" + id);
