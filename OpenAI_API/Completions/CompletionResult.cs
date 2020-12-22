@@ -46,7 +46,7 @@ namespace OpenAI_API
 	}
 
 	/// <summary>
-	/// Respresents a result from calling the Completion API
+	/// Represents a result from calling the Completion API
 	/// </summary>
 	public class CompletionResult
 	{
