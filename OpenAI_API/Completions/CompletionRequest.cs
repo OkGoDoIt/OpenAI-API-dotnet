@@ -96,6 +96,12 @@ namespace OpenAI_API
 		public int? Logprobs { get; set; }
 
 		/// <summary>
+		/// Echo back the prompt in addition to the completion
+		/// </summary>
+		[JsonProperty("echo")]
+		public bool? Echo { get; set; }
+
+		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
 		/// </summary>
 		[JsonProperty("stop")]
@@ -155,6 +161,7 @@ namespace OpenAI_API
 			this.PresencePenalty = basedOn.PresencePenalty;
 			this.FrequencyPenalty = basedOn.FrequencyPenalty;
 			this.Logprobs = basedOn.Logprobs;
+			this.Echo = basedOn.Echo;
 			this.MultipleStopSequences = basedOn.MultipleStopSequences;
 		}
 
@@ -178,15 +185,17 @@ namespace OpenAI_API
 		/// <param name="presencePenalty">The scale of the penalty applied if a token is already present at all.  Should generally be between 0 and 1, although negative numbers are allowed to encourage token reuse.</param>
 		/// <param name="frequencyPenalty">The scale of the penalty for how often a token is used.  Should generally be between 0 and 1, although negative numbers are allowed to encourage token reuse.</param>
 		/// <param name="logProbs">Include the log probabilities on the logprobs most likely tokens, which can be found in <see cref="CompletionResult.Choices"/> -> <see cref="Choice.Logprobs"/>. So for example, if logprobs is 10, the API will return a list of the 10 most likely tokens. If logprobs is supplied, the API will always return the logprob of the sampled token, so there may be up to logprobs+1 elements in the response.</param>
+		/// <param name="echo">Echo back the prompt in addition to the completion.</param>
 		/// <param name="stopSequences">One or more sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</param>
 		public CompletionRequest(string prompt,
 			int? max_tokens = null,
-			double? temperature = null, 
-			double? top_p = null, 
-			int? numOutputs = null, 
-			double? presencePenalty = null, 
+			double? temperature = null,
+			double? top_p = null,
+			int? numOutputs = null,
+			double? presencePenalty = null,
 			double? frequencyPenalty = null,
-			int? logProbs=null,
+			int? logProbs = null,
+			bool? echo = null,
 			params string[] stopSequences)
 		{
 			this.Prompt = prompt;
@@ -197,6 +206,7 @@ namespace OpenAI_API
 			this.PresencePenalty = presencePenalty;
 			this.FrequencyPenalty = frequencyPenalty;
 			this.Logprobs = logProbs;
+			this.Echo = echo;
 			this.MultipleStopSequences = stopSequences;
 		}
 
