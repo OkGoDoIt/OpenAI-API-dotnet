@@ -13,7 +13,7 @@ Console.WriteLine(result.ToString());
 ```
 
 ```csharp
-var api = new OpenAI_API.OpenAIAPI("sk-mysecretkeyhere"););
+var api = new OpenAI_API.OpenAIAPI("sk-myapikeyhere"););
 
 var result = await api.Search.GetBestMatchAsync("Washington DC", "Canada", "China", "USA", "Spain");
 Console.WriteLine(result);
@@ -37,7 +37,7 @@ Install-Package OpenAI
 There are 3 ways to provide your API keys, in order of precedence:
 1.  Pass keys directly to `APIAuthentication(string key)` constructor
 2.  Set environment var for OPENAI_KEY
-3.  Include a config file in the local directory or in your user directory named `.openai` and containing one or both lines:
+3.  Include a config file in the local directory or in your user directory named `.openai` and containing the line:
 ```shell
 OPENAI_KEY=sk-aaaabbbbbccccddddd
 ```
