@@ -40,8 +40,9 @@ namespace OpenAI_API
 		/// Represents an Engine with the given id/<see cref="EngineName"/>
 		/// </summary>
 		/// <param name="name">The id/<see cref="EngineName"/> to use.
-		///						If the <paramref name="name"/> contains a colon (as is the case in the API's <see cref="CompletionResult.Model"/> response),
-		///						the part before the colon is treated as the id/<see cref="EngineName"/> and the following portion is considered the <see cref="ModelRevision"/>
+		///	If the <paramref name="name"/> contains a colon (as is the case in the API's <see cref="CompletionResult.Model"/> response),
+		///	the part before the colon is treated as the id/<see cref="EngineName"/> and the following portion is considered the<see cref="ModelRevision"/>
+		///	the part before the colon is treated as the id/<see cref="EngineName"/> and the following portion is considered the <see cref="ModelRevision"/>
 		///	</param>
 		public Engine(string name)
 		{
@@ -94,10 +95,21 @@ namespace OpenAI_API
 		/// The 2nd most powerful engine, a bit faster than <see cref=Davinci"/>, and a bit faster.
 		/// </summary>
 		public static Engine Curie => new Engine("curie") { Owner = "openai", Ready = true };
+        
 		/// <summary>
 		/// The most powerful, largest engine available, although the speed is quite slow.
 		/// </summary>
 		public static Engine Davinci => new Engine("davinci") { Owner = "openai", Ready = true };
+
+		/// <summary>
+        /// [BETA] The instruct version of the <see cref="Curie"/> engine.
+        /// </summary>
+        public static Engine InstructCurieBeta => new Engine("instruct-curie-beta") { Owner = "openai", Ready = true };
+        
+        /// <summary>
+        /// [BETA] The instruct version of the <see cref="Davinci"/> engine.
+        /// </summary>
+        public static Engine InstructDavinciBeta => new Engine("instruct-davinci-beta") { Owner = "openai", Ready = true };
 
 		/// <summary>
 		/// The default Engine to use in the case no other is specified.  Defaults to <see cref="Davinci"/>
