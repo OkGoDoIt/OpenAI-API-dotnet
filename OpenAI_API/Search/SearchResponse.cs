@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using OpenAI_API.Interfaces;
 
 namespace OpenAI_API
 {
@@ -27,7 +27,7 @@ namespace OpenAI_API
 	/// <summary>
 	/// Used internally to deserialize the json response from the Document Search API
 	/// </summary>
-	public class SearchResponse
+	public class SearchResponse : IOpenAiMetadataResult
 	{
 		/// <summary>
 		/// The list of results

@@ -1,13 +1,11 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using OpenAI_API.Dto;
+using OpenAI_API.Helpers;
 
 namespace OpenAI_API
 {
@@ -16,7 +14,8 @@ namespace OpenAI_API
 	/// </summary>
 	public class CompletionEndpoint
 	{
-		OpenAIAPI Api;
+		private readonly OpenAIAPI _api;
+
 		/// <summary>
 		/// This allows you to set default parameters for every request, for example to set a default temperature or max tokens.  For every request, if you do not have a parameter set on the request but do have it set here as a default, the request will automatically pick up the default value.
 		/// </summary>
@@ -28,7 +27,21 @@ namespace OpenAI_API
 		/// <param name="api"></param>
 		internal CompletionEndpoint(OpenAIAPI api)
 		{
-			this.Api = api;
+			_api = api;
+		}
+
+		private string EngineUrl => $"https://api.openai.com/v1/engines/{_api.UsingEngine.EngineName}";
+
+		private async Task CheckForServerError(HttpResponseMessage response, string jsonContent)
+		{
+			if (response.IsSuccessStatusCode)
+				return;
+
+			string resultAsString = await response.Content.ReadAsStringAsync();
+			var errorRes = JsonConvert.DeserializeObject<OpenAiErrorDto>(resultAsString);
+			throw new HttpRequestException(
+				$"Error calling OpenAi API to get completion.  HTTP status code: {response.StatusCode}"
+				+ $". Request body: {jsonContent}. Error: {errorRes}");
 		}
 
 		#region Non-streaming
@@ -37,52 +50,36 @@ namespace OpenAI_API
 		/// Ask the API to complete the prompt(s) using the specified request.  This is non-streaming, so it will wait until the API returns the full result.
 		/// </summary>
 		/// <param name="request">The request to send to the API.  This does not fall back to default values specified in <see cref="DefaultCompletionRequestArgs"/>.</param>
-		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Choices"/> property for the completions.</returns>
+		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Completions"/> property for the completions.</returns>
 		public async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request)
 		{
-			if (Api.Auth?.ApiKey is null)
-			{
-				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
-			}
+			OpenAiRequestHelper.CheckApiKey(_api.Auth.ApiKey);
 
 			request.Stream = false;
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
+			var client = OpenAiRequestHelper.GetHttpClient(_api.Auth.ApiKey);
+			string jsonContent = request.GetJsonContent();
+			var stringContent = jsonContent.GetStringContent();
 
-			string jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-			var stringContent = new StringContent(jsonContent, UnicodeEncoding.UTF8, "application/json");
-
-			var response = await client.PostAsync($"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/completions", stringContent);
+			var response = await client.PostAsync($"{EngineUrl}/completions", stringContent);
+			string resultAsString = await response.Content.ReadAsStringAsync();
 			if (response.IsSuccessStatusCode)
 			{
-				string resultAsString = await response.Content.ReadAsStringAsync();
-
 				var res = JsonConvert.DeserializeObject<CompletionResult>(resultAsString);
-				try
-				{
-					res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
-					res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
-					res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
-				}
-				catch (Exception) { }
-
-
+				OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
 				return res;
 			}
-			else
-			{
-				throw new HttpRequestException("Error calling OpenAi API to get completion.  HTTP status code: " + response.StatusCode.ToString() + ". Request body: " + jsonContent);
-			}
-		}
 
+			var errorRes = JsonConvert.DeserializeObject<OpenAiErrorDto>(resultAsString);
+			throw new HttpRequestException($"Error calling OpenAi API to get completion.  HTTP status code: {response.StatusCode}" 
+			                               + $". Request body: {jsonContent}. Error: {errorRes}" );
+		}
 
 		/// <summary>
 		/// Ask the API to complete the prompt(s) using the specified request and a requested number of outputs.  This is non-streaming, so it will wait until the API returns the full result.
 		/// </summary>
 		/// <param name="request">The request to send to the API.  This does not fall back to default values specified in <see cref="DefaultCompletionRequestArgs"/>.</param>
 		/// <param name="numOutputs">Overrides <see cref="CompletionRequest.NumChoicesPerPrompt"/> as a convenience.</param>
-		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Choices"/> property for the completions, which should have a length equal to <paramref name="numOutputs"/>.</returns>
+		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Completions"/> property for the completions, which should have a length equal to <paramref name="numOutputs"/>.</returns>
 		public Task<CompletionResult> CreateCompletionsAsync(CompletionRequest request, int numOutputs = 5)
 		{
 			request.NumChoicesPerPrompt = numOutputs;
@@ -102,7 +99,7 @@ namespace OpenAI_API
 		/// <param name="logProbs">Include the log probabilities on the logprobs most likely tokens, which can be found in <see cref="CompletionResult.Choices"/> -> <see cref="Choice.Logprobs"/>. So for example, if logprobs is 10, the API will return a list of the 10 most likely tokens. If logprobs is supplied, the API will always return the logprob of the sampled token, so there may be up to logprobs+1 elements in the response.</param>
 		/// <param name="echo">Echo back the prompt in addition to the completion.</param>
 		/// <param name="stopSequences">One or more sequences where the API will stop generating further tokens. The returned text will not contain the stop sequence.</param>
-		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Choices"/> property for the completions.</returns>
+		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Completions"/> property for the completions.</returns>
 		public Task<CompletionResult> CreateCompletionAsync(string prompt,
 			int? max_tokens = null,
 			double? temperature = null,
@@ -132,7 +129,7 @@ namespace OpenAI_API
 		}
 
 		/// <summary>
-		/// Ask the API to complete the prompt(s) using the specified promptes, with other paramets being drawn from default values specified in <see cref="DefaultCompletionRequestArgs"/> if present.  This is non-streaming, so it will wait until the API returns the full result.
+		/// Ask the API to complete the prompt(s) using the specified prompts, with other parameters being drawn from default values specified in <see cref="DefaultCompletionRequestArgs"/> if present.  This is non-streaming, so it will wait until the API returns the full result.
 		/// </summary>
 		/// <param name="prompts">One or more prompts to generate from</param>
 		/// <returns></returns>
@@ -157,62 +154,46 @@ namespace OpenAI_API
 		/// <param name="resultHandler">An action to be called as each new result arrives, which includes the index of the result in the overall result set.</param>
 		public async Task StreamCompletionAsync(CompletionRequest request, Action<int, CompletionResult> resultHandler)
 		{
-			if (Api.Auth?.ApiKey is null)
-			{
-				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
-			}
+			OpenAiRequestHelper.CheckApiKey(_api.Auth.ApiKey);
 
 			request = new CompletionRequest(request) { Stream = true };
+
 			HttpClient client = new HttpClient();
+			string jsonContent = request.GetJsonContent();
+			var stringContent = jsonContent.GetStringContent();
 
-			string jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-			var stringContent = new StringContent(jsonContent, UnicodeEncoding.UTF8, "application/json");
-
-			using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, $"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/completions"))
+			using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, $"{EngineUrl}/completions")
 			{
-				req.Content = stringContent;
-				req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey); ;
-				req.Headers.Add("User-Agent", "okgodoit/dotnet_openai_api");
+				Content = stringContent
+			};
+			OpenAiRequestHelper.AddDefaultHeaders(req.Headers, _api.Auth.ApiKey);
 
-				var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
+			var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
+			await CheckForServerError(response, jsonContent);
 
-				if (response.IsSuccessStatusCode)
+			int index = 0;
+
+			using var stream = await response.Content.ReadAsStreamAsync();
+			using StreamReader reader = new StreamReader(stream);
+
+			string line;
+			while ((line = await reader.ReadLineAsync()) != null)
+			{
+				if (line.StartsWith("data: "))
+					line = line.Substring("data: ".Length);
+				if (line == "[DONE]")
 				{
-					int index = 0;
-
-					using (var stream = await response.Content.ReadAsStreamAsync())
-					using (StreamReader reader = new StreamReader(stream))
-					{
-						string line;
-						while ((line = await reader.ReadLineAsync()) != null)
-						{
-							if (line.StartsWith("data: "))
-								line = line.Substring("data: ".Length);
-							if (line == "[DONE]")
-							{
-								return;
-							}
-							else if (!string.IsNullOrWhiteSpace(line))
-							{
-								index++;
-								var res = JsonConvert.DeserializeObject<CompletionResult>(line.Trim());
-								try
-								{
-									res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
-									res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
-									res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
-								}
-								catch (Exception) { }
-
-								resultHandler(index, res);
-							}
-						}
-					}
+					return;
 				}
-				else
-				{
-					throw new HttpRequestException("Error calling OpenAi API to get completion.  HTTP status code: " + response.StatusCode.ToString() + ". Request body: " + jsonContent);
-				}
+
+				if (string.IsNullOrWhiteSpace(line))
+					continue;
+
+				index++;
+				var res = JsonConvert.DeserializeObject<CompletionResult>(line.Trim());
+				OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
+
+				resultHandler(index, res);
 			}
 		}
 
@@ -235,52 +216,42 @@ namespace OpenAI_API
 		/// <returns>An async enumerable with each of the results as they come in.  See <seealso cref="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#asynchronous-streams"/> for more details on how to consume an async enumerable.</returns>
 		public async IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
 		{
-			if (Api.Auth?.ApiKey is null)
-			{
-				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
-			}
+			OpenAiRequestHelper.CheckApiKey(_api.Auth.ApiKey);
 
 			request = new CompletionRequest(request) { Stream = true };
 			HttpClient client = new HttpClient();
+			string jsonContent = request.GetJsonContent();
+			var stringContent = jsonContent.GetStringContent();
 
-			string jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-			var stringContent = new StringContent(jsonContent, UnicodeEncoding.UTF8, "application/json");
-
-			using (HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, $"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/completions"))
+			using HttpRequestMessage req = new HttpRequestMessage(HttpMethod.Post, $"{EngineUrl}/completions")
 			{
-				req.Content = stringContent;
-				req.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey); ;
-				req.Headers.Add("User-Agent", "okgodoit/dotnet_openai_api");
+				Content = stringContent
+			};
+			OpenAiRequestHelper.AddDefaultHeaders(req.Headers, _api.Auth.ApiKey);
 
-				var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
+			var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
 
-				if (response.IsSuccessStatusCode)
+			await CheckForServerError(response, jsonContent);
+
+			using var stream = await response.Content.ReadAsStreamAsync();
+			using StreamReader reader = new StreamReader(stream);
+			string line;
+			while ((line = await reader.ReadLineAsync()) != null)
+			{
+				if (line.StartsWith("data: "))
+					line = line.Substring("data: ".Length);
+				if (line == "[DONE]")
 				{
-					using (var stream = await response.Content.ReadAsStreamAsync())
-					using (StreamReader reader = new StreamReader(stream))
-					{
-						string line;
-						while ((line = await reader.ReadLineAsync()) != null)
-						{
-							if (line.StartsWith("data: "))
-								line = line.Substring("data: ".Length);
-							if (line == "[DONE]")
-							{
-								yield break;
-							}
-							else if (!string.IsNullOrWhiteSpace(line))
-							{
-								var res = JsonConvert.DeserializeObject<CompletionResult>(line.Trim());
-								yield return res;
-							}
-						}
-					}
+					yield break;
 				}
-				else
+
+				if (!string.IsNullOrWhiteSpace(line))
 				{
-					throw new HttpRequestException("Error calling OpenAi API to get completion.  HTTP status code: " + response.StatusCode.ToString() + ". Request body: " + jsonContent);
+					var res = JsonConvert.DeserializeObject<CompletionResult>(line.Trim());
+					yield return res;
 				}
 			}
+
 		}
 
 		/// <summary>
@@ -339,7 +310,7 @@ namespace OpenAI_API
 		{
 			string prompt = request.Prompt;
 			var result = await CreateCompletionAsync(request);
-			return prompt + result.ToString();
+			return prompt + result;
 		}
 
 		#endregion

@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
+using OpenAI_API.Helpers;
 
 namespace OpenAI_API
 {
@@ -35,17 +35,12 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns a Dictionary mapping each document to the score for that document.  The similarity score is a positive score that usually ranges from 0 to 300 (but can sometimes go higher), where a score above 200 usually means the document is semantically similar to the query.</returns>
 		public async Task<Dictionary<string, double>> GetSearchResultsAsync(SearchRequest request)
 		{
-			if (Api.Auth?.ApiKey is null)
-			{
-				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
-			}
+			OpenAiRequestHelper.CheckApiKey(Api.Auth?.ApiKey);
 
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
+			var client = OpenAiRequestHelper.GetHttpClient(Api?.Auth?.ApiKey);
 
 			string jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
-			var stringContent = new StringContent(jsonContent, UnicodeEncoding.UTF8, "application/json");
+			var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
 			var response = await client.PostAsync($"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/search", stringContent);
 			if (response.IsSuccessStatusCode)
@@ -53,13 +48,7 @@ namespace OpenAI_API
 				string resultAsString = await response.Content.ReadAsStringAsync();
 				var res = JsonConvert.DeserializeObject<SearchResponse>(resultAsString);
 
-				try
-				{
-					res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
-					res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
-					res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
-				}
-				catch (Exception) { }
+				OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
 
 				if (res.Results == null || res.Results.Count == 0)
 					throw new HttpRequestException("API returnes no search results.  HTTP status code: " + response.StatusCode.ToString() + ". Response body: " + resultAsString);

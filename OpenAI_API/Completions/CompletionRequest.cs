@@ -1,31 +1,19 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
+using Newtonsoft.Json;
+using OpenAI_API.Interfaces;
 
 namespace OpenAI_API
 {
 	/// <summary>
 	/// Represents a request to the Completions API.  Mostly matches the parameters in <see href="https://beta.openai.com/api-ref#create-completion-post">the OpenAI docs</see>, although some have been renames or expanded into single/multiple properties for ease of use.
 	/// </summary>
-	public class CompletionRequest
+	public class CompletionRequest : IOpenAiRequest
 	{
 		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
 		/// </summary>
 		[JsonProperty("prompt")]
-		public object CompiledPrompt
-		{
-			get
-			{
-				if (MultiplePrompts?.Length == 1)
-					return Prompt;
-				else
-					return MultiplePrompts;
-			}
-		}
+		public object CompiledPrompt => MultiplePrompts?.Length == 1 ? (object) Prompt : MultiplePrompts;
 
 		/// <summary>
 		/// If you are requesting more than one prompt, specify them as an array of strings.
@@ -42,7 +30,7 @@ namespace OpenAI_API
 			get => MultiplePrompts.FirstOrDefault();
 			set
 			{
-				MultiplePrompts = new string[] { value };
+				MultiplePrompts = new[] { value };
 			}
 		}
 
@@ -70,7 +58,6 @@ namespace OpenAI_API
 		[JsonProperty("presence_penalty")]
 		public double? PresencePenalty { get; set; }
 
-
 		/// <summary>
 		/// The scale of the penalty for how often a token is used.  Should generally be between 0 and 1, although negative numbers are allowed to encourage token reuse.
 		/// </summary>
@@ -87,10 +74,10 @@ namespace OpenAI_API
 		/// Specifies where the results should stream and be returned at one time.  Do not set this yourself, use the appropriate methods on <see cref="CompletionEndpoint"/> instead.
 		/// </summary>
 		[JsonProperty("stream")]
-		public bool Stream { get; internal set; } = false;
+		public bool Stream { get; internal set; }
 
 		/// <summary>
-		/// Include the log probabilities on the logprobs most likely tokens, which can be found in <see cref="CompletionResult.Choices"/> -> <see cref="Choice.Logprobs"/>. So for example, if logprobs is 10, the API will return a list of the 10 most likely tokens. If logprobs is supplied, the API will always return the logprob of the sampled token, so there may be up to logprobs+1 elements in the response.
+		/// Include the log probabilities on the logprobs most likely tokens, which can be found in <see cref="CompletionResult.Completions"/> -> <see cref="Choice.Logprobs"/>. So for example, if logprobs is 10, the API will return a list of the 10 most likely tokens. If logprobs is supplied, the API will always return the logprob of the sampled token, so there may be up to logprobs+1 elements in the response.
 		/// </summary>
 		[JsonProperty("logprobs")]
 		public int? Logprobs { get; set; }
@@ -111,10 +98,7 @@ namespace OpenAI_API
 			{
 				if (MultipleStopSequences?.Length == 1)
 					return StopSequence;
-				else if (MultipleStopSequences?.Length > 0)
-					return MultipleStopSequences;
-				else
-					return null;
+				return MultipleStopSequences?.Length > 0 ? MultipleStopSequences : null;
 			}
 		}
 
@@ -131,16 +115,16 @@ namespace OpenAI_API
 		[JsonIgnore]
 		public string StopSequence
 		{
-			get => MultipleStopSequences?.FirstOrDefault() ?? null;
+			get => MultipleStopSequences?.FirstOrDefault();
 			set
 			{
 				if (value != null)
-					MultipleStopSequences = new string[] { value };
+					MultipleStopSequences = new[] { value };
 			}
 		}
 
 		/// <summary>
-		/// Cretes a new, empty <see cref="CompletionRequest"/>
+		/// Creates a new, empty <see cref="CompletionRequest"/>
 		/// </summary>
 		public CompletionRequest()
 		{
@@ -153,16 +137,16 @@ namespace OpenAI_API
 		/// <param name="basedOn">The <see cref="CompletionRequest"/> to copy</param>
 		public CompletionRequest(CompletionRequest basedOn)
 		{
-			this.MultiplePrompts = basedOn.MultiplePrompts;
-			this.MaxTokens = basedOn.MaxTokens;
-			this.Temperature = basedOn.Temperature;
-			this.TopP = basedOn.TopP;
-			this.NumChoicesPerPrompt = basedOn.NumChoicesPerPrompt;
-			this.PresencePenalty = basedOn.PresencePenalty;
-			this.FrequencyPenalty = basedOn.FrequencyPenalty;
-			this.Logprobs = basedOn.Logprobs;
-			this.Echo = basedOn.Echo;
-			this.MultipleStopSequences = basedOn.MultipleStopSequences;
+			MultiplePrompts = basedOn.MultiplePrompts;
+			MaxTokens = basedOn.MaxTokens;
+			Temperature = basedOn.Temperature;
+			TopP = basedOn.TopP;
+			NumChoicesPerPrompt = basedOn.NumChoicesPerPrompt;
+			PresencePenalty = basedOn.PresencePenalty;
+			FrequencyPenalty = basedOn.FrequencyPenalty;
+			Logprobs = basedOn.Logprobs;
+			Echo = basedOn.Echo;
+			MultipleStopSequences = basedOn.MultipleStopSequences;
 		}
 
 		/// <summary>
@@ -171,7 +155,7 @@ namespace OpenAI_API
 		/// <param name="prompts">One or more prompts to generate from</param>
 		public CompletionRequest(params string[] prompts)
 		{
-			this.MultiplePrompts = prompts;
+			MultiplePrompts = prompts;
 		}
 
 		/// <summary>
@@ -198,16 +182,16 @@ namespace OpenAI_API
 			bool? echo = null,
 			params string[] stopSequences)
 		{
-			this.Prompt = prompt;
-			this.MaxTokens = max_tokens;
-			this.Temperature = temperature;
-			this.TopP = top_p;
-			this.NumChoicesPerPrompt = numOutputs;
-			this.PresencePenalty = presencePenalty;
-			this.FrequencyPenalty = frequencyPenalty;
-			this.Logprobs = logProbs;
-			this.Echo = echo;
-			this.MultipleStopSequences = stopSequences;
+			Prompt = prompt;
+			MaxTokens = max_tokens;
+			Temperature = temperature;
+			TopP = top_p;
+			NumChoicesPerPrompt = numOutputs;
+			PresencePenalty = presencePenalty;
+			FrequencyPenalty = frequencyPenalty;
+			Logprobs = logProbs;
+			Echo = echo;
+			MultipleStopSequences = stopSequences;
 		}
 
 

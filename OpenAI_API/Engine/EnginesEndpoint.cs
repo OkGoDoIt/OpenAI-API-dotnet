@@ -1,12 +1,9 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
+using OpenAI_API.General;
 
 namespace OpenAI_API
 {
@@ -54,7 +51,7 @@ namespace OpenAI_API
 		{
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
+			client.DefaultRequestHeaders.Add("User-Agent", Constants.Requests.UserAgent);
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines");
 			string resultAsString = await response.Content.ReadAsStringAsync();
@@ -85,7 +82,7 @@ namespace OpenAI_API
 
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
+			client.DefaultRequestHeaders.Add("User-Agent", Constants.Requests.UserAgent);
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines/" + id);
 			if (response.IsSuccessStatusCode)

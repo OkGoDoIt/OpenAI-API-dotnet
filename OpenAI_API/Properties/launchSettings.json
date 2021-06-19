@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "OpenAI_API": {
+      "commandName": "Executable",
+      "executablePath": "D:\\Alex\\Projects\\OpenAI\\OpenAiQuickTest\\bin\\Debug\\net5.0\\OpenAiQuickTest.exe"
+    }
+  }
+}

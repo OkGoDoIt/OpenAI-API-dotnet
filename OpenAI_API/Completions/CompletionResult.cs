@@ -1,9 +1,7 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+using OpenAI_API.Interfaces;
 
 namespace OpenAI_API
 {
@@ -48,7 +46,7 @@ namespace OpenAI_API
 	/// <summary>
 	/// Represents a result from calling the Completion API
 	/// </summary>
-	public class CompletionResult
+	public class CompletionResult : IOpenAiMetadataResult
 	{
 		/// <summary>
 		/// The identifier of the result, which may be used during troubleshooting
@@ -116,7 +114,7 @@ namespace OpenAI_API
 		public List<string> Tokens { get; set; }
 
 		[JsonProperty("token_logprobs")]
-		public List<double> TokenLogprobs { get; set; }
+		public List<double?> TokenLogprobs { get; set; }
 
 		[JsonProperty("top_logprobs")]
 		public IList<IDictionary<string, double>> TopLogprobs { get; set; }
