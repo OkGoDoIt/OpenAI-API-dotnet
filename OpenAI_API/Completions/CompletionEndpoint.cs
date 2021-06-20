@@ -32,18 +32,6 @@ namespace OpenAI_API
 
 		private string EngineUrl => $"https://api.openai.com/v1/engines/{_api.UsingEngine.EngineName}";
 
-		private async Task CheckForServerError(HttpResponseMessage response, string jsonContent)
-		{
-			if (response.IsSuccessStatusCode)
-				return;
-
-			string resultAsString = await response.Content.ReadAsStringAsync();
-			var errorRes = JsonConvert.DeserializeObject<OpenAiErrorDto>(resultAsString);
-			throw new HttpRequestException(
-				$"Error calling OpenAi API to get completion.  HTTP status code: {response.StatusCode}"
-				+ $". Request body: {jsonContent}. Error: {errorRes}");
-		}
-
 		#region Non-streaming
 
 		/// <summary>
@@ -61,17 +49,12 @@ namespace OpenAI_API
 			var stringContent = jsonContent.GetStringContent();
 
 			var response = await client.PostAsync($"{EngineUrl}/completions", stringContent);
-			string resultAsString = await response.Content.ReadAsStringAsync();
-			if (response.IsSuccessStatusCode)
-			{
-				var res = JsonConvert.DeserializeObject<CompletionResult>(resultAsString);
-				OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
-				return res;
-			}
+			await OpenAiResponseHelper.CheckForServerError(response, jsonContent);
 
-			var errorRes = JsonConvert.DeserializeObject<OpenAiErrorDto>(resultAsString);
-			throw new HttpRequestException($"Error calling OpenAi API to get completion.  HTTP status code: {response.StatusCode}" 
-			                               + $". Request body: {jsonContent}. Error: {errorRes}" );
+			string resultAsString = await response.Content.ReadAsStringAsync();
+			var res = JsonConvert.DeserializeObject<CompletionResult>(resultAsString);
+			OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
+			return res;
 		}
 
 		/// <summary>
@@ -169,7 +152,7 @@ namespace OpenAI_API
 			OpenAiRequestHelper.AddDefaultHeaders(req.Headers, _api.Auth.ApiKey);
 
 			var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
-			await CheckForServerError(response, jsonContent);
+			await OpenAiResponseHelper.CheckForServerError(response, jsonContent);
 
 			int index = 0;
 
@@ -231,7 +214,7 @@ namespace OpenAI_API
 
 			var response = await client.SendAsync(req, HttpCompletionOption.ResponseHeadersRead);
 
-			await CheckForServerError(response, jsonContent);
+			await OpenAiResponseHelper.CheckForServerError(response, jsonContent);
 
 			using var stream = await response.Content.ReadAsStreamAsync();
 			using StreamReader reader = new StreamReader(stream);

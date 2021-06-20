@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,7 +21,7 @@ namespace OpenAI_Tests
 		private OpenAIAPI GetApi => new OpenAIAPI(engine: Engine.Ada);
 
 		[Test]
-		public async Task CreateCompletionAsync__GetBasicCompletion_ShouldReturnData()
+		public async Task CreateCompletionAsync_GetBasicCompletion_ShouldReturnData()
 		{
 			var api = GetApi;
 
@@ -287,6 +289,141 @@ namespace OpenAI_Tests
 					.Excluding(o => o.Created)
 					.Excluding(o => o.ProcessingTime)
 					.Excluding(o => o.RequestId)
+			);
+		}
+
+		[TestCase(5, 3)]
+		[TestCase(7, 2)]
+		public async Task StreamCompletionAsync_ShouldStreamIndexAndData(int maxTokens, int numOutputs)
+		{
+			var api = GetApi;
+
+			var completionRequest = new CompletionRequest
+			{
+				Prompt = "three four five",
+				MaxTokens = maxTokens,
+				NumChoicesPerPrompt = numOutputs,
+				Temperature = 0,
+				TopP = 0.1,
+				PresencePenalty = 0.5,
+				FrequencyPenalty = 0.3,
+				Logprobs = 3,
+				Echo = true,
+			};
+
+			var streamIndexes = new List<int>();
+			var completionResults = new List<CompletionResult>();
+			await api.Completions.StreamCompletionAsync(completionRequest, (index, result) =>
+			{
+				streamIndexes.Add(index);
+				completionResults.Add(result);
+			});
+
+			int expectedCount = maxTokens * numOutputs;
+			streamIndexes.Count.Should().Be(expectedCount);
+			completionResults.Count.Should().Be(expectedCount);
+		}
+
+		[TestCase(5, 3)]
+		[TestCase(7, 2)]
+		public async Task StreamCompletionAsync_ShouldStreamData(int maxTokens, int numOutputs)
+		{
+			var api = GetApi;
+
+			var completionRequest = new CompletionRequest
+			{
+				Prompt = "three four five",
+				MaxTokens = maxTokens,
+				NumChoicesPerPrompt = numOutputs,
+				Temperature = 0,
+				TopP = 0.1,
+				PresencePenalty = 0.5,
+				FrequencyPenalty = 0.3,
+				Logprobs = 3,
+				Echo = true,
+			};
+
+			var completionResults = new List<CompletionResult>();
+			await api.Completions.StreamCompletionAsync(completionRequest, result =>
+			{
+				completionResults.Add(result);
+			});
+
+			int expectedCount = maxTokens * numOutputs;
+			completionResults.Count.Should().Be(expectedCount);
+		}
+
+		[TestCase(5, 3)]
+		[TestCase(7, 2)]
+		public async Task StreamCompletionEnumerableAsync_ShouldStreamData(int maxTokens, int numOutputs)
+		{
+			var api = GetApi;
+
+			var completionRequest = new CompletionRequest
+			{
+				Prompt = "three four five",
+				MaxTokens = maxTokens,
+				NumChoicesPerPrompt = numOutputs,
+				Temperature = 0,
+				TopP = 0.1,
+				PresencePenalty = 0.5,
+				FrequencyPenalty = 0.3,
+				Logprobs = 3,
+				Echo = true,
+			};
+
+			var completionResults = new List<CompletionResult>();
+			await foreach (var res in api.Completions.StreamCompletionEnumerableAsync(completionRequest))
+			{
+				completionResults.Add(res);
+			}
+
+			int expectedCount = maxTokens * numOutputs;
+			completionResults.Count.Should().Be(expectedCount);
+		}
+
+		[Test]
+		public async Task StreamCompletionEnumerableAsync_MultipleParamShouldReturnTheSameDataAsSingleParamVersion()
+		{
+			var api = GetApi;
+
+			var r = new CompletionRequest
+			{
+				Prompt = "three four five",
+				MaxTokens = 5,
+				Temperature = 0,
+				TopP = 0.1,
+				PresencePenalty = 0.5,
+				FrequencyPenalty = 0.3,
+				NumChoicesPerPrompt = 2,
+				Logprobs = 3,
+				Echo = true
+			};
+
+			var resultsOneParam = new List<CompletionResult>();
+			await foreach (var res in api.Completions.StreamCompletionEnumerableAsync(r))
+			{
+				resultsOneParam.Add(res);
+			}
+
+			resultsOneParam.Should().NotBeEmpty("At least one result should be fetched");
+
+			var resultsMultipleParams = new List<CompletionResult>();
+			await foreach (var res in api.Completions.StreamCompletionEnumerableAsync(
+				r.Prompt, r.MaxTokens, r.Temperature, r.TopP, r.NumChoicesPerPrompt, r.PresencePenalty,
+				r.FrequencyPenalty,
+				r.Logprobs, r.Echo))
+			{
+				resultsMultipleParams.Add(res);
+			}
+			resultsMultipleParams.Should().NotBeEmpty();
+
+			resultsOneParam.Should().BeEquivalentTo(resultsMultipleParams, opt => opt
+				.Excluding(o => o.Id)
+				.Excluding(o => o.CreatedUnixTime)
+				.Excluding(o => o.Created)
+				.Excluding(o => o.ProcessingTime)
+				.Excluding(o => o.RequestId)
 			);
 		}
 	}

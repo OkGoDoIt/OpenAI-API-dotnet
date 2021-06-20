@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using OpenAI_API.Helpers;
 
@@ -39,26 +38,21 @@ namespace OpenAI_API
 
 			var client = OpenAiRequestHelper.GetHttpClient(Api?.Auth?.ApiKey);
 
-			string jsonContent = JsonConvert.SerializeObject(request, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore, MissingMemberHandling = MissingMemberHandling.Ignore });
-			var stringContent = new StringContent(jsonContent, Encoding.UTF8, "application/json");
+			var jsonContent = request.GetJsonContent();
+			var stringContent = jsonContent.GetStringContent();
 
 			var response = await client.PostAsync($"https://api.openai.com/v1/engines/{Api.UsingEngine.EngineName}/search", stringContent);
-			if (response.IsSuccessStatusCode)
-			{
-				string resultAsString = await response.Content.ReadAsStringAsync();
-				var res = JsonConvert.DeserializeObject<SearchResponse>(resultAsString);
+			await OpenAiResponseHelper.CheckForServerError(response, jsonContent);
+			
+			string resultAsString = await response.Content.ReadAsStringAsync();
+			var res = JsonConvert.DeserializeObject<SearchResponse>(resultAsString);
 
-				OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
+			OpenAiResponseHelper.FillCompletionResultMetadata(res, response);
 
-				if (res.Results == null || res.Results.Count == 0)
-					throw new HttpRequestException("API returnes no search results.  HTTP status code: " + response.StatusCode.ToString() + ". Response body: " + resultAsString);
+			if (res.Results == null || res.Results.Count == 0)
+				throw new HttpRequestException("API returned no search results.  HTTP status code: " + response.StatusCode + ". Response body: " + resultAsString);
 
-				return res.Results.ToDictionary(r => request.Documents[r.DocumentIndex], r => r.Score);
-			}
-			else
-			{
-				throw new HttpRequestException("Error calling OpenAi API to get completion.  HTTP status code: " + response.StatusCode.ToString() + ". Request body: " + jsonContent);
-			}
+			return res.Results.ToDictionary(r => request.Documents[r.DocumentIndex], r => r.Score);
 		}
 
 		/// <summary>

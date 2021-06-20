@@ -1,9 +1,8 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Net.Http;
 using System.Security.Authentication;
 using System.Threading.Tasks;
-using OpenAI_API.General;
+using OpenAI_API.Helpers;
 
 namespace OpenAI_API
 {
@@ -20,7 +19,7 @@ namespace OpenAI_API
 		/// <param name="api"></param>
 		internal EnginesEndpoint(OpenAIAPI api)
 		{
-			this.Api = api;
+			Api = api;
 		}
 
 		/// <summary>
@@ -47,24 +46,17 @@ namespace OpenAI_API
 		/// </summary>
 		/// <param name="auth">API authentication in order to call the API endpoint.  If not specified, attempts to use a default.</param>
 		/// <returns>Asynchronously returns the list of all <see cref="Engine"/>s</returns>
-		public static async Task<List<Engine>> GetEnginesAsync(APIAuthentication auth = null)
+		private static async Task<List<Engine>> GetEnginesAsync(APIAuthentication auth)
 		{
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", Constants.Requests.UserAgent);
+			var client = OpenAiRequestHelper.GetHttpClient(auth.ApiKey);
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines");
 			string resultAsString = await response.Content.ReadAsStringAsync();
 
-			if (response.IsSuccessStatusCode)
-			{
-				var engines = JsonConvert.DeserializeObject<JsonHelperRoot>(resultAsString).data;
-				return engines;
-			}
-			else
-			{
-				throw new HttpRequestException("Error calling OpenAi API to get list of engines.  HTTP status code: " + response.StatusCode.ToString() + ". Content: " + resultAsString);
-			}
+			await OpenAiResponseHelper.CheckForServerError(response, "");
+
+			var engines = JsonConvert.DeserializeObject<JsonHelperRoot>(resultAsString).Data;
+			return engines;
 		}
 
 		/// <summary>
@@ -73,28 +65,21 @@ namespace OpenAI_API
 		/// <param name="id">The id/name of the engine to get more details about</param>
 		/// <param name="auth">API authentication in order to call the API endpoint.  If not specified, attempts to use a default.</param>
 		/// <returns>Asynchronously returns the <see cref="Engine"/> with all available properties</returns>
-		public static async Task<Engine> RetrieveEngineDetailsAsync(string id, APIAuthentication auth = null)
+		public static async Task<Engine> RetrieveEngineDetailsAsync(string id, APIAuthentication auth)
 		{
 			if (auth.ThisOrDefault()?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
 
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", Constants.Requests.UserAgent);
+			var client = OpenAiRequestHelper.GetHttpClient(auth.ThisOrDefault()?.ApiKey);
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines/" + id);
-			if (response.IsSuccessStatusCode)
-			{
-				string resultAsString = await response.Content.ReadAsStringAsync();
-				var engine = JsonConvert.DeserializeObject<Engine>(resultAsString);
-				return engine;
-			}
-			else
-			{
-				throw new HttpRequestException("Error calling OpenAi API to get engine details.  HTTP status code: " + response.StatusCode.ToString());
-			}
+			await OpenAiResponseHelper.CheckForServerError(response, "");
+
+			string resultAsString = await response.Content.ReadAsStringAsync();
+			var engine = JsonConvert.DeserializeObject<Engine>(resultAsString);
+			return engine;
 		}
 
 		/// <summary>
@@ -103,9 +88,9 @@ namespace OpenAI_API
 		private class JsonHelperRoot
 		{
 			[JsonProperty("data")]
-			public List<Engine> data { get; set; }
+			public List<Engine> Data { get; set; }
 			[JsonProperty("object")]
-			public string obj { get; set; }
+			public string Obj { get; set; }
 
 		}
 	}
