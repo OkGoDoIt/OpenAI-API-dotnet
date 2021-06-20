@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenAI_API
@@ -47,11 +43,11 @@ namespace OpenAI_API
 		{
 			if (name.Contains(":"))
 			{
-				this.EngineName = name.Split(':')[0];
-				this.ModelRevision = name.Split(':')[1];
+				EngineName = name.Split(':')[0];
+				ModelRevision = name.Split(':')[1];
 			}
 			else
-				this.EngineName = name;
+				EngineName = name;
 		}
 
 		/// <summary>
@@ -91,7 +87,7 @@ namespace OpenAI_API
 		public static Engine Babbage => new Engine("babbage") { Owner = "openai", Ready = true };
 
 		/// <summary>
-		/// The 2nd most powerful engine, a bit faster than <see cref=Davinci"/>, and a bit faster.
+		/// The 2nd most powerful engine, a bit faster than <see cref="Davinci"/>, and a bit faster.
 		/// </summary>
 		public static Engine Curie => new Engine("curie") { Owner = "openai", Ready = true };
 		/// <summary>
@@ -111,7 +107,7 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns an Engine with all relevant properties filled in</returns>
 		public async Task<Engine> RetrieveEngineDetailsAsync(APIAuthentication auth = null)
 		{
-			return await EnginesEndpoint.RetrieveEngineDetailsAsync(this.EngineName, auth);
+			return await EnginesEndpoint.RetrieveEngineDetailsAsync(EngineName, auth);
 		}
 
 

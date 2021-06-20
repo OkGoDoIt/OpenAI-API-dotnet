@@ -1,13 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace OpenAI_API
+﻿namespace OpenAI_API
 {
 	/// <summary>
 	/// Entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
@@ -22,7 +13,7 @@ namespace OpenAI_API
 		/// <summary>
 		/// Specifies which <see cref="Engine"/>/model to use for API calls
 		/// </summary>
-		public Engine UsingEngine { get; set; } = Engine.Default;
+		public Engine UsingEngine { get; set; }
 
 		/// <summary>
 		/// Creates a new entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
@@ -31,8 +22,8 @@ namespace OpenAI_API
 		/// <param name="engine">The <see cref="Engine"/>/model to use for API calls, defaulting to <see cref="Engine.Davinci"/> if not specified.</param>
 		public OpenAIAPI(APIAuthentication apiKeys = null, Engine engine = null)
 		{
-			this.Auth = apiKeys.ThisOrDefault();
-			this.UsingEngine = engine ?? Engine.Default;
+			Auth = apiKeys.ThisOrDefault();
+			UsingEngine = engine ?? Engine.Default;
 			Completions = new CompletionEndpoint(this);
 			Engines = new EnginesEndpoint(this);
 			Search = new SearchEndpoint(this);
@@ -52,10 +43,5 @@ namespace OpenAI_API
 		/// The API lets you do semantic search over documents. This means that you can provide a query, such as a natural language question or a statement, and find documents that answer the question or are semantically related to the statement. The “documents” can be words, sentences, paragraphs or even longer documents. For example, if you provide documents "White House", "hospital", "school" and query "the president", you’ll get a different similarity score for each document. The higher the similarity score, the more semantically similar the document is to the query (in this example, “White House” will be most similar to “the president”).
 		/// </summary>
 		public SearchEndpoint Search { get; }
-
-
-
-
-
 	}
 }
