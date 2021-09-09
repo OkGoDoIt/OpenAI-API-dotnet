@@ -94,10 +94,21 @@ namespace OpenAI_API
 		/// The 2nd most powerful engine, a bit faster than <see cref=Davinci"/>, and a bit faster.
 		/// </summary>
 		public static Engine Curie => new Engine("curie") { Owner = "openai", Ready = true };
+
 		/// <summary>
 		/// The most powerful, largest engine available, although the speed is quite slow.
 		/// </summary>
 		public static Engine Davinci => new Engine("davinci") { Owner = "openai", Ready = true };
+
+		/// <summary>
+		/// Davinci Codex is more capable, particularly for translating natural language to code.
+		/// </summary>
+		public static Engine DavinciCodex => new Engine("davinci-codex") { Owner = "openai", Ready = true };
+
+		/// <summary>
+		/// Cushman Codex is almost as capable as <see cref=DavinciCodex"/>, but slightly faster. 
+		/// </summary>
+		public static Engine CushmanCodex => new Engine("cushman-codex") { Owner = "openai", Ready = true };
 
 		/// <summary>
 		/// The default Engine to use in the case no other is specified.  Defaults to <see cref="Davinci"/>
