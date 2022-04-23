@@ -83,21 +83,21 @@ namespace OpenAI_API
 		/// <summary>
 		/// The smallest, fastest engine available, although the quality of results may be poor.
 		/// </summary>
-		public static Engine Ada => new Engine("ada") { Owner = "openai", Ready = true };
+		public static Engine Ada => new Engine("text-ada-001") { Owner = "openai", Ready = true };
 
 		/// <summary>
 		/// The 2nd fastest engine, a bit more powerful than <see cref="Ada"/>, and a bit slower.
 		/// </summary>
-		public static Engine Babbage => new Engine("babbage") { Owner = "openai", Ready = true };
+		public static Engine Babbage => new Engine("text-babbage-001") { Owner = "openai", Ready = true };
 
 		/// <summary>
 		/// The 2nd most powerful engine, a bit faster than <see cref=Davinci"/>, and a bit faster.
 		/// </summary>
-		public static Engine Curie => new Engine("curie") { Owner = "openai", Ready = true };
+		public static Engine Curie => new Engine("text-curie-001") { Owner = "openai", Ready = true };
 		/// <summary>
 		/// The most powerful, largest engine available, although the speed is quite slow.
 		/// </summary>
-		public static Engine Davinci => new Engine("davinci") { Owner = "openai", Ready = true };
+		public static Engine Davinci => new Engine("text-davinci-002") { Owner = "openai", Ready = true };
 
 		/// <summary>
 		/// The default Engine to use in the case no other is specified.  Defaults to <see cref="Davinci"/>
