@@ -95,14 +95,19 @@ namespace OpenAI_API
 		/// </summary>
 		public static Engine Curie => new Engine("curie") { Owner = "openai", Ready = true };
 		/// <summary>
-		/// The most powerful, largest engine available, although the speed is quite slow.
+		/// The (former) most powerful, largest engine available, although the speed is quite slow.
 		/// </summary>
 		public static Engine Davinci => new Engine("davinci") { Owner = "openai", Ready = true };
 
 		/// <summary>
+        /// The current most powerful, largest engine available. 
+        /// </summary>
+		public static Engine Davinci_2 => new Engine("text-davinci-002") { Owner = "openai", Ready = true };
+
+		/// <summary>
 		/// The default Engine to use in the case no other is specified.  Defaults to <see cref="Davinci"/>
 		/// </summary>
-		public static Engine Default => Davinci;
+		public static Engine Default => Davinci_2;
 
 		/// <summary>
 		/// Gets more details about this Engine from the API, specifically properties such as <see cref="Owner"/> and <see cref="Ready"/>
