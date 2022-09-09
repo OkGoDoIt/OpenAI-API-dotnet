@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenAI_API.Files;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,11 @@ namespace OpenAI_API
 	/// </summary>
 	public class OpenAIAPI
 	{
+		/// <summary>
+		/// Base url for OpenAI
+		/// </summary>
+		public const string API_URL = "https://api.openai.com/v1/";
+
 		/// <summary>
 		/// The API authentication information to use for API calls
 		/// </summary>
@@ -36,6 +42,7 @@ namespace OpenAI_API
 			Completions = new CompletionEndpoint(this);
 			Engines = new EnginesEndpoint(this);
 			Search = new SearchEndpoint(this);
+			Files = new FilesEndpoint(this);
 		}
 
 		/// <summary>
@@ -53,7 +60,10 @@ namespace OpenAI_API
 		/// </summary>
 		public SearchEndpoint Search { get; }
 
-
+		/// <summary>
+		/// The API lets you do operations with files. You can upload, delete or retrieve files. Files can be used for fine-tuning, search, etc.
+		/// </summary>
+		public FilesEndpoint Files { get; }
 
 
 
