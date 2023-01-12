@@ -55,6 +55,7 @@ namespace OpenAI_API
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ThisOrDefault().ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
+            if (!string.IsNullOrEmpty(auth.ThisOrDefault().OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", auth.ThisOrDefault().OpenAIOrganization);
 
 			var response = await client.GetAsync(@"https://api.openai.com/v1/engines");
 			string resultAsString = await response.Content.ReadAsStringAsync();

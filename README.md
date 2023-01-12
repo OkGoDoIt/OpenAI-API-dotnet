@@ -36,18 +36,18 @@ Install-Package OpenAI
 ### Authentication
 There are 3 ways to provide your API keys, in order of precedence:
 1.  Pass keys directly to `APIAuthentication(string key)` constructor
-2.  Set environment var for OPENAI_KEY
+2.  Set environment var for OPENAI_API_KEY (or OPENAI_KEY for backwards compatability)
 3.  Include a config file in the local directory or in your user directory named `.openai` and containing the line:
 ```shell
-OPENAI_KEY=sk-aaaabbbbbccccddddd
+OPENAI_API_KEY=sk-aaaabbbbbccccddddd
 ```
 
 You use the `APIAuthentication` when you initialize the API as shown:
 ```csharp
 // for example
-OpenAIAPI api = new OpenAIAPI("sk-mykeyhere"); // shorthand
+OpenAIAPI api = new OpenAIAPI("YOUR_API_KEY"); // shorthand
 // or
-OpenAIAPI api = new OpenAIAPI(new APIAuthentication("sk-secretkey")); // create object manually
+OpenAIAPI api = new OpenAIAPI(new APIAuthentication("YOUR_API_KEY")); // create object manually
 // or
 OpenAIAPI api = new OpenAIAPI(APIAuthentication LoadFromEnv()); // use env vars
 // or
@@ -55,6 +55,14 @@ OpenAIAPI api = new OpenAIAPI(APIAuthentication LoadFromPath()); // use config f
 // or
 OpenAIAPI api = new OpenAIAPI(); // uses default, env, or config file
 ```
+
+You may optionally include an openAIOrganization (OPENAI_ORGANIZATION in env or config file) specifying which organization is used for an API request. Usage from these API requests will count against the specified organization's subscription quota.  Organization IDs can be found on your [Organization settings](https://beta.openai.com/account/org-settings) page.
+```csharp
+// for example
+OpenAIAPI api = new OpenAIAPI(new APIAuthentication("YOUR_API_KEY","org-yourOrgHere"));
+```
+
+
 
 ### Completions
 The Completion API is accessed via `OpenAIAPI.Completions`:
