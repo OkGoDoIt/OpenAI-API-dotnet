@@ -6,7 +6,8 @@ using System.Text;
 
 namespace OpenAI_API
 {
-	public class SearchRequest
+    [Obsolete("OpenAI no long supports the Search endpoint")]
+    public class SearchRequest
 	{
 
 		[JsonProperty("documents")]
@@ -16,7 +17,7 @@ namespace OpenAI_API
 		public string Query { get; set; }
 
         /// <summary>
-        /// ID of the model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync"/> to see all of your available models, or use a standard model like <see cref="Model.DavinciText"/>.  Defaults to <see cref="Model.DavinciText"/>.
+        /// ID of the model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync()"/> to see all of your available models, or use a standard model like <see cref="Model.DavinciText"/>.  Defaults to <see cref="Model.DavinciText"/>.
         /// </summary>
         [JsonProperty("model")]
         public string Model { get; set; } = OpenAI_API.Model.DavinciCode;

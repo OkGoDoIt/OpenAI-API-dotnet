@@ -6,22 +6,31 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>OkGoDoIt (Roger Pincombe)</Authors>
 		<Product>OpenAI API</Product>
-		<Description>A simple C# / .NET wrapper library to use with OpenAI's GPT-3 API (currently in beta).  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI API account is required.</Description>
-		<Copyright></Copyright>
+		<Description>A simple C# / .NET wrapper library to use with OpenAI's GPT-3 API.  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI API account is required.</Description>
+		<Copyright>This library is licensed CC-0, in the public domain</Copyright>
 		<PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>Added support for "echo" parameter, which echos back the prompt in responses (thanks to @GotMike!)  Removed support for publishable API keys (and renamed secret keys to simply API keys) since OpenAI no longer supports publishable keys.  Also fixed various typos in the documentation.</PackageReleaseNotes>
-		<SignAssembly>false</SignAssembly>
-		<AssemblyOriginatorKeyFile>okgodoit-signing.pfx</AssemblyOriginatorKeyFile>
+		<PackageReleaseNotes>Updated to work with the current API as of January 12, 2023. Deprecate the Search endpoint as OpenAI has removed that API. This version includes breaking changes around specifying models to keep up with OpenAI API changes. If you had any code which used the old "engines", that will need to be updated to "models". Support for insertion, edits, and embedding is coming soon.</PackageReleaseNotes>
+		<SignAssembly>True</SignAssembly>
+		<AssemblyOriginatorKeyFile>D:\OneDrive - Roger Pincombe\Assets\rsa keys\okgodoit-signing.pfx</AssemblyOriginatorKeyFile>
 		<DelaySign>false</DelaySign>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.2.0</Version>
-		<AssemblyVersion>1.2.0.0</AssemblyVersion>
-		<FileVersion>1.2.0.0</FileVersion>
+		<Version>1.3.0</Version>
+		<AssemblyVersion>1.3.0.0</AssemblyVersion>
+		<FileVersion>1.3.0.0</FileVersion>
+		<GenerateDocumentationFile>True</GenerateDocumentationFile>
+		<PackageReadmeFile>README.md</PackageReadmeFile>
 	</PropertyGroup>
+
+	<ItemGroup>
+	  <None Include="..\README.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />

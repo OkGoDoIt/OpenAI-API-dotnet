@@ -46,8 +46,6 @@ namespace OpenAI_API
 		/// Represents an Model with the given id/<see cref="ModelID"/>
 		/// </summary>
 		/// <param name="name">The id/<see cref="ModelID"/> to use.
-		///						If the <paramref name="name"/> contains a colon (as is the case in the API's <see cref="CompletionResult.Model"/> response),
-		///						the part before the colon is treated as the id/<see cref="ModelID"/> and the following portion is considered the <see cref="ModelRevision"/>
 		///	</param>
 		public Model(string name)
 		{

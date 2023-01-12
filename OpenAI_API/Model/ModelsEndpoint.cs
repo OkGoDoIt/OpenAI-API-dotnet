@@ -36,7 +36,7 @@ namespace OpenAI_API
 		}
 
 		/// <summary>
-		/// Get details about a particular Model from the API, specifically properties such as <see cref="Model.Owner"/> and <see cref="Model.Ready"/>
+		/// Get details about a particular Model from the API, specifically properties such as <see cref="Model.OwnedBy"/> and permissions.
 		/// </summary>
 		/// <param name="id">The id/name of the model to get more details about</param>
 		/// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
@@ -75,13 +75,13 @@ namespace OpenAI_API
 			}
 		}
 
-		/// <summary>
-		/// Get details about a particular Model from the API, specifically properties such as <see cref="Model.Owner"/> and <see cref="Model.Ready"/>
-		/// </summary>
-		/// <param name="id">The id/name of the model to get more details about</param>
-		/// <param name="auth">API authentication in order to call the API endpoint.  If not specified, attempts to use a default.</param>
-		/// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
-		public static async Task<Model> RetrieveModelDetailsAsync(string id, APIAuthentication auth = null)
+        /// <summary>
+        /// Get details about a particular Model from the API, specifically properties such as <see cref="Model.OwnedBy"/> and permissions.
+        /// </summary>
+        /// <param name="id">The id/name of the model to get more details about</param>
+        /// <param name="auth">API authentication in order to call the API endpoint.  If not specified, attempts to use a default.</param>
+        /// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
+        public static async Task<Model> RetrieveModelDetailsAsync(string id, APIAuthentication auth = null)
 		{
 			if (auth.ThisOrDefault()?.ApiKey is null)
 			{

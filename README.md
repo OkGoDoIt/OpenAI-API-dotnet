@@ -3,8 +3,9 @@
 A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
 ## Status
-Updated to work with the current API as of January 12, 2023.  Support for insertion, edits, and embedding is coming soon.
-This version includes breaking changes around specifying models to keep up with OpenAI API changes.  If you had any code which used the old "engines", that will need to be updated.
+Updated to work with the current API as of January 12, 2023. Deprecated the Search endpoint as OpenAI has removed that API. This version includes breaking changes around specifying models to keep up with OpenAI API changes. If you had any code which used the old "engines", that will need to be updated to "models".
+
+Support for insertion, edits, and embedding is coming soon.
 
 ## Quick Example
 
