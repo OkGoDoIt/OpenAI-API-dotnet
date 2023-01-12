@@ -14,10 +14,11 @@ namespace OpenAI_Tests
 			OpenAI_API.APIAuthentication.Default = new OpenAI_API.APIAuthentication(Environment.GetEnvironmentVariable("TEST_OPENAI_SECRET_KEY"));
 		}
 
+        /*
 		[Test]
 		public void TestBasicSearch()
 		{
-			var api = new OpenAI_API.OpenAIAPI(engine: Engine.Curie);
+			var api = new OpenAI_API.OpenAIAPI();
 
 			Assert.IsNotNull(api.Search);
 
@@ -25,8 +26,8 @@ namespace OpenAI_Tests
 			Assert.IsNotNull(result);
 			Assert.AreEqual("USA", result);
 		}
+		*/
+        // TODO: Maybe implement a shim based on https://github.com/openai/openai-cookbook/blob/main/transition_guides_for_deprecated_API_endpoints/search_functionality_example.py ?
 
-		// TODO: More tests needed but this covers basic functionality at least
-
-	}
+    }
 }

@@ -2,23 +2,20 @@
 
 A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
-## Examples
+## Status
+Updated to work with the current API as of January 12, 2023.  Support for insertion, edits, and embedding is coming soon.
+This version includes breaking changes around specifying models to keep up with OpenAI API changes.  If you had any code which used the old "engines", that will need to be updated.
+
+## Quick Example
 
 ```csharp
-var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+var api = new OpenAI_API.OpenAIAPI();
 
 var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
 Console.WriteLine(result.ToString());
 // should print something starting with "Three"
 ```
 
-```csharp
-var api = new OpenAI_API.OpenAIAPI("sk-myapikeyhere"););
-
-var result = await api.Search.GetBestMatchAsync("Washington DC", "Canada", "China", "USA", "Spain");
-Console.WriteLine(result);
-// should print "USA"
-```
 
 ## Requirements
 
@@ -36,7 +33,7 @@ Install-Package OpenAI
 ### Authentication
 There are 3 ways to provide your API keys, in order of precedence:
 1.  Pass keys directly to `APIAuthentication(string key)` constructor
-2.  Set environment var for OPENAI_API_KEY (or OPENAI_KEY for backwards compatability)
+2.  Set environment var for OPENAI_API_KEY (or OPENAI_KEY for backwards compatibility)
 3.  Include a config file in the local directory or in your user directory named `.openai` and containing the line:
 ```shell
 OPENAI_API_KEY=sk-aaaabbbbbccccddddd
@@ -71,7 +68,7 @@ The Completion API is accessed via `OpenAIAPI.Completions`:
 CreateCompletionAsync(CompletionRequest request)
 
 // for example
-var result = await api.Completions.CreateCompletionAsync(new CompletionRequest("One Two Three One Two", temperature: 0.1));
+var result = await api.Completions.CreateCompletionAsync(new CompletionRequest("One Two Three One Two", model: Model.CurieText, temperature: 0.1));
 // or
 var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
 // or other convenience overloads
@@ -86,61 +83,24 @@ Using the new C# 8.0 async iterators:
 IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
 
 // for example
-await foreach (var token in api.Completions.StreamCompletionEnumerableAsync(new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1)))
+await foreach (var token in api.Completions.StreamCompletionEnumerableAsync(new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", Model.DavinciText, 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1)))
 {
 	Console.Write(token);
 }
 ```
 
-Or if using .NET framework or C# <8.0:
+Or if using classic .NET framework or C# <8.0:
 ```csharp
 StreamCompletionAsync(CompletionRequest request, Action<CompletionResult> resultHandler)
 
 // for example
 await api.Completions.StreamCompletionAsync(
-	new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1),
+	new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", Model.DavinciText, 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1),
 	res => ResumeTextbox.Text += res.ToString());
 ```
 
 ### Document Search
-The Search API is accessed via `OpenAIAPI.Search`:
-
-You can get all results as a dictionary using
-```csharp
-GetSearchResultsAsync(SearchRequest request)
-
-// for example
-var request = new SearchRequest()
-{
-	Query = "Washington DC",
-	Documents = new List<string> { "Canada", "China", "USA", "Spain" }
-};
-var result = await api.Search.GetSearchResultsAsync(request);
-// result["USA"] == 294.22
-// result["Spain"] == 73.81
-```
-
-The returned dictionary maps documents to scores.  You can create your `SearchRequest` ahead of time or use one of the helper overloads for convenience, such as
-```csharp
-GetSearchResultsAsync(string query, params string[] documents)
-
-// for example
-var result = await api.Search.GetSearchResultsAsync("Washington DC", "Canada", "China", "USA", "Spain");
-```
-
-You can get only the best match using
-```csharp
-GetBestMatchAsync(request)
-```
-
-And if you only want the best match but still want to know the score, use
-```csharp
-GetBestMatchWithScoreAsync(request)
-```
-Each of those methods has similar convenience overloads to specify the request inline.
-
-### Finetuning
-I don't yet have access to finetuning, but once I do I will add it to this SDK.  Subscribe to this repo if you want to be alerted.
+Unfortunately OpenAI has [removed the search API endpoint](https://help.openai.com/en/articles/6272952-search-transition-guide)  :-(
 
 
 ## Documentation
