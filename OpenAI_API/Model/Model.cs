@@ -1,22 +1,19 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenAI_API
 {
-	/// <summary>
-	/// Represents a language model
-	/// </summary>
-	public class Model
-	{
-		/// <summary>
-		/// The id/name of the model
-		/// </summary>
-		[JsonProperty("id")]
-		public string ModelID { get; set; }
+    /// <summary>
+    /// Represents a language model
+    /// </summary>
+    public class Model
+    {
+        /// <summary>
+        /// The id/name of the model
+        /// </summary>
+        [JsonProperty("id")]
+        public string ModelID { get; set; }
 
         /// <summary>
         /// The owner of this model.  Generally "openai" is a generic OpenAI model, or the organization if a custom or finetuned model.
@@ -25,40 +22,70 @@ namespace OpenAI_API
         public string OwnedBy { get; set; }
 
         /// <summary>
+        /// The type of object. Should always be 'model'.
+        /// </summary>
+        [JsonProperty("object")]
+        public string Object { get; set; }
+
+        /// <summary>
+        /// The owner of this model.  Generally "openai" is a generic OpenAI model, or the organization if a custom or finetuned model.
+        /// </summary>
+        [JsonProperty("created")]
+        public long Created { get; set; }
+
+        /// <summary>
+        /// Permissions for use of the model
+        /// </summary>
+        [JsonProperty("permission")]
+        public List<Permissions> Permission { get; set; } = new List<Permissions>();
+        
+        /// <summary>
+        /// Currently (2023-01-27) seems like this is duplicate of <see cref="ModelID"/> but including for completeness.
+        /// </summary>
+        [JsonProperty("root")]
+        public string Root { get; set; }
+
+        /// <summary>
+        /// Currently (2023-01-27) seems unused, probably intended for nesting of models in a later release
+        /// </summary>
+        [JsonProperty("parent")]
+        public string Parent { get; set; }
+
+        /// <summary>
         /// Allows an model to be implicitly cast to the string of its <see cref="ModelID"/>
         /// </summary>
         /// <param name="model">The <see cref="Model"/> to cast to a string.</param>
         public static implicit operator string(Model model)
-		{
-			return model?.ModelID;
-		}
+        {
+            return model?.ModelID;
+        }
 
-		/// <summary>
-		/// Allows a string to be implicitly cast as an <see cref="Model"/> with that <see cref="ModelID"/>
-		/// </summary>
-		/// <param name="name">The id/<see cref="ModelID"/> to use</param>
-		public static implicit operator Model(string name)
-		{
-			return new Model(name);
-		}
+        /// <summary>
+        /// Allows a string to be implicitly cast as an <see cref="Model"/> with that <see cref="ModelID"/>
+        /// </summary>
+        /// <param name="name">The id/<see cref="ModelID"/> to use</param>
+        public static implicit operator Model(string name)
+        {
+            return new Model(name);
+        }
 
-		/// <summary>
-		/// Represents an Model with the given id/<see cref="ModelID"/>
-		/// </summary>
-		/// <param name="name">The id/<see cref="ModelID"/> to use.
-		///	</param>
-		public Model(string name)
-		{
-			this.ModelID = name;
-		}
+        /// <summary>
+        /// Represents an Model with the given id/<see cref="ModelID"/>
+        /// </summary>
+        /// <param name="name">The id/<see cref="ModelID"/> to use.
+        ///	</param>
+        public Model(string name)
+        {
+            this.ModelID = name;
+        }
 
-		/// <summary>
-		/// Represents a generic Model/model
-		/// </summary>
-		public Model()
-		{
+        /// <summary>
+        /// Represents a generic Model/model
+        /// </summary>
+        public Model()
+        {
 
-		}
+        }
 
 
 
@@ -105,8 +132,90 @@ namespace OpenAI_API
         /// <param name="auth">API authentication in order to call the API endpoint.  If not specified, attempts to use a default.</param>
         /// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
         public async Task<Model> RetrieveModelDetailsAsync(APIAuthentication auth = null)
-		{
-			return await ModelsEndpoint.RetrieveModelDetailsAsync(this.ModelID, auth);
-		}		
-	}
+        {
+            return await ModelsEndpoint.RetrieveModelDetailsAsync(this.ModelID, auth);
+        }
+    }
+
+    /// <summary>
+    /// Permissions for using the model
+    /// </summary>
+    public class Permissions
+    {
+        /// <summary>
+        /// Permission Id (not to be confused with ModelId
+        /// </summary>
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        /// <summary>
+        /// Object type, should always be 'model_permission'
+        /// </summary>
+        [JsonProperty("object")]
+        public string Object { get; set; }
+
+        /// <summary>
+        /// Unix timestamp for creation date/time
+        /// </summary>
+        [JsonProperty("created")]
+        public long Created { get; set; }
+
+        /// <summary>
+        /// Can the engine (model?) be created?
+        /// </summary>
+        [JsonProperty("allow_create_engine")]
+        public bool AllowCreateEngine { get; set; }
+
+        /// <summary>
+        /// Does the model support temperature sampling?
+        /// https://beta.openai.com/docs/api-reference/completions/create#completions/create-temperature
+        /// </summary>
+        [JsonProperty("allow_sampling")]
+        public bool AllowSampling { get; set; }
+
+        /// <summary>
+        /// Does the model support logprobs?
+        /// https://beta.openai.com/docs/api-reference/completions/create#completions/create-logprobs
+        /// </summary>
+        [JsonProperty("allow_logprobs")]
+        public bool AllowLogProbs { get; set; }
+
+        /// <summary>
+        /// Does the model support search indices?
+        /// </summary>
+        [JsonProperty("allow_search_indices")]
+        public bool AllowSearchIndices { get; set; }
+
+        /// <summary>
+        /// ??
+        /// </summary>
+        [JsonProperty("allow_view")]
+        public bool AllowView { get; set; }
+
+        /// <summary>
+        /// Does the model allow fine tuning?
+        /// https://beta.openai.com/docs/api-reference/fine-tunes
+        /// </summary>
+        [JsonProperty("allow_fine_tuning")]
+        public bool AllowFineTuning { get; set; }
+
+        /// <summary>
+        /// Is the model only allowed for a particular organization? Seems not implemented yet. Always '*'.
+        /// </summary>
+        [JsonProperty("organization")]
+        public string Organization { get; set; }
+
+        /// <summary>
+        /// Is the model part of a group? Seems not implemented yet. Always null.
+        /// </summary>
+        [JsonProperty("group")]
+        public string Group { get; set; }
+
+        /// <summary>
+        /// ??
+        /// </summary>
+        [JsonProperty("is_blocking")]
+        public bool IsBlocking { get; set; }
+    }
+
 }
