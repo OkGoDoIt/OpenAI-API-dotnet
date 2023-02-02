@@ -17,6 +17,10 @@ namespace OpenAI_API
 		/// The API key, required to access the API endpoint.
 		/// </summary>
 		public string ApiKey { get; set; }
+        /// <summary>
+        /// The Organization ID to count API requests against.  This can be found at https://beta.openai.com/account/org-settings.
+        /// </summary>
+        public string OpenAIOrganization { get; set; }
 
 		/// <summary>
 		/// Allows implicit casting from a string, so that a simple string API key can be provided in place of an instance of <see cref="APIAuthentication"/>
@@ -36,7 +40,19 @@ namespace OpenAI_API
 			this.ApiKey = apiKey;
 		}
 
-		private static APIAuthentication cachedDefault = null;
+
+        /// <summary>
+        /// Instantiates a new Authentication object with the given <paramref name="apiKey"/>, which may be <see langword="null"/>.  For users who belong to multiple organizations, you can specify which organization is used. Usage from these API requests will count against the specified organization's subscription quota.
+        /// </summary>
+        /// <param name="apiKey">The API key, required to access the API endpoint.</param>
+        /// <param name="openAIOrganization">The Organization ID to count API requests against.  This can be found at https://beta.openai.com/account/org-settings.</param>
+        public APIAuthentication(string apiKey, string openAIOrganization)
+        {
+            this.ApiKey = apiKey;
+			this.OpenAIOrganization = openAIOrganization;
+        }
+
+        private static APIAuthentication cachedDefault = null;
 
 		/// <summary>
 		/// The default authentication to use when no other auth is specified.  This can be set manually, or automatically loaded via environment variables or a config file.  <seealso cref="LoadFromEnv"/><seealso cref="LoadFromPath(string, string, bool)"/>
@@ -63,21 +79,25 @@ namespace OpenAI_API
 			}
 		}
 
-		/// <summary>
-		/// Attempts to load api keys from environment variables, as "OPENAI_KEY" (or "OPENAI_SECRET_KEY", for backwards compatibility)
-		/// </summary>
-		/// <returns>Returns the loaded <see cref="APIAuthentication"/> any api keys were found, or <see langword="null"/> if there were no matching environment vars.</returns>
-		public static APIAuthentication LoadFromEnv()
+        /// <summary>
+        /// Attempts to load api key from environment variables, as "OPENAI_KEY" or "OPENAI_API_KEY".  Also loads org if from "OPENAI_ORGANIZATION" if present.
+        /// </summary>
+        /// <returns>Returns the loaded <see cref="APIAuthentication"/> any api keys were found, or <see langword="null"/> if there were no matching environment vars.</returns>
+        public static APIAuthentication LoadFromEnv()
 		{
-			var key = Environment.GetEnvironmentVariable("OPENAI_KEY");
-			
-			if (string.IsNullOrEmpty(key))
-				key = Environment.GetEnvironmentVariable("OPENAI_SECRET_KEY");
-			
-			if (string.IsNullOrEmpty(key))
-				return null;
+            string key = Environment.GetEnvironmentVariable("OPENAI_KEY");
 
-			return new APIAuthentication(key);
+			if (string.IsNullOrEmpty(key))
+			{
+                key = Environment.GetEnvironmentVariable("OPENAI_API_KEY");
+
+				if (string.IsNullOrEmpty(key))
+                    return null;
+			}
+
+            string org = Environment.GetEnvironmentVariable("OPENAI_ORGANIZATION");
+
+            return new APIAuthentication(key, org);
 		}
 
 		/// <summary>
@@ -93,6 +113,7 @@ namespace OpenAI_API
 				directory = Environment.CurrentDirectory;
 
 			string key = null;
+			string org = null;
 			var curDirectory = new DirectoryInfo(directory);
 
 			while (key == null && curDirectory.Parent != null)
@@ -107,13 +128,16 @@ namespace OpenAI_API
 						{
 							switch (parts[0].ToUpper())
 							{
-								case "OPENAI_KEY":
-									key = parts[1].Trim();
-									break;
-								case "OPENAI_SECRET_KEY":
-									key = parts[1].Trim();
-									break;
-								default:
+                                case "OPENAI_KEY":
+                                    key = parts[1].Trim();
+                                    break;
+                                case "OPENAI_API_KEY":
+                                    key = parts[1].Trim();
+                                    break;
+                                case "OPENAI_ORGANIZATION":
+                                    org = parts[1].Trim();
+                                    break;
+                                default:
 									break;
 							}
 						}
@@ -133,7 +157,7 @@ namespace OpenAI_API
 			if (string.IsNullOrEmpty(key))
 				return null;
 
-			return new APIAuthentication(key);
+			return new APIAuthentication(key, org);
 		}
 
 

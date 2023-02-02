@@ -67,10 +67,10 @@ namespace OpenAI_API
 		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime).DateTime;
 
 		/// <summary>
-		/// Which model was used to generate this result.  Be sure to check <see cref="Engine.ModelRevision"/> for the specific revision.
+		/// Which model was used to generate this result.
 		/// </summary>
 		[JsonProperty("model")]
-		public Engine Model { get; set; }
+		public Model Model { get; set; }
 
 		/// <summary>
 		/// The completions returned by the API.  Depending on your request, there may be 1 or many choices.
