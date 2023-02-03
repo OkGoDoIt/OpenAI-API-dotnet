@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace OpenAI_API
 {
-    /// <summary>
-    /// Represents a language model
-    /// </summary>
-    public class Model
-    {
+	/// <summary>
+	/// Represents a language model
+	/// </summary>
+	public class Model
+	{
 		/// <summary>
 		/// The id/name of the model
 		/// </summary>
@@ -30,7 +30,7 @@ namespace OpenAI_API
 
 		/// The time when the model was created
 		[JsonIgnore]
-		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime.Value).DateTime;
+		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime).DateTime;
 
 		/// <summary>
 		/// The time when the model was created in unix epoch format
@@ -62,35 +62,35 @@ namespace OpenAI_API
 		/// <param name="model">The <see cref="Model"/> to cast to a string.</param>
 		public static implicit operator string(Model model)
 		{
-				return model?.ModelID;
+			return model?.ModelID;
 		}
 
 		/// <summary>
-        /// Allows a string to be implicitly cast as an <see cref="Model"/> with that <see cref="ModelID"/>
-        /// </summary>
-        /// <param name="name">The id/<see cref="ModelID"/> to use</param>
-        public static implicit operator Model(string name)
-        {
-            return new Model(name);
-        }
+		/// Allows a string to be implicitly cast as an <see cref="Model"/> with that <see cref="ModelID"/>
+		/// </summary>
+		/// <param name="name">The id/<see cref="ModelID"/> to use</param>
+		public static implicit operator Model(string name)
+		{
+			return new Model(name);
+		}
 
-        /// <summary>
-        /// Represents an Model with the given id/<see cref="ModelID"/>
-        /// </summary>
-        /// <param name="name">The id/<see cref="ModelID"/> to use.
-        ///	</param>
-        public Model(string name)
-        {
-            this.ModelID = name;
-        }
+		/// <summary>
+		/// Represents an Model with the given id/<see cref="ModelID"/>
+		/// </summary>
+		/// <param name="name">The id/<see cref="ModelID"/> to use.
+		///	</param>
+		public Model(string name)
+		{
+			this.ModelID = name;
+		}
 
-        /// <summary>
-        /// Represents a generic Model/model
-        /// </summary>
-        public Model()
-        {
+		/// <summary>
+		/// Represents a generic Model/model
+		/// </summary>
+		public Model()
+		{
 
-        }
+		}
 
 		/// <summary>
 		/// The default model to use in requests if no other model is specified.
@@ -144,85 +144,85 @@ namespace OpenAI_API
 			return await api.Models.RetrieveModelDetailsAsync(this.ModelID);
 		}
 
-    }
+	}
 
-    /// <summary>
-    /// Permissions for using the model
-    /// </summary>
-    public class Permissions
-    {
-        /// <summary>
-        /// Permission Id (not to be confused with ModelId)
-        /// </summary>
-        [JsonProperty("id")]
-        public string Id { get; set; }
+	/// <summary>
+	/// Permissions for using the model
+	/// </summary>
+	public class Permissions
+	{
+		/// <summary>
+		/// Permission Id (not to be confused with ModelId)
+		/// </summary>
+		[JsonProperty("id")]
+		public string Id { get; set; }
 
-        /// <summary>
-        /// Object type, should always be 'model_permission'
-        /// </summary>
-        [JsonProperty("object")]
-        public string Object { get; set; }
+		/// <summary>
+		/// Object type, should always be 'model_permission'
+		/// </summary>
+		[JsonProperty("object")]
+		public string Object { get; set; }
 
 		/// The time when the permission was created
 		[JsonIgnore]
-		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime.Value).DateTime;
+		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime).DateTime;
 
-        /// <summary>
-        /// Unix timestamp for creation date/time
-        /// </summary>
-        [JsonProperty("created")]
-        public long CreatedUnixTime { get; set; }
+		/// <summary>
+		/// Unix timestamp for creation date/time
+		/// </summary>
+		[JsonProperty("created")]
+		public long CreatedUnixTime { get; set; }
 
-        /// <summary>
-        /// Can the model be created?
-        /// </summary>
-        [JsonProperty("allow_create_engine")]
-        public bool AllowCreateEngine { get; set; }
+		/// <summary>
+		/// Can the model be created?
+		/// </summary>
+		[JsonProperty("allow_create_engine")]
+		public bool AllowCreateEngine { get; set; }
 
-        /// <summary>
-        /// Does the model support temperature sampling?
-        /// https://beta.openai.com/docs/api-reference/completions/create#completions/create-temperature
-        /// </summary>
-        [JsonProperty("allow_sampling")]
-        public bool AllowSampling { get; set; }
+		/// <summary>
+		/// Does the model support temperature sampling?
+		/// https://beta.openai.com/docs/api-reference/completions/create#completions/create-temperature
+		/// </summary>
+		[JsonProperty("allow_sampling")]
+		public bool AllowSampling { get; set; }
 
-        /// <summary>
-        /// Does the model support logprobs?
-        /// https://beta.openai.com/docs/api-reference/completions/create#completions/create-logprobs
-        /// </summary>
-        [JsonProperty("allow_logprobs")]
-        public bool AllowLogProbs { get; set; }
+		/// <summary>
+		/// Does the model support logprobs?
+		/// https://beta.openai.com/docs/api-reference/completions/create#completions/create-logprobs
+		/// </summary>
+		[JsonProperty("allow_logprobs")]
+		public bool AllowLogProbs { get; set; }
 
-        /// <summary>
-        /// Does the model support search indices?
-        /// </summary>
-        [JsonProperty("allow_search_indices")]
-        public bool AllowSearchIndices { get; set; }
+		/// <summary>
+		/// Does the model support search indices?
+		/// </summary>
+		[JsonProperty("allow_search_indices")]
+		public bool AllowSearchIndices { get; set; }
 
-        [JsonProperty("allow_view")]
-        public bool AllowView { get; set; }
+		[JsonProperty("allow_view")]
+		public bool AllowView { get; set; }
 
-        /// <summary>
-        /// Does the model allow fine tuning?
-        /// https://beta.openai.com/docs/api-reference/fine-tunes
-        /// </summary>
-        [JsonProperty("allow_fine_tuning")]
-        public bool AllowFineTuning { get; set; }
+		/// <summary>
+		/// Does the model allow fine tuning?
+		/// https://beta.openai.com/docs/api-reference/fine-tunes
+		/// </summary>
+		[JsonProperty("allow_fine_tuning")]
+		public bool AllowFineTuning { get; set; }
 
-        /// <summary>
-        /// Is the model only allowed for a particular organization? May not be implemented yet.
-        /// </summary>
-        [JsonProperty("organization")]
-        public string Organization { get; set; }
+		/// <summary>
+		/// Is the model only allowed for a particular organization? May not be implemented yet.
+		/// </summary>
+		[JsonProperty("organization")]
+		public string Organization { get; set; }
 
-        /// <summary>
-        /// Is the model part of a group? Seems not implemented yet. Always null.
-        /// </summary>
-        [JsonProperty("group")]
-        public string Group { get; set; }
+		/// <summary>
+		/// Is the model part of a group? Seems not implemented yet. Always null.
+		/// </summary>
+		[JsonProperty("group")]
+		public string Group { get; set; }
 
-        [JsonProperty("is_blocking")]
-        public bool IsBlocking { get; set; }
-    }
+		[JsonProperty("is_blocking")]
+		public bool IsBlocking { get; set; }
+	}
 
 }

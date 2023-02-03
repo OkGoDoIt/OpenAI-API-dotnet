@@ -423,7 +423,8 @@ namespace OpenAI_Tests
 	}
 
 	public static class CompletionTestingHelper
-	{		public static void ShouldNotBeEmpty(this CompletionResult results)
+	{
+		public static void ShouldNotBeEmpty(this CompletionResult results)
 		{
 			results.Should().NotBeNull("a result must be received");
 			results.Completions.Should().NotBeNull("completions must be received");

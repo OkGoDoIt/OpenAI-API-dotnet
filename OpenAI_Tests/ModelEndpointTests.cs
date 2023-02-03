@@ -71,6 +71,8 @@ namespace OpenAI_Tests
 			var api = new OpenAI_API.OpenAIAPI();
 			var modelData = await api.Models.RetrieveModelDetailsAsync(modelId);
 			modelData?.ModelID?.Should()?.Be(modelId);
+			modelData.Created.Should().BeAfter(new DateTime(2018, 1, 1), "the model has a created date no earlier than 2018");
+			modelData.Created.Should().BeBefore(DateTime.Now.AddDays(1), "the model has a created date before today");
 		}
 	}
 }
