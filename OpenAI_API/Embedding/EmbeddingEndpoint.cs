@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using OpenAI_API.Models;
+using System.Threading.Tasks;
 
 namespace OpenAI_API.Embedding
 {

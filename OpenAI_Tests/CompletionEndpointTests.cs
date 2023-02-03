@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using FluentAssertions;
 using System.Collections.Generic;
 using System.Net.Http;
+using OpenAI_API.Completions;
+using OpenAI_API.Models;
 
 namespace OpenAI_Tests
 {
@@ -26,6 +28,11 @@ namespace OpenAI_Tests
 
 			var results = api.Completions.CreateCompletionsAsync(new CompletionRequest("One Two Three Four Five Six Seven Eight Nine One Two Three Four Five Six Seven Eight", model: Model.CurieText, temperature: 0.1, max_tokens: 5)).Result;
 			Assert.IsNotNull(results);
+			Assert.NotNull(results.CreatedUnixTime);
+			Assert.NotZero(results.CreatedUnixTime.Value);
+			Assert.NotNull(results.Created);
+			Assert.Greater(results.Created.Value, DateTime.UtcNow.AddSeconds(-30));
+			Assert.Less(results.Created.Value, DateTime.UtcNow.AddSeconds(30));
 			Assert.NotNull(results.Completions);
 			Assert.NotZero(results.Completions.Count);
 			Assert.That(results.Completions.Any(c => c.Text.Trim().ToLower().StartsWith("nine")));

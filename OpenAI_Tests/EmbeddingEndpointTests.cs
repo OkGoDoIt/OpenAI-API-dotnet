@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using OpenAI_API;
 using OpenAI_API.Embedding;
+using OpenAI_API.Models;
 using System;
 using System.Linq;
 
@@ -23,6 +24,16 @@ namespace OpenAI_Tests
 
             var results = api.Embeddings.CreateEmbeddingAsync(new EmbeddingRequest(Model.AdaTextEmbedding, "A test text for embedding")).Result;
             Assert.IsNotNull(results);
+            if (results.CreatedUnixTime.HasValue)
+            {
+                Assert.NotZero(results.CreatedUnixTime.Value);
+                Assert.NotNull(results.Created);
+                Assert.Greater(results.Created.Value, new DateTime(2018, 1, 1));
+				Assert.Less(results.Created.Value, DateTime.Now.AddDays(1));
+			} else
+            {
+                Assert.Null(results.Created);
+			}
             Assert.NotNull(results.Object);
             Assert.NotZero(results.Data.Count);
             Assert.That(results.Data.First().Embedding.Length == 1536);

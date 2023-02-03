@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace OpenAI_API
+namespace OpenAI_API.Completions
 {
 	/// <summary>
 	/// Represents a completion choice returned by the Completion API.  

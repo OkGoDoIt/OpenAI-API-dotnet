@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OpenAI_API
+namespace OpenAI_API.Models
 {
 	/// <summary>
 	/// Represents a language model
@@ -30,13 +30,13 @@ namespace OpenAI_API
 
 		/// The time when the model was created
 		[JsonIgnore]
-		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime).DateTime;
+		public DateTime? Created => CreatedUnixTime.HasValue ? (DateTime?)(DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime.Value).DateTime) : null;
 
 		/// <summary>
 		/// The time when the model was created in unix epoch format
 		/// </summary>
 		[JsonProperty("created")]
-		public long CreatedUnixTime { get; set; }
+		public long? CreatedUnixTime { get; set; }
 
 		/// <summary>
 		/// Permissions for use of the model

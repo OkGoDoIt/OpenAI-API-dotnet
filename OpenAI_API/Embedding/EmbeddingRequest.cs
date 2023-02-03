@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenAI_API.Models;
 
 namespace OpenAI_API.Embedding
 {
@@ -44,7 +45,7 @@ namespace OpenAI_API.Embedding
 		/// <param name="input">The prompt to transform</param>
 		public EmbeddingRequest(string input)
 		{
-			Model = OpenAI_API.Model.AdaTextEmbedding;
+			Model = OpenAI_API.Models.Model.AdaTextEmbedding;
 			this.Input = input;
 		}
 	}

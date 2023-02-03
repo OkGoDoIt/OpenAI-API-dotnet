@@ -3,9 +3,9 @@
 A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
 ## Status
-Updated to work with the current API as of January 12, 2023. Deprecated the Search endpoint as OpenAI has removed that API. This version includes breaking changes around specifying models to keep up with OpenAI API changes. If you had any code which used the old "engines", that will need to be updated to "models".
+Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
 
-Support for insertion, edits, and embedding is coming soon.
+Thank you [@GotMike](https://github.com/gotmike), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Quick Example
 
@@ -99,10 +99,6 @@ await api.Completions.StreamCompletionAsync(
 	new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", Model.DavinciText, 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1),
 	res => ResumeTextbox.Text += res.ToString());
 ```
-
-### Document Search
-Unfortunately OpenAI has [removed the search API endpoint](https://help.openai.com/en/articles/6272952-search-transition-guide)  :-(
-
 
 ## Documentation
 

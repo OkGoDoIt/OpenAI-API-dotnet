@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using NUnit.Framework;
 using OpenAI_API;
+using OpenAI_API.Models;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -36,8 +37,15 @@ namespace OpenAI_Tests
 
 			Assert.IsNotNull(api.Models);
 
-			var result = api.Models.RetrieveModelDetailsAsync(Model.DavinciText.ModelID).Result;
+			var result = api.Models.RetrieveModelDetailsAsync(Model.DavinciText).Result;
 			Assert.IsNotNull(result);
+
+			Assert.NotNull(result.CreatedUnixTime);
+			Assert.NotZero(result.CreatedUnixTime.Value);
+			Assert.NotNull(result.Created);
+			Assert.Greater(result.Created.Value, new DateTime(2018, 1, 1));
+			Assert.Less(result.Created.Value, DateTime.Now.AddDays(1));
+
 			Assert.IsNotNull(result.ModelID);
 			Assert.IsNotNull(result.OwnedBy);
 			Assert.AreEqual(Model.DavinciText.ModelID.ToLower(), result.ModelID.ToLower());

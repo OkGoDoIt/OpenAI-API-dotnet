@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenAI_API.Models;
 using System;
 
 namespace OpenAI_API
@@ -11,13 +12,13 @@ namespace OpenAI_API
 
 		/// The time when the result was generated
 		[JsonIgnore]
-		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime).DateTime;
+		public DateTime? Created => CreatedUnixTime.HasValue ? (DateTime?)(DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime.Value).DateTime) : null;
 
 		/// <summary>
 		/// The time when the result was generated in unix epoch format
 		/// </summary>
 		[JsonProperty("created")]
-		public int CreatedUnixTime { get; set; }
+		public long? CreatedUnixTime { get; set; }
 
 		/// <summary>
 		/// Which model was used to generate this result.

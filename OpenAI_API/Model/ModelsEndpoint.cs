@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace OpenAI_API
+namespace OpenAI_API.Models
 {
 	/// <summary>
 	/// The API endpoint for querying available models

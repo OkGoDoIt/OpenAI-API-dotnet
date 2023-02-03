@@ -1,7 +1,8 @@
 ﻿using Newtonsoft.Json;
+using OpenAI_API.Models;
 using System.Linq;
 
-namespace OpenAI_API
+namespace OpenAI_API.Completions
 {
 	/// <summary>
 	/// Represents a request to the Completions API.  Mostly matches the parameters in <see href="https://beta.openai.com/api-ref#create-completion-post">the OpenAI docs</see>, although some have been renames or expanded into single/multiple properties for ease of use.
@@ -12,7 +13,7 @@ namespace OpenAI_API
 		/// ID of the model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync()"/> to see all of your available models, or use a standard model like <see cref="Model.DavinciText"/>.
 		/// </summary>
 		[JsonProperty("model")]
-		public string Model { get; set; } = OpenAI_API.Model.DavinciText;
+		public string Model { get; set; } = OpenAI_API.Models.Model.DavinciText;
 
 		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
@@ -165,7 +166,7 @@ namespace OpenAI_API
 		/// </summary>
 		public CompletionRequest()
 		{
-			this.Model = OpenAI_API.Model.DefaultModel;
+			this.Model = OpenAI_API.Models.Model.DefaultModel;
 		}
 
 		/// <summary>
