@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace OpenAI_Tests
 {
@@ -103,6 +104,23 @@ namespace OpenAI_Tests
 			Assert.AreEqual("sk-testBB", auth.ApiKey);
 			Assert.IsNotNull(auth.OpenAIOrganization);
 			Assert.AreEqual("orgTest", auth.OpenAIOrganization);
+		}
+
+		[Test]
+		public async Task TestBadKey()
+		{
+			var auth = new OpenAI_API.APIAuthentication("pk-testAA");
+			Assert.IsFalse(await auth.ValidateAPIKey());
+
+			auth = new OpenAI_API.APIAuthentication(null);
+			Assert.IsFalse(await auth.ValidateAPIKey());
+		}
+
+		[Test]
+		public async Task TestValidateGoodKey()
+		{
+			var auth = new OpenAI_API.APIAuthentication(Environment.GetEnvironmentVariable("TEST_OPENAI_SECRET_KEY"));
+			Assert.IsTrue(await auth.ValidateAPIKey());
 		}
 
 	}

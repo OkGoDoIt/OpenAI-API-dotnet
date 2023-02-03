@@ -4,7 +4,7 @@ using OpenAI_API;
 using OpenAI_API.Models;
 using System;
 using System.Linq;
-using System.Net.Http;
+using System.Security.Authentication;
 using System.Threading.Tasks;
 
 namespace OpenAI_Tests
@@ -66,7 +66,7 @@ namespace OpenAI_Tests
 			var api = new OpenAIAPI(new APIAuthentication(Guid.NewGuid().ToString()));
 			Func<Task> act = () => api.Models.GetModelsAsync();
 			act.Should()
-				.ThrowAsync<HttpRequestException>()
+				.ThrowAsync<AuthenticationException>()
 				.Where(exc => exc.Message.Contains("Incorrect API key provided"));
 		}
 

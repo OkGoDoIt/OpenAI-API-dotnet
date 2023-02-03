@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenAI_API;
 using System;
 using System.Linq;
 using System.Threading.Tasks;

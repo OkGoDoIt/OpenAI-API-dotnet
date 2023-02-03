@@ -135,7 +135,18 @@ namespace OpenAI_API
 					resultAsString = "Additionally, the following error was thrown when attemping to read the response content: " + e.ToString();
 				}
 
-				throw new HttpRequestException(GetErrorMessage(resultAsString, response, Endpoint, url));
+				if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+				{
+					throw new AuthenticationException("OpenAI rejected your authorization, most likely due to an invalid API Key.  Try checking your API Key and see https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for guidance.  Full API response follows: " + resultAsString);
+				}
+				else if (response.StatusCode == System.Net.HttpStatusCode.InternalServerError)
+				{
+					throw new HttpRequestException("OpenAI had an internal server error, which can happen occasionally.  Please retry your request.  " + GetErrorMessage(resultAsString, response, Endpoint, url));
+				}
+				else
+				{
+					throw new HttpRequestException(GetErrorMessage(resultAsString, response, Endpoint, url));
+				}
 			}
 		}
 

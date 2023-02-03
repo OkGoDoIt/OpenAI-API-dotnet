@@ -1,5 +1,4 @@
 ﻿using NUnit.Framework;
-using OpenAI_API;
 using OpenAI_API.Embedding;
 using OpenAI_API.Models;
 using System;
