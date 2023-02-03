@@ -1,15 +1,14 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OpenAI_API
 {
-    /// <summary>
-    /// Used internally to deserialize a result from the Document Search API
-    /// </summary>
-    [Obsolete("OpenAI no long supports the Search endpoint")]
-    public class SearchResult
+	/// <summary>
+	/// Used internally to deserialize a result from the Document Search API
+	/// </summary>
+	[Obsolete("OpenAI no long supports the Search endpoint")]
+	public class SearchResult
 	{
 		/// <summary>
 		/// The index of the document as originally supplied

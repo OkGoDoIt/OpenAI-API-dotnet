@@ -9,12 +9,12 @@ namespace OpenAI_Tests
 		[SetUp]
 		public void Setup()
 		{
-			File.WriteAllText(".openai", "OPENAI_KEY=pk-test12"+Environment.NewLine+ "OPENAI_ORGANIZATION=org-testing123");
-            Environment.SetEnvironmentVariable("OPENAI_API_KEY", "pk-test-env");
-            Environment.SetEnvironmentVariable("OPENAI_ORGANIZATION", "org-testing123");
-        }
+			File.WriteAllText(".openai", "OPENAI_KEY=pk-test12" + Environment.NewLine + "OPENAI_ORGANIZATION=org-testing123");
+			Environment.SetEnvironmentVariable("OPENAI_API_KEY", "pk-test-env");
+			Environment.SetEnvironmentVariable("OPENAI_ORGANIZATION", "org-testing123");
+		}
 
-        [Test]
+		[Test]
 		public void GetAuthFromEnv()
 		{
 			var auth = OpenAI_API.APIAuthentication.LoadFromEnv();
@@ -47,20 +47,20 @@ namespace OpenAI_Tests
 		{
 			var auth = OpenAI_API.APIAuthentication.Default;
 			var envAuth = OpenAI_API.APIAuthentication.LoadFromEnv();
-            Assert.IsNotNull(auth);
-            Assert.IsNotNull(auth.ApiKey);
-            Assert.IsNotNull(envAuth);
-            Assert.IsNotNull(envAuth.ApiKey);
-            Assert.AreEqual(envAuth.ApiKey, auth.ApiKey);
-            Assert.IsNotNull(auth.OpenAIOrganization);
-            Assert.IsNotNull(envAuth.OpenAIOrganization);
-            Assert.AreEqual(envAuth.OpenAIOrganization, auth.OpenAIOrganization);
+			Assert.IsNotNull(auth);
+			Assert.IsNotNull(auth.ApiKey);
+			Assert.IsNotNull(envAuth);
+			Assert.IsNotNull(envAuth.ApiKey);
+			Assert.AreEqual(envAuth.ApiKey, auth.ApiKey);
+			Assert.IsNotNull(auth.OpenAIOrganization);
+			Assert.IsNotNull(envAuth.OpenAIOrganization);
+			Assert.AreEqual(envAuth.OpenAIOrganization, auth.OpenAIOrganization);
 
-        }
+		}
 
 
 
-        [Test]
+		[Test]
 		public void testHelper()
 		{
 			OpenAI_API.APIAuthentication defaultAuth = OpenAI_API.APIAuthentication.Default;

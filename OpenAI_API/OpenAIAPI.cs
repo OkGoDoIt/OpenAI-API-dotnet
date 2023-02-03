@@ -1,11 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using OpenAI_API.Files;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenAI_API
 {
@@ -14,6 +8,11 @@ namespace OpenAI_API
 	/// </summary>
 	public class OpenAIAPI
 	{
+		/// <summary>
+		/// Base url for OpenAI
+		/// </summary>
+		public string ApiUrlBase = "https://api.openai.com/v1/";
+
 		/// <summary>
 		/// The API authentication information to use for API calls
 		/// </summary>
@@ -28,7 +27,8 @@ namespace OpenAI_API
 			this.Auth = apiKeys.ThisOrDefault();
 			Completions = new CompletionEndpoint(this);
 			Models = new ModelsEndpoint(this);
-			Search = new SearchEndpoint(this);
+			//Search = new SearchEndpoint(this);
+			Files = new FilesEndpoint(this);
 		}
 
 		/// <summary>
@@ -36,18 +36,21 @@ namespace OpenAI_API
 		/// </summary>
 		public CompletionEndpoint Completions { get; }
 
-        /// <summary>
-        /// The API endpoint for querying available Engines/models
-        /// </summary>
-        public ModelsEndpoint Models { get; }
+		/// <summary>
+		/// The API endpoint for querying available Engines/models
+		/// </summary>
+		public ModelsEndpoint Models { get; }
 
-        /// <summary>
-        /// The API lets you do semantic search over documents. This means that you can provide a query, such as a natural language question or a statement, and find documents that answer the question or are semantically related to the statement. The “documents” can be words, sentences, paragraphs or even longer documents. For example, if you provide documents "White House", "hospital", "school" and query "the president", you’ll get a different similarity score for each document. The higher the similarity score, the more semantically similar the document is to the query (in this example, “White House” will be most similar to “the president”).
-        /// </summary>
-        [Obsolete("OpenAI no long supports the Search endpoint")]
-        public SearchEndpoint Search { get; }
+		/// <summary>
+		/// The API lets you do semantic search over documents. This means that you can provide a query, such as a natural language question or a statement, and find documents that answer the question or are semantically related to the statement. The “documents” can be words, sentences, paragraphs or even longer documents. For example, if you provide documents "White House", "hospital", "school" and query "the president", you’ll get a different similarity score for each document. The higher the similarity score, the more semantically similar the document is to the query (in this example, “White House” will be most similar to “the president”).
+		/// </summary>
+		[Obsolete("OpenAI no longer supports the Search endpoint")]
+		public SearchEndpoint Search { get; }
 
-
+		/// <summary>
+		/// The API lets you do operations with files. You can upload, delete or retrieve files. Files can be used for fine-tuning, search, etc.
+		/// </summary>
+		public FilesEndpoint Files { get; }
 
 
 

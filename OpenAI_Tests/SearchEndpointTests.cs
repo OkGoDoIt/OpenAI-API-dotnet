@@ -1,8 +1,5 @@
 ﻿using NUnit.Framework;
-using OpenAI_API;
 using System;
-using System.IO;
-using System.Linq;
 
 namespace OpenAI_Tests
 {
