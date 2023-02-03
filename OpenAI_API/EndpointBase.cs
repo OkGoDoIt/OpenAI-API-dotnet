@@ -16,6 +16,8 @@ namespace OpenAI_API
 	/// </summary>
 	public abstract class EndpointBase
 	{
+		private const string Value = "okgodoit/dotnet_openai_api";
+
 		/// <summary>
 		/// The internal reference to the API, mostly used for authentication
 		/// </summary>
@@ -60,7 +62,7 @@ namespace OpenAI_API
 
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
+			client.DefaultRequestHeaders.Add("User-Agent", Value);
 			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
 
 			return client;
