@@ -1,84 +1,78 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace OpenAI_API.Embedding
 {
-    /// <summary>
-    /// Represents an embedding result returned by the Embedding API.  
-    /// </summary>
-    public class EmbeddingResult
-    {
-        /// <summary>
-        /// Type of the response. In case of embeddings, this will be "list"  
-        /// </summary>
-        [JsonProperty("object")]
+	/// <summary>
+	/// Represents an embedding result returned by the Embedding API.  
+	/// </summary>
+	public class EmbeddingResult : ApiResultBase
+	{
+		/// <summary>
+		/// List of results of the embedding
+		/// </summary>
+		[JsonProperty("data")]
+		public Data[] Data { get; set; }
 
-        public string Object { get; set; }
+		/// <summary>
+		/// Usage statistics of how many tokens have been used for this request
+		/// </summary>
+		[JsonProperty("usage")]
+		public Usage Usage { get; set; }
 
-        /// <summary>
-        /// List of results of the embedding
-        /// </summary>
-        [JsonProperty("data")]
-        public Data[] Data { get; set; }
+		/// <summary>
+		/// Allows an EmbeddingResult to be implicitly cast to the array of floats repsresenting the first ebmedding result
+		/// </summary>
+		/// <param name="embeddingResult">The <see cref="EmbeddingResult"/> to cast to an array of floats.</param>
+		public static implicit operator float[](EmbeddingResult embeddingResult)
+		{
+			return embeddingResult.Data.FirstOrDefault()?.Embedding;
+		}
+	}
 
-        /// <summary>
-        /// Name of the model used to generate this embedding
-        /// </summary>
-        [JsonProperty("model")]
-        public string Model { get; set; }
+	/// <summary>
+	/// Data returned from the Embedding API.
+	/// </summary>
+	public class Data
+	{
+		/// <summary>
+		/// Type of the response. In case of Data, this will be "embedding"  
+		/// </summary>
+		[JsonProperty("object")]
 
-        /// <summary>
-        /// Usage statistics of how many tokens have been used for this request
-        /// </summary>
-        [JsonProperty("usage")]
-        public Usage Usage { get; set; }
-    }
+		public string Object { get; set; }
 
-    /// <summary>
-    /// Data returned from the Embedding API.
-    /// </summary>
-    public class Data
-    {
-        /// <summary>
-        /// Type of the response. In case of Data, this will be "embedding"  
-        /// </summary>
-        [JsonProperty("object")]
+		/// <summary>
+		/// The input text represented as a vector (list) of floating point numbers
+		/// </summary>
+		[JsonProperty("embedding")]
+		public float[] Embedding { get; set; }
 
-        public string Object { get; set; }
+		/// <summary>
+		/// Index
+		/// </summary>
+		[JsonProperty("index")]
+		public int Index { get; set; }
 
-        /// <summary>
-        /// The input text represented as a vector (list) of floating point numbers
-        /// </summary>
-        [JsonProperty("embedding")]
-        public float[] Embedding { get; set; }
+	}
 
-        /// <summary>
-        /// Index
-        /// </summary>
-        [JsonProperty("index")]
-        public int Index { get; set; }
+	/// <summary>
+	/// Usage statistics of how many tokens have been used for this request.
+	/// </summary>
+	public class Usage
+	{
+		/// <summary>
+		/// How many tokens did the prompt consist of
+		/// </summary>
+		[JsonProperty("prompt_tokens")]
+		public int PromptTokens { get; set; }
 
-    }
+		/// <summary>
+		/// How many tokens did the request consume total
+		/// </summary>
+		[JsonProperty("total_tokens")]
+		public int TotalTokens { get; set; }
 
-    /// <summary>
-    /// Usage statistics of how many tokens have been used for this request.
-    /// </summary>
-    public class Usage
-    {
-        /// <summary>
-        /// How many tokens did the prompt consist of
-        /// </summary>
-        [JsonProperty("prompt_tokens")]
-        public int PromptTokens { get; set; }
-
-        /// <summary>
-        /// How many tokens did the request consume total
-        /// </summary>
-        [JsonProperty("total_tokens")]
-        public int TotalTokens { get; set; }
-
-    }
+	}
 
 }

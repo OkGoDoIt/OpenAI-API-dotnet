@@ -11,6 +11,11 @@ namespace OpenAI_API
 	public class OpenAIAPI
 	{
 		/// <summary>
+		/// Base url for OpenAI
+		/// </summary>
+		public string ApiUrlBase = "https://api.openai.com/v1/";
+		
+		/// <summary>
 		/// The API authentication information to use for API calls
 		/// </summary>
 		public APIAuthentication Auth { get; set; }
@@ -24,7 +29,7 @@ namespace OpenAI_API
 			this.Auth = apiKeys.ThisOrDefault();
 			Completions = new CompletionEndpoint(this);
 			Models = new ModelsEndpoint(this);
-			Search = new SearchEndpoint(this);
+			//Search = new SearchEndpoint(this);
 			Embeddings = new EmbeddingEndpoint(this);
 		}
 

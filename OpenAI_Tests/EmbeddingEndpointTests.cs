@@ -2,9 +2,7 @@
 using OpenAI_API;
 using OpenAI_API.Embedding;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace OpenAI_Tests
 {
@@ -30,7 +28,6 @@ namespace OpenAI_Tests
             Assert.That(results.Data.First().Embedding.Length == 1536);
         }
 
-
         [Test]
         public void GetSimpleEmbedding()
         {
@@ -38,11 +35,9 @@ namespace OpenAI_Tests
 
             Assert.IsNotNull(api.Embeddings);
 
-            var results = api.Embeddings.CreateEmbeddingAsync("A test text for embedding").Result;
+            var results = api.Embeddings.GetEmbeddingsAsync("A test text for embedding").Result;
             Assert.IsNotNull(results);
-            Assert.NotNull(results.Object);
-            Assert.NotZero(results.Data.Length);
-            Assert.That(results.Data.First().Embedding.Length == 1536);
+            Assert.That(results.Length == 1536);
         }
     }
 }
