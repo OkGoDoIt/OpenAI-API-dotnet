@@ -10,7 +10,7 @@ namespace OpenAI_API.Models
 	public class ModelsEndpoint : EndpointBase
 	{
 		/// <summary>
-		/// The name of the enpoint, which is the final path segment in the API URL.  For example, "models".
+		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "models".
 		/// </summary>
 		protected override string Endpoint { get { return "models"; } }
 

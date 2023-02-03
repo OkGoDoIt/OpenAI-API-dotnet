@@ -5,15 +5,15 @@ A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [
 ## Status
 Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
 
-Thank you [@GotMike](https://github.com/gotmike), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Quick Example
 
 ```csharp
 var api = new OpenAI_API.OpenAIAPI();
 
-var result = await api.Completions.CreateCompletionAsync("One Two Three One Two", temperature: 0.1);
-Console.WriteLine(result.ToString());
+var result = await api.Completions.GetCompletion("One Two Three One Two");
+Console.WriteLine(result);
 // should print something starting with "Three"
 ```
 
@@ -66,7 +66,7 @@ OpenAIAPI api = new OpenAIAPI(new APIAuthentication("YOUR_API_KEY","org-yourOrgH
 The Completion API is accessed via `OpenAIAPI.Completions`:
 
 ```csharp
-CreateCompletionAsync(CompletionRequest request)
+async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request)
 
 // for example
 var result = await api.Completions.CreateCompletionAsync(new CompletionRequest("One Two Three One Two", model: Model.CurieText, temperature: 0.1));
@@ -92,7 +92,7 @@ await foreach (var token in api.Completions.StreamCompletionEnumerableAsync(new 
 
 Or if using classic .NET framework or C# <8.0:
 ```csharp
-StreamCompletionAsync(CompletionRequest request, Action<CompletionResult> resultHandler)
+async Task StreamCompletionAsync(CompletionRequest request, Action<CompletionResult> resultHandler)
 
 // for example
 await api.Completions.StreamCompletionAsync(
@@ -100,9 +100,51 @@ await api.Completions.StreamCompletionAsync(
 	res => ResumeTextbox.Text += res.ToString());
 ```
 
+### Embeddings
+The Embedding API is accessed via `OpenAIAPI.Embeddings`:
+
+```csharp
+async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request)
+
+// for example
+var result = await api.Embeddings.CreateEmbeddingAsync(new EmbeddingRequest("A test text for embedding", model: Model.AdaTextEmbedding));
+// or
+var result = await api.Completions.CreateCompletionAsync("A test text for embedding");
+```
+
+The embedding result contains a lot of metadata, the actual vector of floats is in result.Data[].Embedding.
+
+For simplicity, you can directly ask for the vector of floats and disgard the extra metadata with `api.Embeddings.GetEmbeddingsAsync("test text here")`
+
+### Files (for fine-tuning)
+The Files API endpoint is accessed via `OpenAIAPI.Files`:
+
+```csharp
+// uploading
+async Task<File> UploadFileAsync(string filePath, string purpose = "fine-tune")
+
+// for example
+var response = await api.Files.UploadFileAsync("fine-tuning-data.jsonl");
+Console.Write(response.Id); //the id of the uploaded file
+
+// listing
+async Task<List<File>> GetFilesAsync()
+
+// for example
+var response = await api.Files.GetFilesAsync();
+foreach (var file in response)
+{
+	Console.WriteLine(file.Name)
+}
+```
+
+There are also methods to get file contents, delete a file, etc.
+
+The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
+
 ## Documentation
 
-Every single class, method, and property has extensive XML documentation, so it should show up automatically in IntelliSense.  That combined with the official OpenAI documentation should be enough to get started.  Feel free to ping me on Twitter [@OkGoDoIt](https://twitter.com/OkGoDoIt) if you have any questions.  Better documentation may come later.
+Every single class, method, and property has extensive XML documentation, so it should show up automatically in IntelliSense.  That combined with the official OpenAI documentation should be enough to get started.  Feel free to open an issue here if you have any questions.  Better documentation may come later.
 
 ## License
 ![CC-0 Public Domain](https://licensebuttons.net/p/zero/1.0/88x31.png)

@@ -13,16 +13,14 @@
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>Updated to work with the current API as of January 12, 2023. Deprecate the Search endpoint as OpenAI has removed that API. This version includes breaking changes around specifying models to keep up with OpenAI API changes. If you had any code which used the old "engines", that will need to be updated to "models". Support for insertion, edits, and embedding is coming soon.</PackageReleaseNotes>
-		<SignAssembly>True</SignAssembly>
-		<AssemblyOriginatorKeyFile>D:\OneDrive - Roger Pincombe\Assets\rsa keys\okgodoit-signing.pfx</AssemblyOriginatorKeyFile>
-		<DelaySign>false</DelaySign>
+		<PackageReleaseNotes>Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.</PackageReleaseNotes>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.3.0</Version>
-		<AssemblyVersion>1.3.0.0</AssemblyVersion>
-		<FileVersion>1.3.0.0</FileVersion>
+		<Version>1.4.0</Version>
+		<AssemblyVersion>1.4.0.0</AssemblyVersion>
+		<FileVersion>1.4.0.0</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
+		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
 	</PropertyGroup>
 
 	<ItemGroup>

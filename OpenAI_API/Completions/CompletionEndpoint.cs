@@ -17,7 +17,7 @@ namespace OpenAI_API.Completions
 		public CompletionRequest DefaultCompletionRequestArgs { get; set; } = new CompletionRequest() { Model = Model.DavinciText };
 
 		/// <summary>
-		/// The name of the enpoint, which is the final path segment in the API URL.  For example, "completions".
+		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "completions".
 		/// </summary>
 		protected override string Endpoint { get { return "completions"; } }
 

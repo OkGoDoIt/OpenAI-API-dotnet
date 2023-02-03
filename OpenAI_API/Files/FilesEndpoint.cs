@@ -18,7 +18,7 @@ namespace OpenAI_API.Files
 		internal FilesEndpoint(OpenAIAPI api) : base(api) { }
 
 		/// <summary>
-		/// The name of the enpoint, which is the final path segment in the API URL.  For example, "files".
+		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "files".
 		/// </summary>
 		protected override string Endpoint { get { return "files"; } }
 

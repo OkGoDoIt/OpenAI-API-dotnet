@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 namespace OpenAI_API
 {
 	/// <summary>
-	/// A base object for any OpenAI API enpoint, encompassing common functionality
+	/// A base object for any OpenAI API endpoint, encompassing common functionality
 	/// </summary>
 	public abstract class EndpointBase
 	{
@@ -33,7 +33,7 @@ namespace OpenAI_API
 		}
 
 		/// <summary>
-		/// The name of the enpoint, which is the final path segment in the API URL.  Must be overriden in a derived class.
+		/// The name of the endpoint, which is the final path segment in the API URL.  Must be overriden in a derived class.
 		/// </summary>
 		protected abstract string Endpoint { get; }
 
