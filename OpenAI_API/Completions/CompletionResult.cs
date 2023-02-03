@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading;
 
 namespace OpenAI_API
 {
@@ -82,7 +78,7 @@ namespace OpenAI_API
 		public List<string> Tokens { get; set; }
 
 		[JsonProperty("token_logprobs")]
-		public List<double> TokenLogprobs { get; set; }
+		public List<double?> TokenLogprobs { get; set; }
 
 		[JsonProperty("top_logprobs")]
 		public IList<IDictionary<string, double>> TopLogprobs { get; set; }

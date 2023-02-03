@@ -1,12 +1,5 @@
-﻿using Newtonsoft.Json;
-using OpenAI_API.Files;
+﻿using OpenAI_API.Files;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenAI_API
 {

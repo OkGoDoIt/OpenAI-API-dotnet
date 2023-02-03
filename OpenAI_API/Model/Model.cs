@@ -1,8 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenAI_API
@@ -60,6 +56,10 @@ namespace OpenAI_API
 
 		}
 
+		/// <summary>
+		/// The default model to use in requests if no other model is specified.
+		/// </summary>
+		public static Model DefaultModel { get; set; } = DavinciText;
 
 
 		/// <summary>

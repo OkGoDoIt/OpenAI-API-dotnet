@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data.Common;
 using System.Linq;
-using System.Runtime;
-using System.Text;
 
 namespace OpenAI_API
 {
@@ -18,7 +12,7 @@ namespace OpenAI_API
 		/// ID of the model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync()"/> to see all of your available models, or use a standard model like <see cref="Model.DavinciText"/>.
 		/// </summary>
 		[JsonProperty("model")]
-		public string Model { get; set; }
+		public string Model { get; set; } = OpenAI_API.Model.DavinciText;
 
 		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
@@ -171,7 +165,7 @@ namespace OpenAI_API
 		/// </summary>
 		public CompletionRequest()
 		{
-
+			this.Model = OpenAI_API.Model.DefaultModel;
 		}
 
 		/// <summary>

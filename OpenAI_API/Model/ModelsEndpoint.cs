@@ -1,11 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Security.Authentication;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OpenAI_API
@@ -33,7 +27,7 @@ namespace OpenAI_API
 		/// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
 		public Task<Model> RetrieveModelDetailsAsync(string id)
 		{
-			return RetrieveModelDetailsAsync(id, Api?.Auth);
+			return RetrieveModelDetailsAsync(id, _Api?.Auth);
 		}
 
 		/// <summary>

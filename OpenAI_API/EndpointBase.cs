@@ -5,7 +5,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.Serialization;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,9 +17,9 @@ namespace OpenAI_API
 	public abstract class EndpointBase
 	{
 		/// <summary>
-		/// 
+		/// The internal reference to the API, mostly used for authentication
 		/// </summary>
-		protected readonly OpenAIAPI Api;
+		protected readonly OpenAIAPI _Api;
 
 		/// <summary>
 		/// Constructor of the api endpoint base, to be called from the contructor of any devived classes.  Rather than instantiating any endpoint yourself, access it through an instance of <see cref="OpenAIAPI"/>.
@@ -28,7 +27,7 @@ namespace OpenAI_API
 		/// <param name="api"></param>
 		internal EndpointBase(OpenAIAPI api)
 		{
-			this.Api = api;
+			this._Api = api;
 		}
 
 		/// <summary>
@@ -43,7 +42,7 @@ namespace OpenAI_API
 		{
 			get
 			{
-				return $"{Api.ApiUrlBase}{Endpoint}";
+				return $"{_Api.ApiUrlBase}{Endpoint}";
 			}
 		}
 
@@ -54,15 +53,15 @@ namespace OpenAI_API
 		/// <exception cref="AuthenticationException">Thrown if there is no valid authentication.  Please refer to <see href="https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication"/> for details.</exception>
 		protected HttpClient GetClient()
 		{
-			if (Api.Auth?.ApiKey is null)
+			if (_Api.Auth?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
 
 			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Api.Auth.ApiKey);
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", "okgodoit/dotnet_openai_api");
-			if (!string.IsNullOrEmpty(Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", Api.Auth.OpenAIOrganization);
+			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
 
 			return client;
 		}
