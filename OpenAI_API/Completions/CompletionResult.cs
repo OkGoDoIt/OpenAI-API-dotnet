@@ -48,7 +48,7 @@ namespace OpenAI_API
 	/// <summary>
 	/// Represents a result from calling the Completion API
 	/// </summary>
-	public class CompletionResult
+	public class CompletionResult : ApiResultBase
 	{
 		/// <summary>
 		/// The identifier of the result, which may be used during troubleshooting
@@ -57,44 +57,10 @@ namespace OpenAI_API
 		public string Id { get; set; }
 
 		/// <summary>
-		/// The time when the result was generated in unix epoch format
-		/// </summary>
-		[JsonProperty("created")]
-		public int CreatedUnixTime { get; set; }
-
-		/// The time when the result was generated
-		[JsonIgnore]
-		public DateTime Created => DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime).DateTime;
-
-		/// <summary>
-		/// Which model was used to generate this result.
-		/// </summary>
-		[JsonProperty("model")]
-		public Model Model { get; set; }
-
-		/// <summary>
 		/// The completions returned by the API.  Depending on your request, there may be 1 or many choices.
 		/// </summary>
 		[JsonProperty("choices")]
 		public List<Choice> Completions { get; set; }
-
-		/// <summary>
-		/// The server-side processing time as reported by the API.  This can be useful for debugging where a delay occurs.
-		/// </summary>
-		[JsonIgnore]
-		public TimeSpan ProcessingTime { get; set; }
-
-		/// <summary>
-		/// The organization associated with the API request, as reported by the API.
-		/// </summary>
-		[JsonIgnore]
-		public string Organization{ get; set; }
-
-		/// <summary>
-		/// The request id of this API call, as reported in the response headers.  This may be useful for troubleshooting or when contacting OpenAI support in reference to a specific request.
-		/// </summary>
-		[JsonIgnore]
-		public string RequestId { get; set; }
 
 
 		/// <summary>
