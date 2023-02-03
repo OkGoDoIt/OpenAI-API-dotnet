@@ -21,7 +21,7 @@ namespace OpenAI_Tests
 		[Order(1)]
 		public async Task UploadFile()
 		{
-			var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+			var api = new OpenAI_API.OpenAIAPI();
 			var response = await api.Files.UploadFileAsync("fine-tuning-data.jsonl");
 			Assert.IsNotNull(response);
 			Assert.IsTrue(response.Id.Length > 0);
@@ -37,7 +37,7 @@ namespace OpenAI_Tests
 		[Order(2)]
 		public async Task ListFiles()
 		{
-				var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+				var api = new OpenAI_API.OpenAIAPI();
 				var response = await api.Files.GetFilesAsync();
 				
 				foreach (var file in response)
@@ -52,7 +52,7 @@ namespace OpenAI_Tests
 		[Order(3)]
 		public async Task GetFile()
 		{
-			var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+			var api = new OpenAI_API.OpenAIAPI();
 			var response = await api.Files.GetFilesAsync();
 			foreach (var file in response)
 			{
@@ -72,7 +72,7 @@ namespace OpenAI_Tests
 		[Order(4)]
 		public async Task DeleteFiles()
 		{
-			var api = new OpenAI_API.OpenAIAPI(engine: Engine.Davinci);
+			var api = new OpenAI_API.OpenAIAPI();
 			var response = await api.Files.GetFilesAsync();
 			foreach (var file in response)
 			{
