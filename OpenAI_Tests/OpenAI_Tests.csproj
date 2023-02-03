@@ -16,4 +16,10 @@
     <ProjectReference Include="..\OpenAI_API\OpenAI_API.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="fine-tuning-data.jsonl">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
