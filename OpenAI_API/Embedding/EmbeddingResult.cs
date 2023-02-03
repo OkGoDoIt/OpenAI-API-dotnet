@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace OpenAI_API.Embedding
@@ -12,7 +13,7 @@ namespace OpenAI_API.Embedding
 		/// List of results of the embedding
 		/// </summary>
 		[JsonProperty("data")]
-		public Data[] Data { get; set; }
+		public List<Data> Data { get; set; }
 
 		/// <summary>
 		/// Usage statistics of how many tokens have been used for this request

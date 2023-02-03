@@ -24,7 +24,7 @@ namespace OpenAI_Tests
             var results = api.Embeddings.CreateEmbeddingAsync(new EmbeddingRequest(Model.AdaTextEmbedding, "A test text for embedding")).Result;
             Assert.IsNotNull(results);
             Assert.NotNull(results.Object);
-            Assert.NotZero(results.Data.Length);
+            Assert.NotZero(results.Data.Count);
             Assert.That(results.Data.First().Embedding.Length == 1536);
         }
 
