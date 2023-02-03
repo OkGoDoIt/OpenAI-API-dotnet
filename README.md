@@ -4,6 +4,7 @@ A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [
 
 ## Status
 Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
+Potentially breaking change with v1.4:  The various endpoints (Completions, Models, etc) and related classes have each moved into their own namespaces, for example `OpenAI_API.Completions.CompletionRequest` and `OpenAI_API.Models.Model.DavinciText`.  You may need to add `using`s or fully qualify names in exisitng code.
 
 Thank you [@GotMike](https://github.com/gotmike), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
@@ -66,7 +67,7 @@ OpenAIAPI api = new OpenAIAPI(new APIAuthentication("YOUR_API_KEY","org-yourOrgH
 The Completion API is accessed via `OpenAIAPI.Completions`:
 
 ```csharp
-async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request)
+async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request);
 
 // for example
 var result = await api.Completions.CreateCompletionAsync(new CompletionRequest("One Two Three One Two", model: Model.CurieText, temperature: 0.1));
@@ -81,7 +82,7 @@ Streaming allows you to get results are they are generated, which can help your 
 
 Using the new C# 8.0 async iterators:
 ```csharp
-IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
+IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request);
 
 // for example
 await foreach (var token in api.Completions.StreamCompletionEnumerableAsync(new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", Model.DavinciText, 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1)))
@@ -92,7 +93,7 @@ await foreach (var token in api.Completions.StreamCompletionEnumerableAsync(new 
 
 Or if using classic .NET framework or C# <8.0:
 ```csharp
-async Task StreamCompletionAsync(CompletionRequest request, Action<CompletionResult> resultHandler)
+async Task StreamCompletionAsync(CompletionRequest request, Action<CompletionResult> resultHandler);
 
 // for example
 await api.Completions.StreamCompletionAsync(
@@ -104,7 +105,7 @@ await api.Completions.StreamCompletionAsync(
 The Embedding API is accessed via `OpenAIAPI.Embeddings`:
 
 ```csharp
-async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request)
+async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request);
 
 // for example
 var result = await api.Embeddings.CreateEmbeddingAsync(new EmbeddingRequest("A test text for embedding", model: Model.AdaTextEmbedding));
@@ -121,20 +122,20 @@ The Files API endpoint is accessed via `OpenAIAPI.Files`:
 
 ```csharp
 // uploading
-async Task<File> UploadFileAsync(string filePath, string purpose = "fine-tune")
+async Task<File> UploadFileAsync(string filePath, string purpose = "fine-tune");
 
 // for example
 var response = await api.Files.UploadFileAsync("fine-tuning-data.jsonl");
 Console.Write(response.Id); //the id of the uploaded file
 
 // listing
-async Task<List<File>> GetFilesAsync()
+async Task<List<File>> GetFilesAsync();
 
 // for example
 var response = await api.Files.GetFilesAsync();
 foreach (var file in response)
 {
-	Console.WriteLine(file.Name)
+	Console.WriteLine(file.Name);
 }
 ```
 
