@@ -48,27 +48,27 @@ namespace OpenAI_API
 			}
 		}
 
-        /// <summary>
-        /// Gets the version of the endpoint as url parameter, based on the configuration in the api definition.  For example "https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#rest-api-versioning"
-        /// </summary>
-        protected string ApiVersionParameter
-        {
-            get
-            {
-                if(string.IsNullOrEmpty(_Api.ApiVersion))
+		/// <summary>
+		/// Gets the version of the endpoint as url parameter, based on the configuration in the api definition.  For example "https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#rest-api-versioning"
+		/// </summary>
+		protected string ApiVersionParameter
+		{
+			get
+			{
+				if(string.IsNullOrEmpty(_Api.ApiVersion))
 				{
 					return "";
 				}
 				return $"api-version={_Api.ApiVersion}";
-            }
-        }
+			}
+		}
 
-        /// <summary>
-        /// Gets an HTTPClient with the appropriate authorization and other headers set
-        /// </summary>
-        /// <returns>The fully initialized HttpClient</returns>
-        /// <exception cref="AuthenticationException">Thrown if there is no valid authentication.  Please refer to <see href="https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication"/> for details.</exception>
-        protected HttpClient GetClient()
+		/// <summary>
+		/// Gets an HTTPClient with the appropriate authorization and other headers set
+		/// </summary>
+		/// <returns>The fully initialized HttpClient</returns>
+		/// <exception cref="AuthenticationException">Thrown if there is no valid authentication.  Please refer to <see href="https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication"/> for details.</exception>
+		protected HttpClient GetClient()
 		{
 			if (_Api.Auth?.ApiKey is null)
 			{
@@ -79,7 +79,7 @@ namespace OpenAI_API
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
 			// Further authentication-header used for Azure openAI service
 			client.DefaultRequestHeaders.Add("api-key", _Api.Auth.ApiKey);
-            client.DefaultRequestHeaders.Add("User-Agent", Value);
+			client.DefaultRequestHeaders.Add("User-Agent", Value);
 			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
 
 			return client;
