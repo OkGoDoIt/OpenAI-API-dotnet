@@ -2,22 +2,33 @@
 
 A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
-## Status
-Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
-Potentially breaking change with v1.4:  The various endpoints (Completions, Models, etc) and related classes have each moved into their own namespaces, for example `OpenAI_API.Completions.CompletionRequest` and `OpenAI_API.Models.Model.DavinciText`.  You may need to add `using`s or fully qualify names in exisitng code.
-
-Thank you [@GotMike](https://github.com/gotmike), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
-
 ## Quick Example
 
 ```csharp
-var api = new OpenAI_API.OpenAIAPI();
-
+var api = new OpenAI_API.OpenAIAPI("YOUR_API_KEY");
 var result = await api.Completions.GetCompletion("One Two Three One Two");
 Console.WriteLine(result);
 // should print something starting with "Three"
 ```
 
+## Readme
+
+ * [Status](#Status)
+ * [Requirements](#requirements)
+ * [Installation](#install-from-nuget)
+ * [Authentication](#authentication)
+ * [Completions API](#completions)
+	* [Streaming completion results](#streaming)
+ * [Embeddings API](#embeddings)
+ * [Files API](#files-for-fine-tuning)
+ * [Additonal Documentation](#documentation)
+ * [License](#license)
+
+## Status
+Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
+Potentially breaking change with v1.4:  The various endpoints (Completions, Models, etc) and related classes have each moved into their own namespaces, for example `OpenAI_API.Completions.CompletionRequest` and `OpenAI_API.Models.Model.DavinciText`.  You may need to add `using`s or fully qualify names in existing code.
+
+Thank you [@GotMike](https://github.com/gotmike), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 
@@ -110,7 +121,7 @@ async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request);
 // for example
 var result = await api.Embeddings.CreateEmbeddingAsync(new EmbeddingRequest("A test text for embedding", model: Model.AdaTextEmbedding));
 // or
-var result = await api.Completions.CreateCompletionAsync("A test text for embedding");
+var result = await api.Embeddings.CreateEmbeddingAsync("A test text for embedding");
 ```
 
 The embedding result contains a lot of metadata, the actual vector of floats is in result.Data[].Embedding.
