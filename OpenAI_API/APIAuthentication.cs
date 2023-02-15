@@ -157,34 +157,6 @@ namespace OpenAI_API
 
 			return new APIAuthentication(key, org);
 		}
-
-
-		/// <summary>
-		/// Tests the api key against the OpenAI API, to ensure it is valid.  This hits the models endpoint so should not be charged for usage.
-		/// </summary>
-		/// <returns><see langword="true"/> if the api key is valid, or <see langword="false"/> if empty or not accepted by the OpenAI API.</returns>
-		public async Task<bool> ValidateAPIKey()
-		{
-			if (string.IsNullOrEmpty(ApiKey))
-				return false;
-
-			var api = new OpenAIAPI(this);
-
-			List<Models.Model> results;
-
-			try
-			{
-				results = await api.Models.GetModelsAsync();
-			}
-			catch (Exception ex)
-			{
-				Debug.WriteLine(ex.ToString());
-				return false;
-			}
-
-			return (results.Count > 0);
-		}
-
 	}
 
 	internal static class AuthHelpers

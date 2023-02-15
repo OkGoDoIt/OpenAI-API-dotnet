@@ -48,22 +48,19 @@ namespace OpenAI_API
 			}
 		}
 
-		/// <summary>
-		/// Gets an HTTPClient with the appropriate authorization and other headers set
-		/// </summary>
+		/// <summary>Configures an HttpClient with the appropriate authorization and other headers set</summary>
 		/// <returns>The fully initialized HttpClient</returns>
 		/// <exception cref="AuthenticationException">Thrown if there is no valid authentication.  Please refer to <see href="https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication"/> for details.</exception>
-		protected HttpClient GetClient()
+		internal static HttpClient ConfigureClient(HttpClient client, APIAuthentication auth)
 		{
-			if (_Api.Auth?.ApiKey is null)
+			if (auth?.ApiKey is null)
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
 
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
+			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", auth.ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", Value);
-			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
+			if (!string.IsNullOrEmpty(auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", auth.OpenAIOrganization);
 
 			return client;
 		}
@@ -99,11 +96,8 @@ namespace OpenAI_API
 			if (verb == null)
 				verb = HttpMethod.Get;
 
-			var client = GetClient();
-
-			HttpResponseMessage response = null;
-			string resultAsString = null;
-			HttpRequestMessage req = new HttpRequestMessage(verb, url);
+			
+			using var req = new HttpRequestMessage(verb, url);
 
 			if (postData != null)
 			{
@@ -118,15 +112,16 @@ namespace OpenAI_API
 					req.Content = stringContent;
 				}
 			}
-			response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
 
+			var response = await this._Api.Client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
 			if (response.IsSuccessStatusCode)
 			{
 				return response;
 			}
 			else
 			{
-				try
+                string resultAsString = null;
+                try
 				{
 					resultAsString = await response.Content.ReadAsStringAsync();
 				}

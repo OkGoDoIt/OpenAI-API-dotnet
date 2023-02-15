@@ -21,7 +21,7 @@ namespace OpenAI_Tests
 		[Test]
 		public void GetBasicCompletion()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			Assert.IsNotNull(api.Completions);
 
@@ -41,9 +41,9 @@ namespace OpenAI_Tests
 		[Test]
 		public void GetSimpleCompletion()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
-			Assert.IsNotNull(api.Completions);
+            Assert.IsNotNull(api.Completions);
 
 			var results = api.Completions.CreateCompletionAsync("One Two Three Four Five Six Seven Eight Nine One Two Three Four Five Six Seven Eight", temperature: 0.1, max_tokens: 5).Result;
 			Assert.IsNotNull(results);
@@ -56,9 +56,9 @@ namespace OpenAI_Tests
 		[Test]
 		public async Task CreateCompletionAsync_MultiplePrompts_ShouldReturnResult()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
-			var completionReq = new CompletionRequest
+            var completionReq = new CompletionRequest
 			{
 				MultiplePrompts = new[]
 				{
@@ -80,9 +80,9 @@ namespace OpenAI_Tests
 		[TestCase(3)]
 		public void CreateCompletionAsync_ShouldNotAllowTemperatureOutside01(double temperature)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
-			var completionReq = new CompletionRequest
+            var completionReq = new CompletionRequest
 			{
 				Prompt = "three four five",
 				Temperature = temperature,
@@ -100,9 +100,9 @@ namespace OpenAI_Tests
 		[TestCase(2.0)]
 		public async Task ShouldBeMoreCreativeWithHighTemperature(double temperature)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
-			var completionReq = new CompletionRequest
+            var completionReq = new CompletionRequest
 			{
 				Prompt = "three four five",
 				Temperature = temperature,
@@ -119,9 +119,9 @@ namespace OpenAI_Tests
 		[TestCase(0.1)]
 		public async Task CreateCompletionAsync_ShouldGetSomeResultsWithVariousTopPValues(double topP)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
-			var completionReq = new CompletionRequest
+            var completionReq = new CompletionRequest
 			{
 				Prompt = "three four five",
 				Temperature = 0,
@@ -140,7 +140,7 @@ namespace OpenAI_Tests
 		[TestCase(1.0)]
 		public async Task CreateCompletionAsync_ShouldReturnSomeResultsForPresencePenalty(double presencePenalty)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api =AuthTests.InitService();
 
 			var completionReq = new CompletionRequest
 			{
@@ -161,7 +161,7 @@ namespace OpenAI_Tests
 		[TestCase(1.0)]
 		public async Task CreateCompletionAsync_ShouldReturnSomeResultsForFrequencyPenalty(double frequencyPenalty)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api =AuthTests.InitService();
 
 			var completionReq = new CompletionRequest
 			{
@@ -179,7 +179,7 @@ namespace OpenAI_Tests
 		[Test]
 		public async Task CreateCompletionAsync_ShouldWorkForBiggerNumberOfCompletions()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api =AuthTests.InitService();
 
 			var completionReq = new CompletionRequest
 			{
@@ -199,7 +199,7 @@ namespace OpenAI_Tests
 		[TestCase(5)]
 		public async Task CreateCompletionAsync_ShouldAlsoReturnLogProps(int logProps)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api =AuthTests.InitService();
 
 			var completionReq = new CompletionRequest
 			{
@@ -221,7 +221,7 @@ namespace OpenAI_Tests
 		[Test]
 		public async Task CreateCompletionAsync_Echo_ShouldReturnTheInput()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api =AuthTests.InitService();
 
 			var completionReq = new CompletionRequest
 			{
@@ -240,7 +240,7 @@ namespace OpenAI_Tests
 		[TestCase("Friday")]
 		public async Task CreateCompletionAsync_ShouldStopOnStopSequence(string stopSeq)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			var completionReq = new CompletionRequest
 			{
@@ -260,7 +260,7 @@ namespace OpenAI_Tests
 		[Test]
 		public async Task CreateCompletionAsync_MultipleParamShouldReturnTheSameDataAsSingleParamVersion()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			var r = new CompletionRequest
 			{
@@ -296,7 +296,7 @@ namespace OpenAI_Tests
 		[TestCase(7, 2)]
 		public async Task StreamCompletionAsync_ShouldStreamIndexAndData(int maxTokens, int numOutputs)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			var completionRequest = new CompletionRequest
 			{
@@ -328,7 +328,7 @@ namespace OpenAI_Tests
 		[TestCase(7, 2)]
 		public async Task StreamCompletionAsync_ShouldStreamData(int maxTokens, int numOutputs)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			var completionRequest = new CompletionRequest
 			{
@@ -357,7 +357,7 @@ namespace OpenAI_Tests
 		[TestCase(7, 2)]
 		public async Task StreamCompletionEnumerableAsync_ShouldStreamData(int maxTokens, int numOutputs)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			var completionRequest = new CompletionRequest
 			{
@@ -385,7 +385,7 @@ namespace OpenAI_Tests
 		[Test]
 		public async Task StreamCompletionEnumerableAsync_MultipleParamShouldReturnTheSameDataAsSingleParamVersion()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			var r = new CompletionRequest
 			{
