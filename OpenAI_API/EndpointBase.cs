@@ -96,9 +96,8 @@ namespace OpenAI_API
 			if (verb == null)
 				verb = HttpMethod.Get;
 
-			HttpResponseMessage response = null;
-			string resultAsString = null;
-			HttpRequestMessage req = new HttpRequestMessage(verb, url);
+			
+			using var req = new HttpRequestMessage(verb, url);
 
 			if (postData != null)
 			{
@@ -113,15 +112,16 @@ namespace OpenAI_API
 					req.Content = stringContent;
 				}
 			}
-			response = await this._Api.Client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
 
+			using var response = await this._Api.Client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
 			if (response.IsSuccessStatusCode)
 			{
 				return response;
 			}
 			else
 			{
-				try
+                string resultAsString = null;
+                try
 				{
 					resultAsString = await response.Content.ReadAsStringAsync();
 				}
