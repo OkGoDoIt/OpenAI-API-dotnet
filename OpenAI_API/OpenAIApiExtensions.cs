@@ -3,7 +3,7 @@ namespace Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using OpenAI_API;
 
-static class OpenAIApiExtensions
+public static class OpenAIApiExtensions
 {
     /// <summary>Register <see cref="IOpenAI"/> for DI services. Read configuration from appsettings <code>"openAI": { "key": "", "org": "" }</code></summary>
     /// <param name="services"></param>
