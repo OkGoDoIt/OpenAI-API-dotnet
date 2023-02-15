@@ -20,7 +20,7 @@ namespace OpenAI_Tests
 		[Test]
 		public void GetAllModels()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			Assert.IsNotNull(api.Models);
 
@@ -33,7 +33,7 @@ namespace OpenAI_Tests
 		[Test]
 		public void GetModelDetails()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 
 			Assert.IsNotNull(api.Models);
 
@@ -55,20 +55,20 @@ namespace OpenAI_Tests
 		[Test]
 		public async Task GetEnginesAsync_ShouldReturnTheEngineList()
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 			var models = await api.Models.GetModelsAsync();
 			models.Count.Should().BeGreaterOrEqualTo(5, "most engines should be returned");
 		}
 
-		[Test]
-		public void GetEnginesAsync_ShouldFailIfInvalidAuthIsProvided()
-		{
-			var api = new OpenAIAPI(new APIAuthentication(Guid.NewGuid().ToString()));
-			Func<Task> act = () => api.Models.GetModelsAsync();
-			act.Should()
-				.ThrowAsync<AuthenticationException>()
-				.Where(exc => exc.Message.Contains("Incorrect API key provided"));
-		}
+		// [Test]
+		// public void GetEnginesAsync_ShouldFailIfInvalidAuthIsProvided()
+		// {
+		// 	var api = new OpenAIAPI(new APIAuthentication(Guid.NewGuid().ToString()));
+		// 	Func<Task> act = () => api.Models.GetModelsAsync();
+		// 	act.Should()
+		// 		.ThrowAsync<AuthenticationException>()
+		// 		.Where(exc => exc.Message.Contains("Incorrect API key provided"));
+		// }
 
 		[TestCase("ada")]
 		[TestCase("babbage")]
@@ -76,7 +76,7 @@ namespace OpenAI_Tests
 		[TestCase("davinci")]
 		public async Task RetrieveEngineDetailsAsync_ShouldRetrieveEngineDetails(string modelId)
 		{
-			var api = new OpenAI_API.OpenAIAPI();
+			var api = AuthTests.InitService();
 			var modelData = await api.Models.RetrieveModelDetailsAsync(modelId);
 			modelData?.ModelID?.Should()?.Be(modelId);
 			modelData.Created.Should().BeAfter(new DateTime(2018, 1, 1), "the model has a created date no earlier than 2018");

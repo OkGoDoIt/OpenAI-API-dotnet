@@ -17,7 +17,7 @@ namespace OpenAI_Tests
         [Test]
         public void GetBasicEmbedding()
         {
-            var api = new OpenAI_API.OpenAIAPI();
+            var api = AuthTests.InitService();
 
             Assert.IsNotNull(api.Embeddings);
 
@@ -41,7 +41,7 @@ namespace OpenAI_Tests
         [Test]
         public void GetSimpleEmbedding()
         {
-            var api = new OpenAI_API.OpenAIAPI();
+            var api = AuthTests.InitService();
 
             Assert.IsNotNull(api.Embeddings);
 
