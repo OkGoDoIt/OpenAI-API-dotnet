@@ -16,7 +16,7 @@ namespace OpenAI_API
 	/// </summary>
 	public abstract class EndpointBase
 	{
-		private const string Value = "okgodoit/dotnet_openai_api";
+		private const string UserAgent = "okgodoit/dotnet_openai_api";
 
 		/// <summary>
 		/// The internal reference to the API, mostly used for authentication
@@ -44,22 +44,7 @@ namespace OpenAI_API
 		{
 			get
 			{
-				return $"{_Api.ApiUrlBase}{Endpoint}?{ApiVersionParameter}";
-			}
-		}
-
-		/// <summary>
-		/// Gets the version of the endpoint as url parameter, based on the configuration in the api definition.  For example "https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#rest-api-versioning"
-		/// </summary>
-		protected string ApiVersionParameter
-		{
-			get
-			{
-				if(string.IsNullOrEmpty(_Api.ApiVersion))
-				{
-					return "";
-				}
-				return $"api-version={_Api.ApiVersion}";
+				return string.Format(_Api.ApiUrlFormat, _Api.ApiVersion, Endpoint);
 			}
 		}
 
@@ -87,7 +72,7 @@ namespace OpenAI_API
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
 			// Further authentication-header used for Azure openAI service
 			client.DefaultRequestHeaders.Add("api-key", _Api.Auth.ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", Value);
+			client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
 			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
 
 			return client;

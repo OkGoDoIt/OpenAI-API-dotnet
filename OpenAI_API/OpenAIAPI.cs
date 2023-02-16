@@ -2,6 +2,7 @@
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
 using OpenAI_API.Models;
+using System.Xml.Linq;
 
 namespace OpenAI_API
 {
@@ -12,13 +13,15 @@ namespace OpenAI_API
 	{
 		/// <summary>
 		/// Base url for OpenAI
+		/// for OpenAI, should be "https://api.openai.com/{0}/{1}"
+		/// for Azure, should be "https://(your-resource-name).openai.azure.com/openai/deployments/(deployment-id)/{1}?api-version={0}"
 		/// </summary>
-		public string ApiUrlBase = "https://api.openai.com/v1/";
+		public string ApiUrlFormat { get; set; } = "https://api.openai.com/{0}/{1}";
 
 		/// <summary>
-		/// Version of the Rest Api. Needed for e.g. for the Azure OpenAI service.
+		/// Version of the Rest Api
 		/// </summary>
-		public string ApiVersion { get; set; }
+		public string ApiVersion { get; set; } = "v1";
 
 		/// <summary>
 		/// The API authentication information to use for API calls
@@ -36,6 +39,21 @@ namespace OpenAI_API
 			Models = new ModelsEndpoint(this);
 			Files = new FilesEndpoint(this);
 			Embeddings = new EmbeddingEndpoint(this);
+		}
+
+		/// <summary>
+		/// Instantiates a version of the API for connecting to the Azure OpenAI endpoint instead of the main OpenAI endpoint.
+		/// </summary>
+		/// <param name="YourResourceName">The name of your Azure OpenAI Resource</param>
+		/// <param name="deploymentId">The name of your model deployment. You're required to first deploy a model before you can make calls.</param>
+		/// <param name="apiKey">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.  Currently this library only supports the api-key flow, not the AD-Flow.</param>
+		/// <returns></returns>
+		public static OpenAIAPI ForAzure(string YourResourceName, string deploymentId, APIAuthentication apiKey = null)
+		{
+			OpenAIAPI api = new OpenAIAPI(apiKey);
+			api.ApiVersion = "2022-12-01";
+			api.ApiUrlFormat = $"https://{YourResourceName}.openai.azure.com/openai/deployments/{deploymentId})/" + "{1}?api-version={0}";
+			return api;
 		}
 
 		/// <summary>
