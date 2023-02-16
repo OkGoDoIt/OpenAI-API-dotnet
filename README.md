@@ -25,8 +25,8 @@ Console.WriteLine(result);
  * [License](#license)
 
 ## Status
-Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
-Potentially breaking change with v1.4:  The various endpoints (Completions, Models, etc) and related classes have each moved into their own namespaces, for example `OpenAI_API.Completions.CompletionRequest` and `OpenAI_API.Models.Model.DavinciText`.  You may need to add `using`s or fully qualify names in existing code.
+Updated to work with the current API as of February 16, 2023.  Fixed several minor bugs.
+
 Now also should work with the Azure OpenAI Service, although this is untested. See [Azure](#azure) section for further details.
 
 Thank you [@GotMike](https://github.com/gotmike), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!

@@ -6,18 +6,20 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>OkGoDoIt (Roger Pincombe)</Authors>
 		<Product>OpenAI API</Product>
-		<Description>A simple C# / .NET wrapper library to use with OpenAI's GPT-3 API.  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI API account is required.</Description>
+		<Description>A simple C# / .NET wrapper library to use with OpenAI's GPT-3 API.  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI or Azure OpenAI account is required.</Description>
 		<Copyright>This library is licensed CC-0, in the public domain</Copyright>
 		<PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>Updated to work with the current API as of February 3, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.  Potentially breaking change with v1.4:  The various endpoints (Completions, Models, etc) and related classes have each moved into their own namespaces, for example `OpenAI_API.Completions.CompletionRequest` and `OpenAI_API.Models.Model.DavinciText`.  You may need to add `using`s or fully qualify names in exisitng code.</PackageReleaseNotes>
+		<PackageReleaseNotes>
+			Updated to work with the current API as of February 16, 2023.  Fixed several minor bugs.  Now also should work with the Azure OpenAI Service, although this is untested.
+		</PackageReleaseNotes>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.4.1</Version>
-		<AssemblyVersion>1.4.1.0</AssemblyVersion>
-		<FileVersion>1.4.1.0</FileVersion>
+		<Version>1.5</Version>
+		<AssemblyVersion>1.5.0.0</AssemblyVersion>
+		<FileVersion>1.5.0.0</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
