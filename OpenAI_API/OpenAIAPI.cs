@@ -14,7 +14,12 @@ namespace OpenAI_API
 		/// Base url for OpenAI
 		/// </summary>
 		public string ApiUrlBase = "https://api.openai.com/v1/";
-		
+
+		/// <summary>
+		/// Version of the Rest Api. Needed for e.g. for the Azure OpenAI service.
+		/// </summary>
+		public string ApiVersion { get; set; }
+
 		/// <summary>
 		/// The API authentication information to use for API calls
 		/// </summary>

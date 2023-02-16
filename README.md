@@ -28,6 +28,8 @@ Console.WriteLine(result);
 Updated to work with the current API as of February 2, 2023.  Added Files and Embedding endpoints. Removed the Search endpoint as OpenAI has removed that API.
 Potentially breaking change with v1.4:  The various endpoints (Completions, Models, etc) and related classes have each moved into their own namespaces, for example `OpenAI_API.Completions.CompletionRequest` and `OpenAI_API.Models.Model.DavinciText`.  You may need to add `using`s or fully qualify names in existing code.
 
+Now also works with the Azure OpenAI Service. See [Azure](#azure) section for further details.
+
 Thank you [@GotMike](https://github.com/gotmike), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
@@ -153,6 +155,29 @@ foreach (var file in response)
 There are also methods to get file contents, delete a file, etc.
 
 The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
+
+### Azure
+
+For using the Azure OpenAI Service, you need to define the Api-Version of the OpenAIAPI class. Currently only the following version is suported by azure: `2022-12-01`.
+
+Refer the Azure OpenAI documentation for further informations: [REST API versioning](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#rest-api-versioning)
+
+Additionally you need to specify the BaseUrl to your API. The Url should look something like:
+```http
+https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}
+```
+
+Configuration should look something like this for the Azure service:
+
+```csharp
+// authentication methods as specified above in authentication section
+OpenAIAPI api = new OpenAIAPI(); // uses default, env, or config file
+// configure your specific azure settings
+api.ApiUrlBase = "https://{your-resource-name}.openai.azure.com/openai/deployments/{deployment-id}";
+api.ApiVersion = "2022-12-01"
+```
+
+The API-Key for Azure Service should be provided like the api-key for the OpenAI native API. Currently this library only supports the api-key flow, not the AD-Flow.
 
 ## Documentation
 

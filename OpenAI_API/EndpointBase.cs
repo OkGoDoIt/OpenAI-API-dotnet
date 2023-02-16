@@ -44,7 +44,22 @@ namespace OpenAI_API
 		{
 			get
 			{
-				return $"{_Api.ApiUrlBase}{Endpoint}";
+				return $"{_Api.ApiUrlBase}{Endpoint}?{ApiVersionParameter}";
+			}
+		}
+
+		/// <summary>
+		/// Gets the version of the endpoint as url parameter, based on the configuration in the api definition.  For example "https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference#rest-api-versioning"
+		/// </summary>
+		protected string ApiVersionParameter
+		{
+			get
+			{
+				if(string.IsNullOrEmpty(_Api.ApiVersion))
+				{
+					return "";
+				}
+				return $"api-version={_Api.ApiVersion}";
 			}
 		}
 
@@ -70,6 +85,8 @@ namespace OpenAI_API
 
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
+			// Further authentication-header used for Azure openAI service
+			client.DefaultRequestHeaders.Add("api-key", _Api.Auth.ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", Value);
 			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
 
