@@ -71,7 +71,6 @@ namespace OpenAI_API.Files
 		/// <param name="purpose">The intendend purpose of the uploaded documents. Use "fine-tune" for Fine-tuning. This allows us to validate the format of the uploaded file.</param>
 		public async Task<File> UploadFileAsync(string filePath, string purpose = "fine-tune")
 		{
-			HttpClient client = GetClient();
 			var content = new MultipartFormDataContent
 			{
 				{ new StringContent(purpose), "purpose" },

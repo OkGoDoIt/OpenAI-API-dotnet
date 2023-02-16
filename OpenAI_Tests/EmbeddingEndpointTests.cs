@@ -39,6 +39,21 @@ namespace OpenAI_Tests
         }
 
         [Test]
+        public void ReturnedUsage()
+        {
+            var api = new OpenAI_API.OpenAIAPI();
+
+            Assert.IsNotNull(api.Embeddings);
+
+            var results = api.Embeddings.CreateEmbeddingAsync(new EmbeddingRequest(Model.AdaTextEmbedding, "A test text for embedding")).Result;
+            Assert.IsNotNull(results);
+
+			Assert.IsNotNull(results.Usage);
+			Assert.GreaterOrEqual(results.Usage.PromptTokens, 5);
+			Assert.GreaterOrEqual(results.Usage.TotalTokens, results.Usage.PromptTokens);
+		}
+
+        [Test]
         public void GetSimpleEmbedding()
         {
             var api = new OpenAI_API.OpenAIAPI();

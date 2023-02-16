@@ -60,6 +60,14 @@ namespace OpenAI_API
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
 
+			/*
+			if (_Api.SharedHttpClient==null)
+			{
+				_Api.SharedHttpClient = new HttpClient();
+				_Api.SharedHttpClient.
+			}
+			*/
+
 			HttpClient client = new HttpClient();
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", Value);
@@ -99,7 +107,7 @@ namespace OpenAI_API
 			if (verb == null)
 				verb = HttpMethod.Get;
 
-			var client = GetClient();
+			using var client = GetClient();
 
 			HttpResponseMessage response = null;
 			string resultAsString = null;
@@ -330,6 +338,25 @@ namespace OpenAI_API
 		{
 			var response = await HttpRequestRaw(url, verb, postData, true);
 
+			string organization = null;
+			string requestId = null;
+			TimeSpan processingTime = TimeSpan.Zero;
+			string openaiVersion = null;
+			string modelFromHeaders = null;
+
+			try
+			{
+				organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
+				requestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
+				processingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
+				openaiVersion = response.Headers.GetValues("Openai-Version").FirstOrDefault();
+				modelFromHeaders = response.Headers.GetValues("Openai-Model").FirstOrDefault();
+			}
+			catch (Exception e)
+			{
+				Debug.Print($"Issue parsing metadata of OpenAi Response.  Url: {url}, Error: {e.ToString()}.  This is probably ignorable.");
+			}
+
 			string resultAsString = "";
 
 			using (var stream = await response.Content.ReadAsStreamAsync())
@@ -349,19 +376,13 @@ namespace OpenAI_API
 					else if (!string.IsNullOrWhiteSpace(line))
 					{
 						var res = JsonConvert.DeserializeObject<T>(line);
-						try
-						{
-							res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
-							res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
-							res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
-							res.OpenaiVersion = response.Headers.GetValues("Openai-Version").FirstOrDefault();
-							if (string.IsNullOrEmpty(res.Model))
-								res.Model = response.Headers.GetValues("Openai-Model").FirstOrDefault();
-						}
-						catch (Exception e)
-						{
-							Debug.Print($"Issue parsing metadata of OpenAi Response.  Url: {url}, Error: {e.ToString()}, Response: {resultAsString}.  This is probably ignorable.");
-						}
+
+						res.Organization = organization;
+						res.RequestId = requestId;
+						res.ProcessingTime = processingTime;
+						res.OpenaiVersion = openaiVersion;
+						if (string.IsNullOrEmpty(res.Model))
+							res.Model = modelFromHeaders;
 
 						yield return res;
 					}

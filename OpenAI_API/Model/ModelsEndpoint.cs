@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -25,9 +26,11 @@ namespace OpenAI_API.Models
 		/// </summary>
 		/// <param name="id">The id/name of the model to get more details about</param>
 		/// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
-		public Task<Model> RetrieveModelDetailsAsync(string id)
+		public async Task<Model> RetrieveModelDetailsAsync(string id)
 		{
-			return RetrieveModelDetailsAsync(id, _Api?.Auth);
+			string resultAsString = await HttpGetContent<JsonHelperRoot>($"{Url}/{id}");
+			var model = JsonConvert.DeserializeObject<Model>(resultAsString);
+			return model;
 		}
 
 		/// <summary>
@@ -43,13 +46,12 @@ namespace OpenAI_API.Models
 		/// Get details about a particular Model from the API, specifically properties such as <see cref="Model.OwnedBy"/> and permissions.
 		/// </summary>
 		/// <param name="id">The id/name of the model to get more details about</param>
-		/// <param name="auth">API authentication in order to call the API endpoint.  If not specified, attempts to use a default.</param>
+		/// <param name="auth">Obsolete: IGNORED</param>
 		/// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
+		[Obsolete("Use the overload without the APIAuthentication parameter instead, as custom auth is no longer used.", false)]
 		public async Task<Model> RetrieveModelDetailsAsync(string id, APIAuthentication auth = null)
 		{
-			string resultAsString = await HttpGetContent<JsonHelperRoot>($"{Url}/{id}");
-			var model = JsonConvert.DeserializeObject<Model>(resultAsString);
-			return model;
+			return await this.RetrieveModelDetailsAsync(id);
 		}
 
 		/// <summary>

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using OpenAI_API.Embedding;
 using System.Collections.Generic;
 
 namespace OpenAI_API.Completions
@@ -42,6 +43,18 @@ namespace OpenAI_API.Completions
 	}
 
 	/// <summary>
+	/// API usage as reported by the OpenAI API for this request
+	/// </summary>
+	public class CompletionUsage : Usage
+	{
+		/// <summary>
+		/// How many tokens are in the completion(s)
+		/// </summary>
+		[JsonProperty("completion_tokens")]
+		public short CompletionTokens { get; set; }
+	}
+
+	/// <summary>
 	/// Represents a result from calling the Completion API
 	/// </summary>
 	public class CompletionResult : ApiResultBase
@@ -58,6 +71,11 @@ namespace OpenAI_API.Completions
 		[JsonProperty("choices")]
 		public List<Choice> Completions { get; set; }
 
+		/// <summary>
+		/// API token usage as reported by the OpenAI API for this request
+		/// </summary>
+		[JsonProperty("usage")]
+		public CompletionUsage Usage { get; set; }
 
 		/// <summary>
 		/// Gets the text of the first completion, representing the main result
