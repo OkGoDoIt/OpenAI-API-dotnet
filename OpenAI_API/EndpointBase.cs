@@ -113,7 +113,7 @@ namespace OpenAI_API
 				}
 			}
 
-			using var response = await this._Api.Client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
+			var response = await this._Api.Client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
 			if (response.IsSuccessStatusCode)
 			{
 				return response;
