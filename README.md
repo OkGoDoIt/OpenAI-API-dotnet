@@ -43,11 +43,36 @@ Install package [`OpenAI` from Nuget](https://www.nuget.org/packages/OpenAI/).  
 Install-Package OpenAI
 ```
 
-### Authentication
+### Register for Dependency Injection
+If you are using Dependency Injection, you can register the API using `appsettings.json` configuration:
+
+```json
+"openAI": {
+  "key": "YOUR_API_KEY",
+  "org": "OPENAI_ORGANIZATION"
+}
+```
+
+Then in your `Program.cs` or `Startup.cs` add:
+
+```c#
+builder.Services.AddOpenAIService(builder.Configuration);
+```
+
+This registers `IOpenAI` for dependency injection using:
+- `[FromServices] IOpenAI? openAI` in your controllers.
+- `IOpenAI? openAI` in your constructor.
+
+#### Legacy constructors
+Previous versions of this package allowed direct instantiation of the service, but this causes connection pool exhaustion when multiple instances exist.
+
+It is still supported for backwards compatibility, but not recommended. 
+
 There are 3 ways to provide your API keys, in order of precedence:
 1.  Pass keys directly to `APIAuthentication(string key)` constructor
 2.  Set environment var for OPENAI_API_KEY (or OPENAI_KEY for backwards compatibility)
 3.  Include a config file in the local directory or in your user directory named `.openai` and containing the line:
+
 ```shell
 OPENAI_API_KEY=sk-aaaabbbbbccccddddd
 ```
