@@ -155,6 +155,20 @@ There are also methods to get file contents, delete a file, etc.
 
 The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
 
+### Images
+The Images API is accessed via `OpenAIAPI.Images`:
+
+```csharp
+async Task<EmbeddingResult> CreateEmbeddingAsync(ImageRequest request);
+
+// for example
+var result = await api.Images.CreateImageAsync(new ImageRequest("A test text for images"));
+// or
+var result = await api.Images.CreateImageAsync("A test text for images");
+```
+
+The image result contains a URL for a online image.
+
 ### Azure
 
 For using the Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.  Additionally you may specify the Api version which defaults to `2022-12-01`.
