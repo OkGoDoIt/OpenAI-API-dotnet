@@ -52,7 +52,7 @@ namespace OpenAI_API
 		{
 			OpenAIAPI api = new OpenAIAPI(apiKey);
 			api.ApiVersion = "2022-12-01";
-			api.ApiUrlFormat = $"https://{YourResourceName}.openai.azure.com/openai/deployments/{deploymentId})/" + "{1}?api-version={0}";
+			api.ApiUrlFormat = $"https://{YourResourceName}.openai.azure.com/openai/deployments/{deploymentId}/" + "{1}?api-version={0}";
 			return api;
 		}
 
