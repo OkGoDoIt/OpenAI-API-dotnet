@@ -133,6 +133,17 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
 
+		/// <summary>
+		/// Stable text moderation model that may provide lower accuracy compared to TextModerationLatest.
+		/// OpenAI states they will provide advanced notice before updating this model.
+		/// </summary>
+		public static Model TextModerationStable => new Model("text-moderation-stable") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// The latest text moderation model. This model will be automatically upgraded over time.
+		/// </summary>
+		public static Model TextModerationLatest => new Model("text-moderation-latest") { OwnedBy = "openai" };
+
 
 		/// <summary>
 		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
