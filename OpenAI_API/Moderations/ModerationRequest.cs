@@ -48,7 +48,7 @@ namespace OpenAI_API.Moderations
 		/// <param name="input">The prompt to classify</param>
 		public ModerationRequest(string input)
 		{
-			Model = OpenAI_API.Models.Model.AdaTextEmbedding;
+			Model = OpenAI_API.Models.Model.TextModerationLatest;
 			this.Input = input;
 		}
 	}
