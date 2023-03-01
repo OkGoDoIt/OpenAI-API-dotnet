@@ -133,6 +133,16 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
 
+		/// <summary>
+		/// 
+		/// </summary>
+		public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// 
+		/// </summary>
+		public static Model ChatGPTTurbo0301 => new Model("gpt-3.5-turbo-0301") { OwnedBy = "openai" };
+
 
 		/// <summary>
 		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
