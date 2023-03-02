@@ -9,7 +9,7 @@ namespace OpenAI_API
 	/// <summary>
 	/// Entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
 	/// </summary>
-	public class OpenAIAPI
+	public class OpenAIAPI : IOpenAIAPI
 	{
 		/// <summary>
 		/// Base url for OpenAI
