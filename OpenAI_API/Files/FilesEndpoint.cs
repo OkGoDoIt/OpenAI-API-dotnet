@@ -9,7 +9,7 @@ namespace OpenAI_API.Files
 	/// <summary>
 	/// The API endpoint for operations List, Upload, Delete, Retrieve files
 	/// </summary>
-	public class FilesEndpoint : EndpointBase
+	public class FilesEndpoint : EndpointBase, IFilesEndpoint
 	{
 		/// <summary>
 		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Files"/>.
