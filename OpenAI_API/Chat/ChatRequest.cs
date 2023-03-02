@@ -21,7 +21,7 @@ namespace OpenAI_API.Chat
 		/// The messages to send with this Chat Request
 		/// </summary>
 		[JsonProperty("messages")]
-		public List<ChatMessage> Messages { get; set; }
+		public ChatMessage[] Messages { get; set; }
 
 		/// <summary>
 		/// What sampling temperature to use. Higher values means the model will take more risks. Try 0.9 for more creative applications, and 0 (argmax sampling) for ones with a well-defined answer. It is generally recommend to use this or <see cref="TopP"/> but not both.

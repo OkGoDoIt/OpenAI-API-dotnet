@@ -20,7 +20,7 @@ namespace OpenAI_API.Chat
         /// The list of choices that the user was presented with during the chat interaction
         /// </summary>
         [JsonProperty("choices")]
-        public List<ChatChoice> Choices { get; set; }
+        public ChatChoice[] Choices { get; set; }
 
         /// <summary>
         /// The usage statistics for the chat interaction

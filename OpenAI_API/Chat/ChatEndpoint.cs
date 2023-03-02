@@ -63,7 +63,7 @@ namespace OpenAI_API.Chat
 		/// <param name="logitBias"></param>
 		/// <param name="multipleStopSequences"></param>
 		/// <returns></returns>
-		public Task<ChatResult> CreateCompletionAsync(List<ChatMessage> messages = null,
+		public Task<ChatResult> CreateCompletionAsync(ChatMessage[] messages = null,
 			Model model = null,
 			double? temperature = null,
 			double? topP = null,
