@@ -7,7 +7,8 @@ using System.Text;
 namespace OpenAI_API.Chat
 {
 	/// <summary>
-	/// 
+	/// A request to the Chat API. This is similar, but not exactly the same as the <see cref="Completions.CompletionRequest"/>
+	/// Based on the <see href="https://platform.openai.com/docs/api-reference/chat">OpenAI API docs</see>
 	/// </summary>
 	public class ChatRequest
 	{
@@ -36,10 +37,10 @@ namespace OpenAI_API.Chat
 		public double? TopP { get; set; }
 
 		/// <summary>
-		/// How many different choices to request for each prompt.  Defaults to 1.
+		/// How many different choices to request for each message. Defaults to 1.
 		/// </summary>
 		[JsonProperty("n")]
-		public int? NumChoicesPerPrompt { get; set; }
+		public int? NumChoicesPerMessage { get; set; }
 
 		/// <summary>
 		/// Specifies where the results should stream and be returned at one time.  Do not set this yourself, use the appropriate methods on <see cref="CompletionEndpoint"/> instead.
@@ -119,7 +120,7 @@ namespace OpenAI_API.Chat
 		public string user { get; set; }
 
 		/// <summary>
-		/// 
+		/// Creates a new, empty <see cref="ChatRequest"/>
 		/// </summary>
 		public ChatRequest()
         {
@@ -127,7 +128,7 @@ namespace OpenAI_API.Chat
         }
 
 		/// <summary>
-		/// 
+		/// Create a new chat request using the data from the input chat request.
 		/// </summary>
 		/// <param name="basedOn"></param>
 		public ChatRequest(ChatRequest basedOn)
@@ -136,7 +137,7 @@ namespace OpenAI_API.Chat
 			this.Messages = basedOn.Messages;
 			this.Temperature = basedOn.Temperature;
 			this.TopP = basedOn.TopP;
-			this.NumChoicesPerPrompt = basedOn.NumChoicesPerPrompt;
+			this.NumChoicesPerMessage = basedOn.NumChoicesPerMessage;
 			this.MultipleStopSequences = basedOn.MultipleStopSequences;
 			this.MaxTokens = basedOn.MaxTokens;
 			this.FrequencyPenalty = basedOn.FrequencyPenalty;

@@ -30,7 +30,7 @@ namespace OpenAI_API.Chat
     }
 
     /// <summary>
-    /// 
+    /// A message received from the API, including the message text, index, and reason why the message finished.
     /// </summary>
     public class ChatChoice
     {
@@ -54,7 +54,7 @@ namespace OpenAI_API.Chat
     }
 
     /// <summary>
-    /// 
+    /// Chat message sent or received from the API. Includes who is speaking in the "role" and the message text in the "content"
     /// </summary>
     public class ChatMessage
     {
@@ -83,7 +83,7 @@ namespace OpenAI_API.Chat
     }
 
     /// <summary>
-    /// 
+    /// How many tokens were used in this chat message.
     /// </summary>
     public class ChatUsage
     {
