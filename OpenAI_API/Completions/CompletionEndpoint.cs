@@ -9,7 +9,7 @@ namespace OpenAI_API.Completions
 	/// <summary>
 	/// Text generation is the core function of the API. You give the API a prompt, and it generates a completion. The way you “program” the API to do a task is by simply describing the task in plain english or providing a few written examples. This simple approach works for a wide range of use cases, including summarization, translation, grammar correction, question answering, chatbots, composing emails, and much more (see the prompt library for inspiration).
 	/// </summary>
-	public class CompletionEndpoint : EndpointBase
+	public class CompletionEndpoint : EndpointBase, ICompletionEndpoint
 	{
 		/// <summary>
 		/// This allows you to set default parameters for every request, for example to set a default temperature or max tokens.  For every request, if you do not have a parameter set on the request but do have it set here as a default, the request will automatically pick up the default value.
