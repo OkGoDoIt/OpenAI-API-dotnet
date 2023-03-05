@@ -74,7 +74,7 @@ namespace OpenAI_API.Chat
 			int? max_tokens = null,
 			double? frequencyPenalty = null,
 			double? presencePenalty = null,
-			Dictionary<string, float> logitBias = null,
+            IReadOnlyDictionary<string, float> logitBias = null,
 			params string[] stopSequences)
 		{
 			ChatRequest request = new ChatRequest(DefaultChatRequestArgs)
@@ -176,7 +176,7 @@ namespace OpenAI_API.Chat
 			int? max_tokens = null,
 			double? frequencyPenalty = null,
 			double? presencePenalty = null,
-			Dictionary<string, float> logitBias = null,
+            IReadOnlyDictionary<string, float> logitBias = null,
 			params string[] stopSequences)
 		{
 			ChatRequest request = new ChatRequest(DefaultChatRequestArgs)

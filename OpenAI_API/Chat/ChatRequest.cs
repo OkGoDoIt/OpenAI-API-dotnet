@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -111,7 +111,7 @@ namespace OpenAI_API.Chat
 		/// The exact effect will vary per model, but values between -1 and 1 should decrease or increase likelihood of selection; values like -100 or 100 should result in a ban or exclusive selection of the relevant token.
 	    /// </summary>
 		[JsonProperty("logit_bias")]
-		public Dictionary<string, float> LogitBias { get; set; } 
+		public IReadOnlyDictionary<string, float> LogitBias { get; set; } 
 
 		/// <summary>
 		/// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
