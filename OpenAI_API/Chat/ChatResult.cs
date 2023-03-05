@@ -51,6 +51,13 @@ namespace OpenAI_API.Chat
         /// </summary>
         [JsonProperty("finish_reason")]
         public string FinishReason { get; set; }
+
+        /// <summary>
+        /// Partial message "delta" from a stream. For example, the result from <see cref="ChatEndpoint.StreamChatEnumerableAsync(ChatRequest)">StreamChatEnumerableAsync.</see>
+        /// If this result object is not from a stream, this will be null
+        /// </summary>
+        [JsonProperty("delta")]
+        public ChatMessage Delta { get; set; }
     }
 
     /// <summary>
