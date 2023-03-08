@@ -22,15 +22,17 @@ Console.WriteLine(result);
  * [Embeddings API](#embeddings)
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
+ * [Image APIs](#images)
+ * [Azure](#azure)
  * [Additonal Documentation](#documentation)
  * [License](#license)
 
 ## Status
-Updated to work with the current API as of February 16, 2023.  Fixed several minor bugs.
+Added support for DALL-E 2 image generations.
 
-Now also should work with the Azure OpenAI Service, although this is untested. See [Azure](#azure) section for further details.
+Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@ncface](https://github.com/ncface), [@megalon](https://github.com/megalon), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@stonelv](https://github.com/stonelv), [@megalon](https://github.com/megalon), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 
@@ -174,7 +176,25 @@ There are also methods to get file contents, delete a file, etc.
 
 The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
 
-### Azure
+### Images
+The Image Generation API is accessed via `OpenAIAPI.ImageGenerations`:
+
+```csharp
+async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
+
+// for example
+var result = await api.Images.CreateImageAsync(new ImageGenerationRequest("A drawing of a computer writing a test", 1, ImageSize._512));
+// or
+var result = await api.Images.CreateImageAsync("A drawing of a computer writing a test");
+
+Console.WriteLine(result.Data[0].Url);
+```
+
+The image result contains a URL for an online image or a base64-encoded image, depending on the ImageGenerationRequest.ResponseFormat (url is the default).
+
+Image edits and variations are not yet implemented.
+
+## Azure
 
 For using the Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.  Additionally you may specify the Api version which defaults to `2022-12-01`.
 
