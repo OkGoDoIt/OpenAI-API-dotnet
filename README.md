@@ -28,7 +28,7 @@ Console.WriteLine(result);
  * [License](#license)
 
 ## Status
-Added support for DALL-E 2 image generations.
+Added support for DALL-E 2 image generations and the moderation endpoint.
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 

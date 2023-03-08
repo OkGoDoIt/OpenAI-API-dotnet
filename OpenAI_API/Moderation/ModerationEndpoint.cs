@@ -22,7 +22,7 @@ namespace OpenAI_API.Moderation
         protected override string Endpoint { get { return "moderations"; } }
 
         /// <summary>
-        /// Constructor of the api endpoint. Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Moderations"/>.
+        /// Constructor of the api endpoint. Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Moderation"/>.
         /// </summary>
         /// <param name="api"></param>
         internal ModerationEndpoint(OpenAIAPI api) : base(api) { }
