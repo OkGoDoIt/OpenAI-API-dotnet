@@ -20,6 +20,7 @@ Console.WriteLine(result);
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
+ * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
  * [Additonal Documentation](#documentation)
  * [License](#license)
@@ -128,6 +129,24 @@ var result = await api.Embeddings.CreateEmbeddingAsync("A test text for embeddin
 The embedding result contains a lot of metadata, the actual vector of floats is in result.Data[].Embedding.
 
 For simplicity, you can directly ask for the vector of floats and disgard the extra metadata with `api.Embeddings.GetEmbeddingsAsync("test text here")`
+
+
+### Moderation
+The Moderation API is accessed via `OpenAIAPI.Moderation`:
+
+```csharp
+async Task<ModerationResult> CreateEmbeddingAsync(ModerationRequest request);
+
+// for example
+var result = await api.Moderation.CallModerationAsync(new ModerationRequest("A test text for moderating", Model.TextModerationLatest));
+// or
+var result = await api.Moderation.CallModerationAsync("A test text for moderating");
+
+Console.WriteLine(result.results[0].MainContentFlag);
+```
+
+The results are in `.results[0]` and have nice helper methods like `FlaggedCategories` and `MainContentFlag`.
+
 
 ### Files (for fine-tuning)
 The Files API endpoint is accessed via `OpenAIAPI.Files`:
