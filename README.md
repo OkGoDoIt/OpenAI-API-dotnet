@@ -20,6 +20,7 @@ Console.WriteLine(result);
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
+ * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
  * [Image APIs](#images)
  * [Azure](#azure)
@@ -31,7 +32,7 @@ Added support for DALL-E 2 image generations.
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@stonelv](https://github.com/stonelv) [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@stonelv](https://github.com/stonelv), [@megalon](https://github.com/megalon), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 
@@ -130,6 +131,24 @@ var result = await api.Embeddings.CreateEmbeddingAsync("A test text for embeddin
 The embedding result contains a lot of metadata, the actual vector of floats is in result.Data[].Embedding.
 
 For simplicity, you can directly ask for the vector of floats and disgard the extra metadata with `api.Embeddings.GetEmbeddingsAsync("test text here")`
+
+
+### Moderation
+The Moderation API is accessed via `OpenAIAPI.Moderation`:
+
+```csharp
+async Task<ModerationResult> CreateEmbeddingAsync(ModerationRequest request);
+
+// for example
+var result = await api.Moderation.CallModerationAsync(new ModerationRequest("A test text for moderating", Model.TextModerationLatest));
+// or
+var result = await api.Moderation.CallModerationAsync("A test text for moderating");
+
+Console.WriteLine(result.results[0].MainContentFlag);
+```
+
+The results are in `.results[0]` and have nice helper methods like `FlaggedCategories` and `MainContentFlag`.
+
 
 ### Files (for fine-tuning)
 The Files API endpoint is accessed via `OpenAIAPI.Files`:

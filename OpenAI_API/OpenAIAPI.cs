@@ -3,7 +3,7 @@ using OpenAI_API.Embedding;
 using OpenAI_API.Files;
 using OpenAI_API.Images;
 using OpenAI_API.Models;
-using OpenAI_API.Moderations;
+using OpenAI_API.Moderation;
 using System.Xml.Linq;
 
 namespace OpenAI_API
@@ -41,7 +41,7 @@ namespace OpenAI_API
 			Models = new ModelsEndpoint(this);
 			Files = new FilesEndpoint(this);
 			Embeddings = new EmbeddingEndpoint(this);
-			Moderations = new ModerationEndpoint(this);
+			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
 		}
 
@@ -73,7 +73,7 @@ namespace OpenAI_API
 		/// <summary>
 		/// Classify text against the OpenAI Content Policy.
 		/// </summary>
-		public ModerationEndpoint Moderations { get; }
+		public ModerationEndpoint Moderation { get; }
 
 		/// <summary>
 		/// The API endpoint for querying available Engines/models
