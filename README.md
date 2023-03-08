@@ -29,7 +29,7 @@ Updated to work with the current API as of February 16, 2023.  Fixed several min
 
 Now also should work with the Azure OpenAI Service, although this is untested. See [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@ncface](https://github.com/ncface), [@megalon](https://github.com/megalon), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenAI_API.Moderations
+namespace OpenAI_API.Moderation
 {
     /// <summary>
     /// This endpoint classifies text against the OpenAI Content Policy
@@ -32,10 +32,10 @@ namespace OpenAI_API.Moderations
         /// </summary>
         /// <param name="input">Text to classify</param>
         /// <returns>Asynchronously returns the classification result</returns>
-        public async Task<ModerationResult> CreateModerationAsync(string input)
+        public async Task<ModerationResult> CallModerationAsync(string input)
         {
             ModerationRequest req = new ModerationRequest(DefaultModerationRequestArgs.Model, input);
-            return await CreateModerationAsync(req);
+            return await CallModerationAsync(req);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace OpenAI_API.Moderations
         /// </summary>
         /// <param name="request">Request to send to the API</param>
         /// <returns>Asynchronously returns the classification result</returns>
-        public async Task<ModerationResult> CreateModerationAsync(ModerationRequest request)
+        public async Task<ModerationResult> CallModerationAsync(ModerationRequest request)
         {
             return await HttpPost<ModerationResult>(postData: request);
         }
