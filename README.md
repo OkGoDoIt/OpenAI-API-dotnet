@@ -22,13 +22,14 @@ Console.WriteLine(result);
  * [Embeddings API](#embeddings)
  * [Files API](#files-for-fine-tuning)
  * [Image APIs](#images)
+ * [Azure](#azure)
  * [Additonal Documentation](#documentation)
  * [License](#license)
 
 ## Status
 Added support for DALL-E 2 image generations.
 
-Now also should work with the Azure OpenAI Service, although this is untested. See [Azure](#azure) section for further details.
+Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
 Thank you [@GotMike](https://github.com/gotmike), [@stonelv](https://github.com/stonelv) [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
@@ -174,7 +175,7 @@ The image result contains a URL for an online image or a base64-encoded image, d
 
 Image edits and variations are not yet implemented.
 
-### Azure
+## Azure
 
 For using the Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.  Additionally you may specify the Api version which defaults to `2022-12-01`.
 
