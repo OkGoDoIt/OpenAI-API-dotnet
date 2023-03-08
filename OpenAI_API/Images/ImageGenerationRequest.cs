@@ -10,7 +10,7 @@ namespace OpenAI_API.Images
     /// <summary>
 	/// Represents a request to the Images API.  Mostly matches the parameters in <see href="https://platform.openai.com/docs/api-reference/images/create">the OpenAI docs</see>, although some have been renames or expanded into single/multiple properties for ease of use.
 	/// </summary>
-    public class ImageRequest
+    public class ImageGenerationRequest
     {
 		/// <summary>
 		/// A text description of the desired image(s). The maximum length is 1000 characters.
@@ -22,54 +22,54 @@ namespace OpenAI_API.Images
 		/// How many different choices to request for each prompt.  Defaults to 1.
 		/// </summary>
 		[JsonProperty("n")]
-		public int? NumOfImages { get; set; }
+		public int? NumOfImages { get; set; } = 1;
 
 		/// <summary>
-		/// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+		/// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. Optional.
 		/// </summary>
 		[JsonProperty("user")]
 		public string User { get; set; }
 
 		/// <summary>
-		/// The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
+		/// The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024. Defauls to 1024x1024
 		/// </summary>
-		[JsonProperty("size")]
-		public string Size { get; set; }
+		[JsonProperty("size"), JsonConverter(typeof(ImageSize.ImageSizeJsonConverter))]
+		public ImageSize Size { get; set; }
 
 		/// <summary>
-		/// The format in which the generated images are returned. Must be one of url or b64_json.
+		/// The format in which the generated images are returned. Must be one of url or b64_json. Defaults to Url.
 		/// </summary>
-		[JsonProperty("response_format")]
-		public string ResponseFormat { get; set; }
+		[JsonProperty("response_format"), JsonConverter(typeof(ImageResponseFormat.ImageResponseJsonConverter))]
+		public ImageResponseFormat ResponseFormat { get; set; }
 
 		/// <summary>
-		/// Cretes a new, empty <see cref="ImageRequest"/>
+		/// Cretes a new, empty <see cref="ImageGenerationRequest"/>
 		/// </summary>
-		public ImageRequest()
+		public ImageGenerationRequest()
 		{
 
 		}
 
 		/// <summary>
-		/// Creates a new <see cref="ImageRequest"/> with the specified parameters
+		/// Creates a new <see cref="ImageGenerationRequest"/> with the specified parameters
 		/// </summary>
 		/// <param name="prompt">A text description of the desired image(s). The maximum length is 1000 characters.</param>
 		/// <param name="numOfImages">How many different choices to request for each prompt.  Defaults to 1.</param>
-		/// <param name="user">A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</param>
 		/// <param name="size">The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.</param>
+		/// <param name="user">A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</param>
 		/// <param name="responseFormat">The format in which the generated images are returned. Must be one of url or b64_json.</param>
-		public ImageRequest(
+		public ImageGenerationRequest(
 			string prompt,
-			int? numOfImages = null,
+			int? numOfImages = 1,
+			ImageSize size = null,
 			string user = null,
-			string size = null,
-			string responseFormat = null)
+			ImageResponseFormat responseFormat = null)
 		{
 			this.Prompt = prompt;
 			this.NumOfImages = numOfImages;
 			this.User = user;
-			this.Size = size;
-			this.ResponseFormat = responseFormat;
+			this.Size = size ?? ImageSize._1024;
+			this.ResponseFormat = responseFormat ?? ImageResponseFormat.Url;
 		}
 
 	}
