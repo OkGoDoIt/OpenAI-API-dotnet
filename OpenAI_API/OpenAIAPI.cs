@@ -1,6 +1,7 @@
 ﻿using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
+using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderations;
 using System.Xml.Linq;
@@ -41,6 +42,7 @@ namespace OpenAI_API
 			Files = new FilesEndpoint(this);
 			Embeddings = new EmbeddingEndpoint(this);
 			Moderations = new ModerationEndpoint(this);
+			ImageGenerations = new ImageGenerationEndpoint(this);
 		}
 
 		/// <summary>
@@ -83,7 +85,10 @@ namespace OpenAI_API
 		/// </summary>
 		public FilesEndpoint Files { get; }
 
-
+		/// <summary>
+		/// The API lets you do operations with images. You can Given a prompt and/or an input image, the model will generate a new image.
+		/// </summary>
+		public ImageGenerationEndpoint ImageGenerations { get; }
 
 	}
 }
