@@ -21,15 +21,16 @@ Console.WriteLine(result);
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
  * [Files API](#files-for-fine-tuning)
+ * [Image APIs](#images)
  * [Additonal Documentation](#documentation)
  * [License](#license)
 
 ## Status
-Updated to work with the current API as of February 16, 2023.  Fixed several minor bugs.
+Added support for DALL-E 2 image generations.
 
 Now also should work with the Azure OpenAI Service, although this is untested. See [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@stonelv](https://github.com/stonelv) [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 
@@ -156,18 +157,22 @@ There are also methods to get file contents, delete a file, etc.
 The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
 
 ### Images
-The Images API is accessed via `OpenAIAPI.Images`:
+The Image Generation API is accessed via `OpenAIAPI.ImageGenerations`:
 
 ```csharp
-async Task<EmbeddingResult> CreateEmbeddingAsync(ImageRequest request);
+async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
 
 // for example
-var result = await api.Images.CreateImageAsync(new ImageRequest("A test text for images"));
+var result = await api.Images.CreateImageAsync(new ImageGenerationRequest("A drawing of a computer writing a test", 1, ImageSize._512));
 // or
-var result = await api.Images.CreateImageAsync("A test text for images");
+var result = await api.Images.CreateImageAsync("A drawing of a computer writing a test");
+
+Console.WriteLine(result.Data[0].Url);
 ```
 
-The image result contains a URL for a online image.
+The image result contains a URL for an online image or a base64-encoded image, depending on the ImageGenerationRequest.ResponseFormat (url is the default).
+
+Image edits and variations are not yet implemented.
 
 ### Azure
 

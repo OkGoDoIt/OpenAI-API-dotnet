@@ -40,7 +40,7 @@ namespace OpenAI_API
 			Models = new ModelsEndpoint(this);
 			Files = new FilesEndpoint(this);
 			Embeddings = new EmbeddingEndpoint(this);
-			Images = new ImageEndpoint(this);
+			ImageGenerations = new ImageGenerationEndpoint(this);
 		}
 
 		/// <summary>
@@ -81,7 +81,7 @@ namespace OpenAI_API
 		/// <summary>
 		/// The API lets you do operations with images. You can Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
-		public ImageEndpoint Images { get; }
+		public ImageGenerationEndpoint ImageGenerations { get; }
 
 	}
 }
