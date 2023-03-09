@@ -29,11 +29,13 @@ Console.WriteLine(result);
  * [License](#license)
 
 ## Status
+[![OpenAI](https://img.shields.io/nuget/v/OpenAI?style=for-the-badge)](https://www.nuget.org/packages/OpenAI/)
+
 Added support for ChatGPT, DALL·E 2 image generations, and the moderation endpoint.
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), [@pandapknaepel](https://github.com/pandapknaepel), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 
