@@ -79,6 +79,7 @@ namespace OpenAI_Tests
 			Assert.NotZero(results.Choices.Count);
 			Assert.AreEqual(ChatMessageRole.Assistant, results.Choices[0].Message.Role);
 			Assert.That(results.Choices.All(c => c.Message.Role.Equals(ChatMessageRole.Assistant)));
+			Assert.That(results.Choices.All(c => c.Message.Role == ChatMessageRole.Assistant));
 			Assert.That(results.Choices.All(c => c.Message.Content.Length > 1));
 			Assert.IsNotEmpty(results.ToString());
 		}
