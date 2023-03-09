@@ -29,7 +29,7 @@ Console.WriteLine(result);
  * [License](#license)
 
 ## Status
-[![OpenAI](https://img.shields.io/nuget/v/OpenAI?style=for-the-badge)](https://www.nuget.org/packages/OpenAI/)
+[![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
 Added support for ChatGPT, DALL·E 2 image generations, and the moderation endpoint.
 
