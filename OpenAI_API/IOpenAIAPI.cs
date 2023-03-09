@@ -1,3 +1,4 @@
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -36,6 +37,11 @@ namespace OpenAI_API
         /// The API lets you transform text into a vector (list) of floating point numbers. The distance between two vectors measures their relatedness. Small distances suggest high relatedness and large distances suggest low relatedness.
         /// </summary>
         IEmbeddingEndpoint Embeddings { get; }
+        
+        /// <summary>
+        /// Text generation in the form of chat messages. This interacts with the ChatGPT API.
+        /// </summary>
+        IChatEndpoint Chat { get; }
 
         /// <summary>
         /// The API endpoint for querying available Engines/models
