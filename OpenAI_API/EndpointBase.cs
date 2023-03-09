@@ -369,12 +369,17 @@ namespace OpenAI_API
 				{
 					resultAsString += line + Environment.NewLine;
 
-					if (line.StartsWith("data: "))
-						line = line.Substring("data: ".Length);
+					if (line.StartsWith("data:"))
+						line = line.Substring("data:".Length);
+
+					line = line.TrimStart();
+
 					if (line == "[DONE]")
 					{
 						yield break;
 					}
+					else if (line.StartsWith(":"))
+					{ }
 					else if (!string.IsNullOrWhiteSpace(line))
 					{
 						var res = JsonConvert.DeserializeObject<T>(line);
