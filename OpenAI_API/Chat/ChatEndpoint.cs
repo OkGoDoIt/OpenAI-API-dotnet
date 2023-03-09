@@ -11,7 +11,7 @@ namespace OpenAI_API.Chat
 	/// <summary>
 	/// ChatGPT API endpoint. Use this endpoint to send multiple messages and carry on a conversation.
 	/// </summary>
-	public class ChatEndpoint : EndpointBase
+	public class ChatEndpoint : EndpointBase, IChatEndpoint
 	{
 		/// <summary>
 		/// This allows you to set default parameters for every request, for example to set a default temperature or max tokens.  For every request, if you do not have a parameter set on the request but do have it set here as a default, the request will automatically pick up the default value.

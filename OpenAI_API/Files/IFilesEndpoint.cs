@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace OpenAI_API.Files
 {
-    /// <summary>
-    /// The API endpoint for operations List, Upload, Delete, Retrieve files
-    /// </summary>
-    public interface IFilesEndpoint
+	/// <summary>
+	/// An interface for <see cref="FilesEndpoint"/>, for ease of mock testing, etc
+	/// </summary>
+	public interface IFilesEndpoint
     {
         /// <summary>
         /// Get the list of all files

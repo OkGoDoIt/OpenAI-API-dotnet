@@ -5,15 +5,15 @@ using OpenAI_API.Models;
 
 namespace OpenAI_API
 {
-    /// <summary>
-    /// Entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
-    /// </summary>
-    public interface IOpenAIAPI
+	/// <summary>
+	/// An interface for <see cref="OpenAIAPI"/>, for ease of mock testing, etc
+	/// </summary>
+	public interface IOpenAIAPI
     {
         /// <summary>
         /// Base url for OpenAI
         /// for OpenAI, should be "https://api.openai.com/{0}/{1}"
-        /// for Azure, should be "https://(your-resource-name).openai.azure.com/openai/deployments/(deployment-id)/{1}?api-version={0}"
+        /// for Azure, should be "https://(your-resource-name.openai.azure.com/openai/deployments/(deployment-id)/{1}?api-version={0}"
         /// </summary>
         string ApiUrlFormat { get; set; }
 

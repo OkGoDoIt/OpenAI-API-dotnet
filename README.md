@@ -23,17 +23,17 @@ Console.WriteLine(result);
  * [Embeddings API](#embeddings)
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
- * [Image APIs](#images)
+ * [Image APIs (DALL·E)](#images)
  * [Azure](#azure)
  * [Additonal Documentation](#documentation)
  * [License](#license)
 
 ## Status
-Added support for ChatGPT, DALL·E 2 image generations and the moderation endpoint.
+Added support for ChatGPT, DALL·E 2 image generations, and the moderation endpoint.
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@stonelv](https://github.com/stonelv), [@megalon](https://github.com/megalon), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 

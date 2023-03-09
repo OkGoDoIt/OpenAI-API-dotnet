@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace OpenAI_API.Models
 {
-    /// <summary>
-    /// The API endpoint for querying available models
-    /// </summary>
-    public interface IModelsEndpoint
+	/// <summary>
+	/// An interface for <see cref="ModelsEndpoint"/>, for ease of mock testing, etc
+	/// </summary>
+	public interface IModelsEndpoint
     {
         /// <summary>
         /// Get details about a particular Model from the API, specifically properties such as <see cref="Model.OwnedBy"/> and permissions.

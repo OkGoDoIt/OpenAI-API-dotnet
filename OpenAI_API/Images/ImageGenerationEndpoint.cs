@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace OpenAI_API.Images
 {
-    /// <summary>
+	/// <summary>
 	/// Given a prompt and/or an input image, the model will generate a new image.
 	/// </summary>
-    public class ImageGenerationEndpoint : EndpointBase
-    {
+	public class ImageGenerationEndpoint : EndpointBase, IImageGenerationEndpoint
+	{
 		/// <summary>
 		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "image".
 		/// </summary>

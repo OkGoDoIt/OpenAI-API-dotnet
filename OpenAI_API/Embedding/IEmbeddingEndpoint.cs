@@ -2,10 +2,10 @@ using System.Threading.Tasks;
 
 namespace OpenAI_API.Embedding
 {
-    /// <summary>
-    /// OpenAI’s text embeddings measure the relatedness of text strings by generating an embedding, which is a vector (list) of floating point numbers. The distance between two vectors measures their relatedness. Small distances suggest high relatedness and large distances suggest low relatedness.
-    /// </summary>
-    public interface IEmbeddingEndpoint
+	/// <summary>
+	/// An interface for <see cref="EmbeddingEndpoint"/>, for ease of mock testing, etc
+	/// </summary>
+	public interface IEmbeddingEndpoint
     {
         /// <summary>
         /// This allows you to send request to the recommended model without needing to specify. Every request uses the <see cref="Model.AdaTextEmbedding"/> model
