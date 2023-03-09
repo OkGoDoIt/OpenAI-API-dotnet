@@ -1,4 +1,4 @@
-# C#/.NET SDK for accessing the OpenAI GPT-3 API 
+# C#/.NET SDK for accessing the OpenAI GPT-3 API, ChatGPT, and DALL·E 2
 
 A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).
 
@@ -29,7 +29,7 @@ Console.WriteLine(result);
  * [License](#license)
 
 ## Status
-Added support for DALL-E 2 image generations and the moderation endpoint.
+Added support for ChatGPT, DALL·E 2 image generations and the moderation endpoint.
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
@@ -241,7 +241,7 @@ There are also methods to get file contents, delete a file, etc.
 The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
 
 ### Images
-The Image Generation API is accessed via `OpenAIAPI.ImageGenerations`:
+The DALL-E Image Generation API is accessed via `OpenAIAPI.ImageGenerations`:
 
 ```csharp
 async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);

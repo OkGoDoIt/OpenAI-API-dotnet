@@ -8,7 +8,7 @@ using System.Text;
 namespace OpenAI_API.Images
 {
     /// <summary>
-	/// Represents a request to the Images API.  Mostly matches the parameters in <see href="https://platform.openai.com/docs/api-reference/images/create">the OpenAI docs</see>, although some have been renames or expanded into single/multiple properties for ease of use.
+	/// Represents a request to the Images API.  Mostly matches the parameters in <see href="https://platform.openai.com/docs/api-reference/images/create">the OpenAI docs</see>, although some have been renamed or expanded into single/multiple properties for ease of use.
 	/// </summary>
     public class ImageGenerationRequest
     {

@@ -17,7 +17,7 @@ namespace OpenAI_API
 		/// <summary>
 		/// Base url for OpenAI
 		/// for OpenAI, should be "https://api.openai.com/{0}/{1}"
-		/// for Azure, should be "https://(your-resource-name).openai.azure.com/openai/deployments/(deployment-id)/{1}?api-version={0}"
+		/// for Azure, should be "https://(your-resource-name.openai.azure.com/openai/deployments/(deployment-id)/{1}?api-version={0}"
 		/// </summary>
 		public string ApiUrlFormat { get; set; } = "https://api.openai.com/{0}/{1}";
 
