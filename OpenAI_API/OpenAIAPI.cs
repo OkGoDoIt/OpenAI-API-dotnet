@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Completions;
+﻿using OpenAI_API.Chat;
+using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
 using OpenAI_API.Images;
@@ -41,6 +42,7 @@ namespace OpenAI_API
 			Models = new ModelsEndpoint(this);
 			Files = new FilesEndpoint(this);
 			Embeddings = new EmbeddingEndpoint(this);
+			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
 		}
@@ -69,6 +71,11 @@ namespace OpenAI_API
 		/// The API lets you transform text into a vector (list) of floating point numbers. The distance between two vectors measures their relatedness. Small distances suggest high relatedness and large distances suggest low relatedness.
 		/// </summary>
 		public EmbeddingEndpoint Embeddings { get; }
+
+		/// <summary>
+		/// Text generation in the form of chat messages. This interacts with the ChatGPT API.
+		/// </summary>
+		public ChatEndpoint Chat { get; }
 
 		/// <summary>
 		/// Classify text against the OpenAI Content Policy.
