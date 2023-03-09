@@ -134,14 +134,25 @@ namespace OpenAI_API.Models
 		public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
 
 		/// <summary>
-		/// 
+		/// Most capable GPT-3.5 model and optimized for chat at 1/10th the cost of text-davinci-003. Will be updated with the latest model iteration.
 		/// </summary>
 		public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
 
 		/// <summary>
-		/// 
+		/// Snapshot of gpt-3.5-turbo from March 1st 2023. Unlike gpt-3.5-turbo, this model will not receive updates, and will only be supported for a three month period ending on June 1st 2023.
 		/// </summary>
 		public static Model ChatGPTTurbo0301 => new Model("gpt-3.5-turbo-0301") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// Stable text moderation model that may provide lower accuracy compared to TextModerationLatest.
+		/// OpenAI states they will provide advanced notice before updating this model.
+		/// </summary>
+		public static Model TextModerationStable => new Model("text-moderation-stable") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// The latest text moderation model. This model will be automatically upgraded over time.
+		/// </summary>
+		public static Model TextModerationLatest => new Model("text-moderation-latest") { OwnedBy = "openai" };
 
 
 		/// <summary>
