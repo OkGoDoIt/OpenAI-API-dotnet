@@ -17,6 +17,7 @@ Console.WriteLine(result);
  * [Requirements](#requirements)
  * [Installation](#install-from-nuget)
  * [Authentication](#authentication)
+ * [ChatGPT API](#chatgpt)
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
@@ -76,7 +77,70 @@ You may optionally include an openAIOrganization (OPENAI_ORGANIZATION in env or 
 OpenAIAPI api = new OpenAIAPI(new APIAuthentication("YOUR_API_KEY","org-yourOrgHere"));
 ```
 
+### ChatGPT
+The Chat API is accessed via `OpenAIAPI.Chat`.  There are two ways to use the Chat Endpoint, either via simplified conversations or with the full Request/Response methods.
 
+#### Chat Conversations
+The Conversation Class allows you to easily interact with ChatGPT by adding messages to a chat and asking ChatGPT to reply.
+```csharp
+var chat = api.Chat.CreateConversation();
+
+/// give instruction as System
+chat.AppendSystemMessage("You are a teacher who helps children understand if things are animals or not.  If the user tells you an animal, you say \"yes\".  If the user tells you something that is not an animal, you say \"no\".  You only ever respond with \"yes\" or \"no\".  You do not say anything else.");
+
+// give a few examples as user and assistant
+chat.AppendUserInput("Is this an animal? Cat");
+chat.AppendExampleChatbotOutput("Yes");
+chat.AppendUserInput("Is this an animal? House");
+chat.AppendExampleChatbotOutput("No");
+
+// now let's ask it a question'
+chat.AppendUserInput("Is this an animal? Dog");
+// and get the response
+string response = await chat.GetResponseFromChatbot();
+Console.WriteLine(response); // "Yes"
+
+// and continue the conversation by asking another
+chat.AppendUserInput("Is this an animal? Chair");
+// and get another response
+response = await chat.GetResponseFromChatbot();
+Console.WriteLine(response); // "No"
+
+// the entire chat history is available in chat.Messages
+foreach (ChatMessage msg in chat.Messages)
+{
+	Console.WriteLine($"{msg.Role}: {msg.Content}");
+}
+```
+
+#### Chat Endpoint Requests
+You can access full control of the Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
+
+```csharp
+async Task<ChatResult> CreateChatCompletionAsync(ChatRequest request);
+
+// for example
+var result = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
+	{
+		Model = Model.ChatGPTTurbo,
+		Temperature = 0.1,
+		MaxTokens = 50,
+		Messages = new ChatMessage[] {
+			new ChatMessage(ChatMessageRole.User, "Hello!")
+		}
+	})
+// or
+var result = api.Chat.CreateChatCompletionAsync("Hello!");
+
+var reply = results.Choices[0].Message;
+Console.WriteLine($"{reply.Role}: {reply.Content.Trim()}");
+// or
+Console.WriteLine(results);
+```
+
+It returns a `ChatResult` which is mostly metadata, so use its `.ToString()` method to get the text if all you want is assistant's reply text.
+
+There's also an async streaming API which works similarly to the [Completions endpoint streaming results](#streaming). 
 
 ### Completions
 The Completion API is accessed via `OpenAIAPI.Completions`:
