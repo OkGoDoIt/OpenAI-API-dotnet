@@ -6,7 +6,7 @@ namespace OpenAI_API.Embedding
 	/// <summary>
 	/// OpenAI’s text embeddings measure the relatedness of text strings by generating an embedding, which is a vector (list) of floating point numbers. The distance between two vectors measures their relatedness. Small distances suggest high relatedness and large distances suggest low relatedness.
 	/// </summary>
-	public class EmbeddingEndpoint : EndpointBase
+	public class EmbeddingEndpoint : EndpointBase, IEmbeddingEndpoint
 	{
 		/// <summary>
 		/// This allows you to send request to the recommended model without needing to specify. Every request uses the <see cref="Model.AdaTextEmbedding"/> model

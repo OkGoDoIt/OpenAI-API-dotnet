@@ -8,7 +8,7 @@ namespace OpenAI_API.Models
 	/// <summary>
 	/// The API endpoint for querying available models
 	/// </summary>
-	public class ModelsEndpoint : EndpointBase
+	public class ModelsEndpoint : EndpointBase, IModelsEndpoint
 	{
 		/// <summary>
 		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "models".
