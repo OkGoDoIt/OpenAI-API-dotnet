@@ -67,14 +67,14 @@ namespace OpenAI_Tests
 			OpenAI_API.APIAuthentication defaultAuth = OpenAI_API.APIAuthentication.Default;
 			OpenAI_API.APIAuthentication manualAuth = new OpenAI_API.APIAuthentication("pk-testAA");
 			OpenAI_API.OpenAIAPI api = new OpenAI_API.OpenAIAPI();
-			OpenAI_API.APIAuthentication shouldBeDefaultAuth = api.Auth;
+			OpenAI_API.IAPIAuthentication shouldBeDefaultAuth = api.Auth;
 			Assert.IsNotNull(shouldBeDefaultAuth);
 			Assert.IsNotNull(shouldBeDefaultAuth.ApiKey);
 			Assert.AreEqual(defaultAuth.ApiKey, shouldBeDefaultAuth.ApiKey);
 
 			OpenAI_API.APIAuthentication.Default = new OpenAI_API.APIAuthentication("pk-testAA");
 			api = new OpenAI_API.OpenAIAPI();
-			OpenAI_API.APIAuthentication shouldBeManualAuth = api.Auth;
+			OpenAI_API.IAPIAuthentication shouldBeManualAuth = api.Auth;
 			Assert.IsNotNull(shouldBeManualAuth);
 			Assert.IsNotNull(shouldBeManualAuth.ApiKey);
 			Assert.AreEqual(manualAuth.ApiKey, shouldBeManualAuth.ApiKey);
