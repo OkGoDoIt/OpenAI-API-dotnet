@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace OpenAI_Example.ConsoleApp.Applications
 {
-    internal class ChatExample : IProgram
+    internal sealed class ChatExample : IProgram
     {
         public async Task RunAsync(string apiKey)
         {
