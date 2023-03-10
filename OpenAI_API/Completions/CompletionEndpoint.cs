@@ -36,7 +36,7 @@ namespace OpenAI_API.Completions
 		/// <returns>Asynchronously returns the completion result.  Look in its <see cref="CompletionResult.Completions"/> property for the completions.</returns>
 		public async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request)
 		{
-			return await HttpPost<CompletionResult>(postData: request);
+			return await HttpPostAsync<CompletionResult>(postData: request);
 		}
 
 		/// <summary>
@@ -153,7 +153,7 @@ namespace OpenAI_API.Completions
 		public IAsyncEnumerable<CompletionResult> StreamCompletionEnumerableAsync(CompletionRequest request)
 		{
 			request = new CompletionRequest(request) { Stream = true };
-			return HttpStreamingRequest<CompletionResult>(Url, HttpMethod.Post, request);
+			return HttpStreamingRequestAsync<CompletionResult>(Url, HttpMethod.Post, request);
 		}
 
 		/// <summary>
@@ -211,7 +211,7 @@ namespace OpenAI_API.Completions
 		/// </summary>
 		/// <param name="request">The request to send to the API.  This does not fall back to default values specified in <see cref="DefaultCompletionRequestArgs"/>.</param>
 		/// <returns>A string of the prompt followed by the best completion</returns>
-		public async Task<string> CreateAndFormatCompletion(CompletionRequest request)
+		public async Task<string> CreateAndFormatCompletionAsync(CompletionRequest request)
 		{
 			string prompt = request.Prompt;
 			var result = await CreateCompletionAsync(request);
@@ -223,7 +223,7 @@ namespace OpenAI_API.Completions
 		/// </summary>
 		/// <param name="prompt">The prompt to complete</param>
 		/// <returns>The best completion</returns>
-		public async Task<string> GetCompletion(string prompt)
+		public async Task<string> GetCompletionAsync(string prompt)
 		{
 			CompletionRequest request = new CompletionRequest(DefaultCompletionRequestArgs)
 			{

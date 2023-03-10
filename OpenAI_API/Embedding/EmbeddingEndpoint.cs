@@ -42,7 +42,7 @@ namespace OpenAI_API.Embedding
 		/// <returns>Asynchronously returns the embedding result. Look in its <see cref="Data.Embedding"/> property of <see cref="EmbeddingResult.Data"/> to find the vector of floating point numbers</returns>
 		public async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request)
 		{
-			return await HttpPost<EmbeddingResult>(postData: request);
+			return await HttpPostAsync<EmbeddingResult>(postData: request);
 		}
 
 		/// <summary>

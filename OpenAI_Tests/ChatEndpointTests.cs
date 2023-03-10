@@ -97,12 +97,12 @@ namespace OpenAI_Tests
 			chat.AppendUserInput("Is this an animal? House");
 			chat.AppendExampleChatbotOutput("No");
 			chat.AppendUserInput("Is this an animal? Dog");
-			string res = chat.GetResponseFromChatbot().Result;
+			string res = chat.GetResponseFromChatbotAsync().Result;
 			Assert.NotNull(res);
 			Assert.IsNotEmpty(res);
 			Assert.AreEqual("Yes", res.Trim());
 			chat.AppendUserInput("Is this an animal? Chair");
-			res = chat.GetResponseFromChatbot().Result;
+			res = chat.GetResponseFromChatbotAsync().Result;
 			Assert.NotNull(res);
 			Assert.IsNotEmpty(res);
 			Assert.AreEqual("No", res.Trim());

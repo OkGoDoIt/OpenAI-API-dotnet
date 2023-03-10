@@ -110,17 +110,17 @@ namespace OpenAI_Tests
 		public async Task TestBadKey()
 		{
 			var auth = new OpenAI_API.APIAuthentication("pk-testAA");
-			Assert.IsFalse(await auth.ValidateAPIKey());
+			Assert.IsFalse(await auth.ValidateAPIKeyAsync());
 
 			auth = new OpenAI_API.APIAuthentication(null);
-			Assert.IsFalse(await auth.ValidateAPIKey());
+			Assert.IsFalse(await auth.ValidateAPIKeyAsync());
 		}
 
 		[Test]
 		public async Task TestValidateGoodKey()
 		{
 			var auth = new OpenAI_API.APIAuthentication(Environment.GetEnvironmentVariable("TEST_OPENAI_SECRET_KEY"));
-			Assert.IsTrue(await auth.ValidateAPIKey());
+			Assert.IsTrue(await auth.ValidateAPIKeyAsync());
 		}
 
 	}

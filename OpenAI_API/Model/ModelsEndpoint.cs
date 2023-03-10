@@ -28,7 +28,7 @@ namespace OpenAI_API.Models
 		/// <returns>Asynchronously returns the <see cref="Model"/> with all available properties</returns>
 		public async Task<Model> RetrieveModelDetailsAsync(string id)
 		{
-			string resultAsString = await HttpGetContent<JsonHelperRoot>($"{Url}/{id}");
+			string resultAsString = await HttpGetContentAsync<JsonHelperRoot>($"{Url}/{id}");
 			var model = JsonConvert.DeserializeObject<Model>(resultAsString);
 			return model;
 		}
@@ -39,7 +39,7 @@ namespace OpenAI_API.Models
 		/// <returns>Asynchronously returns the list of all <see cref="Model"/>s</returns>
 		public async Task<List<Model>> GetModelsAsync()
 		{
-			return (await HttpGet<JsonHelperRoot>()).data;
+			return (await HttpGetAsync<JsonHelperRoot>()).data;
 		}
 
 		/// <summary>

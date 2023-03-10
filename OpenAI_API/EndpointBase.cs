@@ -101,7 +101,7 @@ namespace OpenAI_API
 		/// <param name="streaming">(optional) If true, streams the response.  Otherwise waits for the entire response before returning.</param>
 		/// <returns>The HttpResponseMessage of the response, which is confirmed to be successful.</returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned</exception>
-		private async Task<HttpResponseMessage> HttpRequestRaw(string url = null, HttpMethod verb = null, object postData = null, bool streaming = false)
+		private async Task<HttpResponseMessage> HttpRequestRawAsync(string url = null, HttpMethod verb = null, object postData = null, bool streaming = false)
 		{
 			if (string.IsNullOrEmpty(url))
 				url = this.Url;
@@ -166,9 +166,9 @@ namespace OpenAI_API
 		/// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
 		/// <returns>The text string of the response, which is confirmed to be successful.</returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned</exception>
-		internal async Task<string> HttpGetContent<T>(string url = null)
+		internal async Task<string> HttpGetContentAsync<T>(string url = null)
 		{
-			var response = await HttpRequestRaw(url);
+			var response = await HttpRequestRawAsync(url);
 			return await response.Content.ReadAsStringAsync();
 		}
 
@@ -182,9 +182,9 @@ namespace OpenAI_API
 		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
 		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		private async Task<T> HttpRequest<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
+		private async Task<T> HttpRequestAsync<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
 		{
-			var response = await HttpRequestRaw(url, verb, postData);
+			var response = await HttpRequestRawAsync(url, verb, postData);
 			string resultAsString = await response.Content.ReadAsStringAsync();
 
 			var res = JsonConvert.DeserializeObject<T>(resultAsString);
@@ -246,9 +246,9 @@ namespace OpenAI_API
 		/// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
 		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		internal async Task<T> HttpGet<T>(string url = null) where T : ApiResultBase
+		internal async Task<T> HttpGetAsync<T>(string url = null) where T : ApiResultBase
 		{
-			return await HttpRequest<T>(url, HttpMethod.Get);
+			return await HttpRequestAsync<T>(url, HttpMethod.Get);
 		}
 
 		/// <summary>
@@ -259,9 +259,9 @@ namespace OpenAI_API
 		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
 		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		internal async Task<T> HttpPost<T>(string url = null, object postData = null) where T : ApiResultBase
+		internal async Task<T> HttpPostAsync<T>(string url = null, object postData = null) where T : ApiResultBase
 		{
-			return await HttpRequest<T>(url, HttpMethod.Post, postData);
+			return await HttpRequestAsync<T>(url, HttpMethod.Post, postData);
 		}
 
 		/// <summary>
@@ -272,9 +272,9 @@ namespace OpenAI_API
 		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
 		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		internal async Task<T> HttpDelete<T>(string url = null, object postData = null) where T : ApiResultBase
+		internal async Task<T> HttpDeleteAsync<T>(string url = null, object postData = null) where T : ApiResultBase
 		{
-			return await HttpRequest<T>(url, HttpMethod.Delete, postData);
+			return await HttpRequestAsync<T>(url, HttpMethod.Delete, postData);
 		}
 
 
@@ -286,9 +286,9 @@ namespace OpenAI_API
 		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
 		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		internal async Task<T> HttpPut<T>(string url = null, object postData = null) where T : ApiResultBase
+		internal async Task<T> HttpPutAsync<T>(string url = null, object postData = null) where T : ApiResultBase
 		{
-			return await HttpRequest<T>(url, HttpMethod.Put, postData);
+			return await HttpRequestAsync<T>(url, HttpMethod.Put, postData);
 		}
 
 
@@ -336,9 +336,9 @@ namespace OpenAI_API
 		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
 		/// <returns>The HttpResponseMessage of the response, which is confirmed to be successful.</returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned</exception>
-		protected async IAsyncEnumerable<T> HttpStreamingRequest<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
+		protected async IAsyncEnumerable<T> HttpStreamingRequestAsync<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
 		{
-			var response = await HttpRequestRaw(url, verb, postData, true);
+			var response = await HttpRequestRawAsync(url, verb, postData, true);
 
 			string organization = null;
 			string requestId = null;
