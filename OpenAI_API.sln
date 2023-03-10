@@ -13,6 +13,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		README.md = README.md
 	EndProjectSection
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1. Examples", "1. Examples", "{B6A90DB1-5DC1-468E-BEEC-93302D9FD949}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI_Example.ConsoleApp", "examples\OpenAI_Example.Console\OpenAI_Example.ConsoleApp.csproj", "{CB645694-1347-4D64-8D83-B8B7279370F4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,9 +31,16 @@ Global
 		{066EC5A5-47CE-4B91-B924-F236644037C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{066EC5A5-47CE-4B91-B924-F236644037C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{066EC5A5-47CE-4B91-B924-F236644037C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CB645694-1347-4D64-8D83-B8B7279370F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB645694-1347-4D64-8D83-B8B7279370F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB645694-1347-4D64-8D83-B8B7279370F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CB645694-1347-4D64-8D83-B8B7279370F4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{CB645694-1347-4D64-8D83-B8B7279370F4} = {B6A90DB1-5DC1-468E-BEEC-93302D9FD949}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {971477B1-6BBA-40CD-8B76-AEBC01D99130}
