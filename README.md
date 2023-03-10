@@ -126,7 +126,7 @@ chat.AppendUserInput("How to make a hamburger?");
 
 await foreach (var res in chat.StreamResponseEnumerableFromChatbot())
 {
-	Console.Write(res);
+    Console.Write(res);
 }
 ```
 
