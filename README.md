@@ -115,6 +115,32 @@ foreach (ChatMessage msg in chat.Messages)
 }
 ```
 
+#### Streaming
+
+Streaming allows you to get results are they are generated, which can help your application feel more responsive.
+
+Using the new C# 8.0 async iterators:
+```csharp
+var chat = api.Chat.CreateConversation();
+chat.AppendUserInput("How to make a hamburger?");
+
+await foreach (var res in chat.StreamResponseEnumerableFromChatbot())
+{
+	Console.Write(res);
+}
+```
+
+Or if using classic .NET framework or C# <8.0:
+```csharp
+var chat = api.Chat.CreateConversation();
+chat.AppendUserInput("How to make a hamburger?");
+
+await chat.StreamResponseFromChatbot(res =>
+{
+    Console.Write(res);
+});
+```
+
 #### Chat Endpoint Requests
 You can access full control of the Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
 
