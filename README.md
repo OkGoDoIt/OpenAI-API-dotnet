@@ -124,7 +124,7 @@ Using the new C# 8.0 async iterators:
 var chat = api.Chat.CreateConversation();
 chat.AppendUserInput("How to make a hamburger?");
 
-await foreach (var res in chat.StreamResponseEnumerableFromChatbot())
+await foreach (var res in chat.StreamResponseEnumerableFromChatbotAsync())
 {
     Console.Write(res);
 }
@@ -135,7 +135,7 @@ Or if using classic .NET framework or C# <8.0:
 var chat = api.Chat.CreateConversation();
 chat.AppendUserInput("How to make a hamburger?");
 
-await chat.StreamResponseFromChatbot(res =>
+await chat.StreamResponseFromChatbotAsync(res =>
 {
     Console.Write(res);
 });

@@ -125,12 +125,12 @@ namespace OpenAI_API.Chat
 
 		/// <summary>
 		/// Calls the API to get a response, which is appended to the current chat's <see cref="Messages"/> as an <see cref="ChatMessageRole.Assistant"/> <see cref="ChatMessage"/>, and streams the results to the <paramref name="resultHandler"/> as they come in. <br/>
-		/// If you are on the latest C# supporting async enumerables, you may prefer the cleaner syntax of <see cref="StreamResponseEnumerableFromChatbot"/> instead.
+		/// If you are on the latest C# supporting async enumerables, you may prefer the cleaner syntax of <see cref="StreamResponseEnumerableFromChatbotAsync"/> instead.
 		///  </summary>
 		/// <param name="resultHandler">An action to be called as each new result arrives.</param>
-		public async Task StreamResponseFromChatbot(Action<string> resultHandler)
+		public async Task StreamResponseFromChatbotAsync(Action<string> resultHandler)
 		{
-			await foreach (string res in StreamResponseEnumerableFromChatbot())
+			await foreach (string res in StreamResponseEnumerableFromChatbotAsync())
 			{
 				resultHandler(res);
 			}
@@ -138,10 +138,10 @@ namespace OpenAI_API.Chat
 
 		/// <summary>
 		/// Calls the API to get a response, which is appended to the current chat's <see cref="Messages"/> as an <see cref="ChatMessageRole.Assistant"/> <see cref="ChatMessage"/>, and streams the results as they come in. <br/>
-		/// If you are not using C# 8 supporting async enumerables or if you are using the .NET Framework, you may need to use <see cref="StreamResponseFromChatbot"/> instead.
+		/// If you are not using C# 8 supporting async enumerables or if you are using the .NET Framework, you may need to use <see cref="StreamResponseFromChatbotAsync"/> instead.
 		/// </summary>
 		/// <returns>An async enumerable with each of the results as they come in.  See <see href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#asynchronous-streams"/> for more details on how to consume an async enumerable.</returns>
-		public async IAsyncEnumerable<string> StreamResponseEnumerableFromChatbot()
+		public async IAsyncEnumerable<string> StreamResponseEnumerableFromChatbotAsync()
 		{
 			ChatRequest req = new ChatRequest(RequestParameters);
 			req.Messages = _Messages.ToList();
