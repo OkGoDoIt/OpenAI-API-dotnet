@@ -1,7 +1,10 @@
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
+using OpenAI_API.Images;
 using OpenAI_API.Models;
+using OpenAI_API.Moderation;
 
 namespace OpenAI_API
 {
@@ -38,6 +41,16 @@ namespace OpenAI_API
         EmbeddingEndpoint Embeddings { get; }
 
         /// <summary>
+        /// Text generation in the form of chat messages. This interacts with the ChatGPT API.
+        /// </summary>
+        ChatEndpoint Chat { get; }
+
+        /// <summary>
+        /// Classify text against the OpenAI Content Policy.
+        /// </summary>
+        ModerationEndpoint Moderation { get; }
+
+        /// <summary>
         /// The API endpoint for querying available Engines/models
         /// </summary>
         ModelsEndpoint Models { get; }
@@ -46,5 +59,10 @@ namespace OpenAI_API
         /// The API lets you do operations with files. You can upload, delete or retrieve files. Files can be used for fine-tuning, search, etc.
         /// </summary>
         FilesEndpoint Files { get; }
+
+        /// <summary>
+        /// The API lets you do operations with images. You can Given a prompt and/or an input image, the model will generate a new image.
+        /// </summary>
+        ImageGenerationEndpoint ImageGenerations { get; }
     }
 }

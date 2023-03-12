@@ -5,7 +5,6 @@ using OpenAI_API.Files;
 using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
-using System.Xml.Linq;
 
 namespace OpenAI_API
 {
@@ -96,6 +95,5 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. You can Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public ImageGenerationEndpoint ImageGenerations { get; }
-
 	}
 }
