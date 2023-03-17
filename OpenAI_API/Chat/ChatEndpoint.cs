@@ -30,6 +30,13 @@ namespace OpenAI_API.Chat
 		internal ChatEndpoint(OpenAIAPI api) : base(api) { }
 
 		/// <summary>
+		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Completions"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal ChatEndpoint(HttpClient httpClient, OpenAIAPI api) : base(api) { }
+
+		/// <summary>
 		/// Creates an ongoing chat which can easily encapsulate the conversation.  This is the simplest way to use the Chat endpoint.
 		/// </summary>
 		/// <returns></returns>

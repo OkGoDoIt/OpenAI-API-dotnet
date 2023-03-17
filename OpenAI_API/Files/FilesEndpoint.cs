@@ -18,6 +18,13 @@ namespace OpenAI_API.Files
 		internal FilesEndpoint(OpenAIAPI api) : base(api) { }
 
 		/// <summary>
+		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Files"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal FilesEndpoint(HttpClient httpClient, OpenAIAPI api) : base(httpClient, api) { }
+
+		/// <summary>
 		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "files".
 		/// </summary>
 		protected override string Endpoint { get { return "files"; } }

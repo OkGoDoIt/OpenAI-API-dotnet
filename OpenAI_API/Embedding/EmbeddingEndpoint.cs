@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Models;
+﻿using System.Net.Http;
+using OpenAI_API.Models;
 using System.Threading.Tasks;
 
 namespace OpenAI_API.Embedding
@@ -23,6 +24,13 @@ namespace OpenAI_API.Embedding
 		/// </summary>
 		/// <param name="api"></param>
 		internal EmbeddingEndpoint(OpenAIAPI api) : base(api) { }
+
+		/// <summary>
+		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Embeddings"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal EmbeddingEndpoint(HttpClient httpClient, OpenAIAPI api) : base(httpClient, api) { }
 
 		/// <summary>
 		/// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/>

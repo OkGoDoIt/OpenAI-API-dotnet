@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace OpenAI_API.Models
@@ -20,6 +21,13 @@ namespace OpenAI_API.Models
 		/// </summary>
 		/// <param name="api"></param>
 		internal ModelsEndpoint(OpenAIAPI api) : base(api) { }
+
+		/// <summary>
+		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Models"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal ModelsEndpoint(HttpClient httpClient, OpenAIAPI api) : base(httpClient, api) { }
 
 		/// <summary>
 		/// Get details about a particular Model from the API, specifically properties such as <see cref="Model.OwnedBy"/> and permissions.

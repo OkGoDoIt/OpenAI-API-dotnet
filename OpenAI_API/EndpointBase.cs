@@ -18,6 +18,8 @@ namespace OpenAI_API
 	{
 		private const string UserAgent = "okgodoit/dotnet_openai_api";
 
+		private HttpClient _httpClient;
+
 		/// <summary>
 		/// The internal reference to the API, mostly used for authentication
 		/// </summary>
@@ -30,6 +32,18 @@ namespace OpenAI_API
 		internal EndpointBase(OpenAIAPI api)
 		{
 			this._Api = api;
+		}
+
+		/// <summary>
+		/// Constructor of the api endpoint base, to be called from the contructor of any devived classes.
+		/// Rather than instantiating any endpoint yourself, access it through an instance of <see cref="OpenAIAPI"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal EndpointBase(HttpClient httpClient, OpenAIAPI api)
+		{
+			this._Api = api;
+			this._httpClient = httpClient;
 		}
 
 		/// <summary>
@@ -67,15 +81,17 @@ namespace OpenAI_API
 				_Api.SharedHttpClient.
 			}
 			*/
-
-			HttpClient client = new HttpClient();
-			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
+			
+			_httpClient ??= new HttpClient();
+			
+			_httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
 			// Further authentication-header used for Azure openAI service
-			client.DefaultRequestHeaders.Add("api-key", _Api.Auth.ApiKey);
-			client.DefaultRequestHeaders.Add("User-Agent", UserAgent);
-			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) client.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
+			_httpClient.DefaultRequestHeaders.Add("api-key", _Api.Auth.ApiKey);
+			_httpClient.DefaultRequestHeaders.Add("User-Agent", UserAgent);
+			if (!string.IsNullOrEmpty(_Api.Auth.OpenAIOrganization)) 
+				_httpClient.DefaultRequestHeaders.Add("OpenAI-Organization", _Api.Auth.OpenAIOrganization);
 
-			return client;
+			return _httpClient;
 		}
 
 		/// <summary>

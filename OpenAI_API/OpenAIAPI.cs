@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Chat;
+﻿using System.Net.Http;
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -48,6 +49,23 @@ namespace OpenAI_API
 		}
 
 		/// <summary>
+		/// Creates a new entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
+		/// </summary>
+		/// <param name="httpClient">The HttpClient to use while calling OpenAI's API. By injecting it, you can customize its behavior.</param>
+		/// <param name="apiKeys">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.</param>
+		public OpenAIAPI(HttpClient httpClient, APIAuthentication apiKeys = null)
+		{
+			this.Auth = apiKeys.ThisOrDefault();
+			Completions = new CompletionEndpoint(httpClient, this);
+			Models = new ModelsEndpoint(httpClient, this);
+			Files = new FilesEndpoint(httpClient, this);
+			Embeddings = new EmbeddingEndpoint(httpClient,this);
+			Chat = new ChatEndpoint(httpClient, this);
+			Moderation = new ModerationEndpoint(httpClient, this);
+			ImageGenerations = new ImageGenerationEndpoint(httpClient, this);
+		}
+
+		/// <summary>
 		/// Instantiates a version of the API for connecting to the Azure OpenAI endpoint instead of the main OpenAI endpoint.
 		/// </summary>
 		/// <param name="YourResourceName">The name of your Azure OpenAI Resource</param>
@@ -57,6 +75,22 @@ namespace OpenAI_API
 		public static OpenAIAPI ForAzure(string YourResourceName, string deploymentId, APIAuthentication apiKey = null)
 		{
 			OpenAIAPI api = new OpenAIAPI(apiKey);
+			api.ApiVersion = "2022-12-01";
+			api.ApiUrlFormat = $"https://{YourResourceName}.openai.azure.com/openai/deployments/{deploymentId}/" + "{1}?api-version={0}";
+			return api;
+		}
+
+		/// <summary>
+		/// Instantiates a version of the API for connecting to the Azure OpenAI endpoint instead of the main OpenAI endpoint.
+		/// </summary>
+		/// <param name="httpClient">The HttpClient to use while calling OpenAI's API. By injecting it, you can customize its behavior.</param>
+		/// <param name="YourResourceName">The name of your Azure OpenAI Resource</param>
+		/// <param name="deploymentId">The name of your model deployment. You're required to first deploy a model before you can make calls.</param>
+		/// <param name="apiKey">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.  Currently this library only supports the api-key flow, not the AD-Flow.</param>
+		/// <returns></returns>
+		public static OpenAIAPI ForAzure(HttpClient httpClient, string YourResourceName, string deploymentId, APIAuthentication apiKey = null)
+		{
+			OpenAIAPI api = new OpenAIAPI(httpClient, apiKey);
 			api.ApiVersion = "2022-12-01";
 			api.ApiUrlFormat = $"https://{YourResourceName}.openai.azure.com/openai/deployments/{deploymentId}/" + "{1}?api-version={0}";
 			return api;
