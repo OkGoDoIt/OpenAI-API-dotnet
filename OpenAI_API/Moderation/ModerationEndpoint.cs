@@ -1,6 +1,7 @@
 ﻿using OpenAI_API.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,6 +27,13 @@ namespace OpenAI_API.Moderation
 		/// </summary>
 		/// <param name="api"></param>
 		internal ModerationEndpoint(OpenAIAPI api) : base(api) { }
+
+		/// <summary>
+		/// Constructor of the api endpoint. Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Moderation"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal ModerationEndpoint(HttpClient httpClient, OpenAIAPI api) : base(httpClient, api) { }
 
 		/// <summary>
 		/// Ask the API to classify the text using the default model.

@@ -25,6 +25,7 @@ Console.WriteLine(result);
  * [Files API](#files-for-fine-tuning)
  * [Image APIs (DALL-E)](#images)
  * [Azure](#azure)
+ * [Customize the HTTP Client](#customize-the-http-client)
  * [Additonal Documentation](#documentation)
  * [License](#license)
 
@@ -276,6 +277,29 @@ OpenAIAPI api = OpenAIAPI.ForAzure("YourResourceName", "deploymentId", "api-key"
 
 You may then use the `api` object like normal.  You may also specify the `APIAuthentication` is any of the other ways listed in the [Authentication](#authentication) section above.  Currently this library only supports the api-key flow, not the AD-Flow.
 
+## Customize the HTTP Client
+
+You can customize the HttpClient used in the wrapper by specifing it in the constructor or in the `ForAzure` static method.
+```csharp
+builder.Services.AddHttpClient<OpenAiBusinessService>()
+    .SetHandlerLifetime(TimeSpan.FromMinutes(30))
+    .AddPolicyHandler(RetryPolicy.GetTooManyRequestRetryPolicy())
+```
+And then in your class 
+```csharp
+public class OpenAiBusinessService
+{
+    private readonly OpenAIAPI _azureOpenAiApiWrapper;
+    private readonly OpenAIAPI _openAiWrapper;
+
+    public OpenAiBusinessService(HttpClient httpClient)
+    {
+        _azureOpenAiApiWrapper = OpenAIAPI.ForAzure("resource", "deploymentId", "apiKey");
+        _openAiWrapper = new OpenAIAPI(httpClient, new APIAuthentication("apiKey"));
+
+    }
+}
+```
 ## Documentation
 
 Every single class, method, and property has extensive XML documentation, so it should show up automatically in IntelliSense.  That combined with the official OpenAI documentation should be enough to get started.  Feel free to open an issue here if you have any questions.  Better documentation may come later.

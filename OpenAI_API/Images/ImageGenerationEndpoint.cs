@@ -1,6 +1,7 @@
 ﻿using OpenAI_API.Models;
 using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -21,6 +22,13 @@ namespace OpenAI_API.Images
 		/// </summary>
 		/// <param name="api"></param>
 		internal ImageGenerationEndpoint(OpenAIAPI api) : base(api) { }
+
+		/// <summary>
+		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.ImageGenerations"/>.
+		/// </summary>
+		/// <param name="httpClient"></param>
+		/// <param name="api"></param>
+		internal ImageGenerationEndpoint(HttpClient httpClient, OpenAIAPI api)  : base(httpClient, api) { }
 
 		/// <summary>
 		/// Ask the API to Creates an image given a prompt.
