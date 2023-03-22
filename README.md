@@ -1,6 +1,8 @@
+[![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
+[![Discord](https://badgen.net/discord/online-members/ysrM6UF9gC)](https://discord.gg/ysrM6UF9gC)
 # C#/.NET SDK for accessing the OpenAI GPT-3 API, ChatGPT, and DALL-E 2
 
-A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API.  I am not affiliated with OpenAI and this library is not endorsed or supported by them.
+A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API. I am not affiliated with OpenAI and this library is not endorsed or supported by them. If you want to help out feel free to join our [Discord server](https://discord.gg/ysrM6UF9gC).
 
 ## Quick Example
 
@@ -13,7 +15,7 @@ Console.WriteLine(result);
 
 ## Readme
 
- * [Status](#Status)
+ * [Status](#status)
  * [Requirements](#requirements)
  * [Installation](#install-from-nuget)
  * [Authentication](#authentication)
@@ -29,7 +31,6 @@ Console.WriteLine(result);
  * [License](#license)
 
 ## Status
-[![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
 Added support for ChatGPT, DALLE 2 image generations, and the moderation endpoint.
 
