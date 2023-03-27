@@ -3,7 +3,7 @@
 using OpenAI_API;
 using OpenAI_API.Models;
 
-OpenAIAPI api = new OpenAIAPI("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");
+OpenAIAPI api = new OpenAIAPI("");
 var at = api.AudioTranscription;
 
 var trans = await at.CreateTranscriptionAsync(file: @"c:\temp\audio.mp3", model: Model.Whisper);
