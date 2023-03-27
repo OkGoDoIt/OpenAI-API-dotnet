@@ -154,13 +154,17 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model TextModerationLatest => new Model("text-moderation-latest") { OwnedBy = "openai" };
 
-
 		/// <summary>
-		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
+		/// 
 		/// </summary>
-		/// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
-		/// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
-		public async Task<Model> RetrieveModelDetailsAsync(OpenAI_API.OpenAIAPI api)
+        public static Model Whisper => new Model("whisper-1") { OwnedBy = "openai-internal" };
+
+        /// <summary>
+        /// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
+        /// </summary>
+        /// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
+        /// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
+        public async Task<Model> RetrieveModelDetailsAsync(OpenAI_API.OpenAIAPI api)
 		{
 			return await api.Models.RetrieveModelDetailsAsync(this.ModelID);
 		}

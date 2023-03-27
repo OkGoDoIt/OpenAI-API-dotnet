@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Chat;
+﻿using OpenAI_API.Audio;
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -45,6 +46,8 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			AudioTranscription = new AudioTranscriptionEndpoint(this);
+			AudioTranslation = new AudioTranslationEndpoint(this);
 		}
 
 		/// <summary>
@@ -97,5 +100,14 @@ namespace OpenAI_API
 		/// </summary>
 		public ImageGenerationEndpoint ImageGenerations { get; }
 
-	}
+		/// <summary>
+		/// 
+		/// </summary>
+        public AudioTranscriptionEndpoint AudioTranscription { get; }
+
+		/// <summary>
+		/// 
+		/// </summary>
+        public AudioTranslationEndpoint AudioTranslation { get; }
+    }
 }

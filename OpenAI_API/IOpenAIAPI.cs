@@ -1,3 +1,4 @@
+using OpenAI_API.Audio;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -46,5 +47,15 @@ namespace OpenAI_API
         /// The API lets you do operations with files. You can upload, delete or retrieve files. Files can be used for fine-tuning, search, etc.
         /// </summary>
         FilesEndpoint Files { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        AudioTranscriptionEndpoint AudioTranscription { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        AudioTranslationEndpoint AudioTranslation { get; }
     }
 }
