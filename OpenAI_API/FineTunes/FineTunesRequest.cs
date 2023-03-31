@@ -17,7 +17,7 @@ namespace OpenAI_API.FineTunes
         /// Additionally, you must upload your file with the purpose fine-tune.
         /// See the fine-tuning guide for more details.
         /// </summary>
-        [JsonProperty("training_file", Required= Required.Always)]
+        [JsonProperty("training_file", Required = Required.Always)]
         public string TrainingFile { get; set; }
 
 
@@ -32,8 +32,8 @@ namespace OpenAI_API.FineTunes
         /// is a JSON object with the keys "prompt" and "completion". 
         /// Additionally, you must upload your file with the purpose fine-tune.
         /// See the fine-tuning guide for more details
-                /// </summary>
-                [JsonProperty("validation_file")]
+        /// </summary>
+        [JsonProperty("validation_file")]
         public string ValidationFile { get; set; }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace OpenAI_API.FineTunes
         /// or a fine-tuned model created after 2022-04-21. 
         /// To learn more about these models, see the Models documentation.
         /// </summary>
-                [JsonProperty("model")]
+        [JsonProperty("model")]
         public Model Model { get; set; } = Model.CurieText;
 
         /// <summary>
