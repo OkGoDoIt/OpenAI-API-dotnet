@@ -336,8 +336,5 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
-# BeatPulse healthcheck temp database
-healthchecksdb
-/TestOpenAI_API/Program.cs
-/TestOpenAI_API/TestOpenAI_API.csproj
-/TestOpenAI_API/Program.cs
+#Ignora il programma di testing
+TestOpenAI_API

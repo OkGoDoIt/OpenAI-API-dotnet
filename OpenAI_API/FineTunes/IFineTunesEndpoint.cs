@@ -14,7 +14,6 @@ namespace OpenAI_API.FineTunes
 
         Task CreateFineTune();
 
-
         Task ListFineTunes();
 
         Task RetrieveFineTune();
