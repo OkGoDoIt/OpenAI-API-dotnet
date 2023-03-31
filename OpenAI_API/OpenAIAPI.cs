@@ -5,7 +5,7 @@ using OpenAI_API.Files;
 using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
-using System.Xml.Linq;
+using System.Net.Http;
 
 namespace OpenAI_API
 {
@@ -30,6 +30,11 @@ namespace OpenAI_API
 		/// The API authentication information to use for API calls
 		/// </summary>
 		public APIAuthentication Auth { get; set; }
+
+		/// <summary>
+		/// Optionally provide an IHttpClientFactory to create the client to send requests.
+		/// </summary>
+		public IHttpClientFactory HttpClientFactory { get; set; }
 
 		/// <summary>
 		/// Creates a new entry point to the OpenAPI API, handling auth and allowing access to the various API endpoints
@@ -96,6 +101,5 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. You can Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public ImageGenerationEndpoint ImageGenerations { get; }
-
 	}
 }
