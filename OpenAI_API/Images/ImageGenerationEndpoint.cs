@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace OpenAI_API.Images
 {
 	/// <summary>
-	/// Given a prompt and/or an input image, the model will generate a new image.
+	/// Given a prompt, the model will generate a new image.
 	/// </summary>
 	public class ImageGenerationEndpoint : EndpointBase, IImageGenerationEndpoint
 	{
