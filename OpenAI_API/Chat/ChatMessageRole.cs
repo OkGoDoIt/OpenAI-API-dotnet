@@ -94,7 +94,7 @@ namespace OpenAI_API.Chat
 		/// Gets the string value for this role to pass to the API
 		/// </summary>
 		/// <param name="value">The ChatMessageRole to convert</param>
-		public static implicit operator String(ChatMessageRole value) { return value; }
+		public static implicit operator String(ChatMessageRole value) { return value.Value; }
 
 		///// <summary>
 		///// Used during the Json serialization process
