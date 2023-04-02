@@ -33,7 +33,7 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Added support for ChatGPT, DALLE 2 image generations, and the moderation endpoint.
+Added support for GPT4, streaming conversations with ChatGPT, and supporting [`IHttpClientFactory`](#ihttpclientfactory).
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
@@ -290,19 +290,22 @@ Image edits and variations are not yet implemented.
 
 ## Azure
 
-For using the Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.  Additionally you may specify the Api version which defaults to `2022-12-01`.
+For using the Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.
 
 _I do not have access to the Microsoft Azure OpenAI service, so I am unable to test this functionality.  If you have access and can test, please submit an issue describing your results.  A PR with integration tests would also be greatly appreciated.  Specifically, it is unclear to me that specifying models works the same way with Azure._
 
-Refer the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference) for further information.
+Refer the [Azure OpenAI documentation](https://learn.microsoft.com/en-us/azure/cognitive-services/openai/reference) and [detailed screenshots in #64](https://github.com/OkGoDoIt/OpenAI-API-dotnet/issues/64#issuecomment-1479276020) for further information.
 
 Configuration should look something like this for the Azure service:
 
 ```csharp
 OpenAIAPI api = OpenAIAPI.ForAzure("YourResourceName", "deploymentId", "api-key");
+api.ApiVersion = "2023-03-15-preview"; // needed to access chat endpoint on Azure
 ```
 
 You may then use the `api` object like normal.  You may also specify the `APIAuthentication` is any of the other ways listed in the [Authentication](#authentication) section above.  Currently this library only supports the api-key flow, not the AD-Flow.
+
+As of April 2, 2023, you need to manually select api version `2023-03-15-preview` as shown above to access the chat endpoint on Azure.  Once this is out of preview I will update the default.
 
 ## IHttpClientFactory
 While this library does not fully support dependancy injection at this time, you may specify an `IHttpClientFactory` to be used for HTTP requests, which allows for tweaking http request properties, connection pooling, and mocking.  Details in [#103](https://github.com/OkGoDoIt/OpenAI-API-dotnet/pull/103).
