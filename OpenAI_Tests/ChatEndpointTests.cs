@@ -84,12 +84,14 @@ namespace OpenAI_Tests
 			Assert.IsNotEmpty(results.ToString());
 		}
 
-		[Test]
-		public void ChatBackAndForth()
+		[TestCase("gpt-3.5-turbo")]
+		[TestCase("gpt-4")]
+		public void ChatBackAndForth(string model)
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
 			var chat = api.Chat.CreateConversation();
+			chat.Model = model;
 
 			chat.AppendSystemMessage("You are a teacher who helps children understand if things are animals or not.  If the user tells you an animal, you say \"yes\".  If the user tells you something that is not an animal, you say \"no\".  You only ever respond with \"yes\" or \"no\".  You do not say anything else.");
 			chat.AppendUserInput("Is this an animal? Cat");
