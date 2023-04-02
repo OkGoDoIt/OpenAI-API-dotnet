@@ -40,7 +40,7 @@ namespace OpenAI_API.Chat
 		}
 
 		/// <summary>
-		/// After calling <see cref="GetResponseFromChatbot"/>, this contains the full response object which can contain useful metadata like token usages, <see cref="ChatChoice.FinishReason"/>, etc.  This is overwritten with every call to <see cref="GetResponseFromChatbot"/> and only contains the most recent result.
+		/// After calling <see cref="GetResponseFromChatbotAsync"/>, this contains the full response object which can contain useful metadata like token usages, <see cref="ChatChoice.FinishReason"/>, etc.  This is overwritten with every call to <see cref="GetResponseFromChatbotAsync"/> and only contains the most recent result.
 		/// </summary>
 		public ChatResult MostResentAPIResult { get; private set; }
 
@@ -117,7 +117,7 @@ namespace OpenAI_API.Chat
 		/// Calls the API to get a response, which is appended to the current chat's <see cref="Messages"/> as an <see cref="ChatMessageRole.Assistant"/> <see cref="ChatMessage"/>.
 		/// </summary>
 		/// <returns>The string of the response from the chatbot API</returns>
-		public async Task<string> GetResponseFromChatbot()
+		public async Task<string> GetResponseFromChatbotAsync()
 		{
 			ChatRequest req = new ChatRequest(RequestParameters);
 			req.Messages = _Messages.ToList();
@@ -133,6 +133,14 @@ namespace OpenAI_API.Chat
 			}
 			return null;
 		}
+
+		/// <summary>
+		/// OBSOLETE: GetResponseFromChatbot() has been renamed to <see cref="GetResponseFromChatbotAsync"/> to follow .NET naming guidelines.  This alias will be removed in a future version.
+		/// </summary>
+		/// <returns>The string of the response from the chatbot API</returns>
+		[Obsolete("Conversation.GetResponseFromChatbot() has been renamed to GetResponseFromChatbotAsync to follow .NET naming guidelines.  Please update any references to GetResponseFromChatbotAsync().  This alias will be removed in a future version.", false)]
+		public Task<string> GetResponseFromChatbot() => GetResponseFromChatbotAsync();
+
 
 		#endregion
 

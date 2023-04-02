@@ -35,7 +35,7 @@ Console.WriteLine(result);
 
 Added support for GPT4, streaming conversations with ChatGPT, and supporting [`IHttpClientFactory`](#ihttpclientfactory).
 
-Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
+Should work with the Azure OpenAI Service. See the [Azure](#azure) section for further details.
 
 Thank you [@babrekel](https://github.com/babrekel), [@JasonWei512](https://github.com/JasonWei512), [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), [@pandapknaepel](https://github.com/pandapknaepel), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
@@ -101,13 +101,13 @@ chat.AppendExampleChatbotOutput("No");
 // now let's ask it a question'
 chat.AppendUserInput("Is this an animal? Dog");
 // and get the response
-string response = await chat.GetResponseFromChatbot();
+string response = await chat.GetResponseFromChatbotAsync();
 Console.WriteLine(response); // "Yes"
 
 // and continue the conversation by asking another
 chat.AppendUserInput("Is this an animal? Chair");
 // and get another response
-response = await chat.GetResponseFromChatbot();
+response = await chat.GetResponseFromChatbotAsync();
 Console.WriteLine(response); // "No"
 
 // the entire chat history is available in chat.Messages
