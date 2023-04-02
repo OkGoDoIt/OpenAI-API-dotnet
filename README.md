@@ -18,6 +18,8 @@ Console.WriteLine(result);
  * [Installation](#install-from-nuget)
  * [Authentication](#authentication)
  * [ChatGPT API](#chatgpt)
+	* [Conversations](#chat-conversations)
+	* [Chat Endpoint](#chat-endpoint-requests)
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
@@ -35,7 +37,7 @@ Added support for ChatGPT, DALLE 2 image generations, and the moderation endpoin
 
 Now also should work with the Azure OpenAI Service, although this is untested. See the [Azure](#azure) section for further details.
 
-Thank you [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), [@pandapknaepel](https://github.com/pandapknaepel), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Thank you [@babrekel](https://github.com/babrekel), [@JasonWei512](https://github.com/JasonWei512), [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), [@pandapknaepel](https://github.com/pandapknaepel), and [@Alexei000](https://github.com/Alexei000) for your contributions!
 
 ## Requirements
 
@@ -126,22 +128,22 @@ chat.AppendUserInput("How to make a hamburger?");
 
 await foreach (var res in chat.StreamResponseEnumerableFromChatbotAsync())
 {
-    Console.Write(res);
+	Console.Write(res);
 }
 ```
 
-Or if using classic .NET framework or C# <8.0:
+Or if using classic .NET Framework or C# <8.0:
 ```csharp
 var chat = api.Chat.CreateConversation();
 chat.AppendUserInput("How to make a hamburger?");
 
 await chat.StreamResponseFromChatbotAsync(res =>
 {
-    Console.Write(res);
+	Console.Write(res);
 });
 ```
 
-#### Chat Endpoint Requests
+### Chat Endpoint Requests
 You can access full control of the Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
 
 ```csharp
@@ -301,6 +303,14 @@ OpenAIAPI api = OpenAIAPI.ForAzure("YourResourceName", "deploymentId", "api-key"
 ```
 
 You may then use the `api` object like normal.  You may also specify the `APIAuthentication` is any of the other ways listed in the [Authentication](#authentication) section above.  Currently this library only supports the api-key flow, not the AD-Flow.
+
+## IHttpClientFactory
+While this library does not fully support dependancy injection at this time, you may specify an `IHttpClientFactory` to be used for HTTP requests, which allows for tweaking http request properties, connection pooling, and mocking.  Details in [#103](https://github.com/OkGoDoIt/OpenAI-API-dotnet/pull/103).
+
+```csharp
+OpenAIAPI api = new OpenAIAPI();
+api.HttpClientFactory = myIHttpClientFactoryObject;
+```
 
 ## Documentation
 
