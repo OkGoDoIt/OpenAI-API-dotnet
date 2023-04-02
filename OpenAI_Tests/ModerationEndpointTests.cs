@@ -49,7 +49,7 @@ namespace OpenAI_Tests
 
             Assert.IsNotNull(api.Moderation);
 
-            var results = api.Moderation.CallModerationAsync(new ModerationRequest("I want to kill them.")).Result;
+            var results = api.Moderation.CallModerationAsync("I want to kill them.").Result;
             Assert.IsNotNull(results);
             if (results.CreatedUnixTime.HasValue)
             {
