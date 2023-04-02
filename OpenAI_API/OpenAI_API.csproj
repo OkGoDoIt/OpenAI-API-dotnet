@@ -17,9 +17,9 @@
 			Added support for GPT4, streaming conversations with ChatGPT, IHttpClientFactory, and numerous bug fixes.
 		</PackageReleaseNotes>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.7</Version>
-		<AssemblyVersion>1.7.0.0</AssemblyVersion>
-		<FileVersion>1.7.0.0</FileVersion>
+		<Version>1.7.1</Version>
+		<AssemblyVersion>1.7.1.0</AssemblyVersion>
+		<FileVersion>1.7.1.0</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
@@ -34,6 +34,14 @@
 		<Deterministic>true</Deterministic>
 
 	</PropertyGroup>
+
+	<PropertyGroup>
+		<PackageIcon>nuget_logo.png</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<None Include="nuget_logo.png" Pack="true" PackagePath="\" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="..\README.md">
