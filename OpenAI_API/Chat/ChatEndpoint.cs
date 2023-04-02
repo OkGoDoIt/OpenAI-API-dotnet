@@ -32,10 +32,11 @@ namespace OpenAI_API.Chat
 		/// <summary>
 		/// Creates an ongoing chat which can easily encapsulate the conversation.  This is the simplest way to use the Chat endpoint.
 		/// </summary>
+		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  See <see href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI documentation for a list of possible parameters to tweak.</see></param>
 		/// <returns></returns>
-		public Conversation CreateConversation()
+		public Conversation CreateConversation(ChatRequest defaultChatRequestArgs = null)
 		{
-			return new Conversation(this, defaultChatRequestArgs: DefaultChatRequestArgs);
+			return new Conversation(this, defaultChatRequestArgs: defaultChatRequestArgs ?? DefaultChatRequestArgs);
 		}
 
 		#region Non-streaming

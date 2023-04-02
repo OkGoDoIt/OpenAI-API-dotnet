@@ -49,7 +49,7 @@ namespace OpenAI_API.Chat
 		/// </summary>
 		/// <param name="endpoint">A reference to the API endpoint, needed for API requests.  Generally should be <see cref="OpenAIAPI.Chat"/>.</param>
 		/// <param name="model">Optionally specify the model to use for ChatGPT requests.  If not specified, used <paramref name="defaultChatRequestArgs"/>.Model or falls back to <see cref="OpenAI_API.Models.Model.ChatGPTTurbo"/></param>
-		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  <see href="https://platform.openai.com/docs/api-reference/chat/create">Se  OpenAI documentation for a list of possible parameters to tweak.</see></param>
+		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  See <see href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI documentation for a list of possible parameters to tweak.</see></param>
 		public Conversation(ChatEndpoint endpoint, OpenAI_API.Models.Model model = null, ChatRequest defaultChatRequestArgs = null)
 		{
 			RequestParameters = new ChatRequest(defaultChatRequestArgs);
@@ -102,6 +102,8 @@ namespace OpenAI_API.Chat
 		/// <param name="content">Text content written by a developer to help give examples of desired behavior</param>
 		public void AppendExampleChatbotOutput(string content) => this.AppendMessage(new ChatMessage(ChatMessageRole.Assistant, content));
 
+		#region Non-streaming
+
 		/// <summary>
 		/// Calls the API to get a response, which is appended to the current chat's <see cref="Messages"/> as an <see cref="ChatMessageRole.Assistant"/> <see cref="ChatMessage"/>.
 		/// </summary>
@@ -117,11 +119,15 @@ namespace OpenAI_API.Chat
 			if (res.Choices.Count > 0)
 			{
 				var newMsg = res.Choices[0].Message;
-				AppendMessage(res.Choices[0].Message);
-				return res.Choices[0].Message.Content;
+				AppendMessage(newMsg);
+				return newMsg.Content;
 			}
 			return null;
 		}
+
+		#endregion
+
+		#region Streaming
 
 		/// <summary>
 		/// Calls the API to get a response, which is appended to the current chat's <see cref="Messages"/> as an <see cref="ChatMessageRole.Assistant"/> <see cref="ChatMessage"/>, and streams the results to the <paramref name="resultHandler"/> as they come in. <br/>
@@ -133,6 +139,20 @@ namespace OpenAI_API.Chat
 			await foreach (string res in StreamResponseEnumerableFromChatbotAsync())
 			{
 				resultHandler(res);
+			}
+		}
+
+		/// <summary>
+		/// Calls the API to get a response, which is appended to the current chat's <see cref="Messages"/> as an <see cref="ChatMessageRole.Assistant"/> <see cref="ChatMessage"/>, and streams the results to the <paramref name="resultHandler"/> as they come in. <br/>
+		/// If you are on the latest C# supporting async enumerables, you may prefer the cleaner syntax of <see cref="StreamResponseEnumerableFromChatbotAsync"/> instead.
+		///  </summary>
+		/// <param name="resultHandler">An action to be called as each new result arrives, which includes the index of the result in the overall result set.</param>
+		public async Task StreamResponseFromChatbotAsync(Action<int, string> resultHandler)
+		{
+			int index = 0;
+			await foreach (string res in StreamResponseEnumerableFromChatbotAsync())
+			{
+				resultHandler(index++, res);
 			}
 		}
 
@@ -153,7 +173,9 @@ namespace OpenAI_API.Chat
 			{
 				if (res.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
 				{
-					responseRole = delta.Role;
+					if (delta.Role != null)
+						responseRole = delta.Role;
+
 					string deltaContent = delta.Content;
 
 					if (!string.IsNullOrEmpty(deltaContent))
@@ -162,6 +184,7 @@ namespace OpenAI_API.Chat
 						yield return deltaContent;
 					}
 				}
+				MostResentAPIResult = res;
 			}
 
 			if (responseRole != null)
@@ -169,5 +192,7 @@ namespace OpenAI_API.Chat
 				AppendMessage(responseRole, responseStringBuilder.ToString());
 			}
 		}
+
+		#endregion
 	}
 }

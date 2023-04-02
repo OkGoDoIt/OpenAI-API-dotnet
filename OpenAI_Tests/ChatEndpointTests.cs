@@ -106,11 +106,6 @@ namespace OpenAI_Tests
 			Assert.NotNull(res);
 			Assert.IsNotEmpty(res);
 			Assert.AreEqual("No", res.Trim());
-
-			foreach (ChatMessage msg in chat.Messages)
-			{
-				Console.WriteLine($"{msg.Role}: {msg.Content}");
-			}
 		}
 
 		[Test]
@@ -138,6 +133,38 @@ namespace OpenAI_Tests
 
 			Assert.Greater(chatResults.Count, 100);
 			Assert.That(chatResults.Select(cr => cr.Choices[0].Delta.Content).Count(c => !string.IsNullOrEmpty(c)) > 50);
+		}
+
+		[Test]
+		public async Task StreamingConversation()
+		{
+			var api = new OpenAI_API.OpenAIAPI();
+
+			var chat = api.Chat.CreateConversation();
+			chat.RequestParameters.MaxTokens = 500;
+			chat.RequestParameters.Temperature = 0.2;
+			chat.Model = Model.ChatGPTTurbo;
+
+			chat.AppendSystemMessage("You are a helpful assistant who is really good at explaining things to students.");
+			chat.AppendUserInput("Please explain to me how mountains are formed in great detail.");
+
+			string result = "";
+			int streamParts = 0;
+
+			await foreach (var streamResultPart in chat.StreamResponseEnumerableFromChatbotAsync())
+			{
+				result += streamResultPart;
+				streamParts++;
+			}
+
+			Assert.NotNull(result);
+			Assert.IsNotEmpty(result);
+			Assert.That(result.ToLower().Contains("mountains"));
+			Assert.Greater(result.Length, 200);
+			Assert.Greater(streamParts, 5);
+
+			Assert.AreEqual(ChatMessageRole.User, chat.Messages.Last().Role);
+			Assert.AreEqual(result, chat.Messages.Last().Content);
 		}
 
 	}
