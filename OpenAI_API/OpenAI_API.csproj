@@ -14,12 +14,12 @@
 		<PackageTags>OpenAI, AI, ML, API, ChatGPT, DALLE, GPT3, GPT-3, GPT4, GPT-4, DALL-E</PackageTags>
 		<Title>OpenAI API</Title>
 		<PackageReleaseNotes>
-			Added support for GPT4, streaming conversations with ChatGPT, IHttpClientFactory, and numerous bug fixes.
+			Added support for GPT4, streaming conversations with ChatGPT, IHttpClientFactory, and various bug fixes.
 		</PackageReleaseNotes>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.7.1</Version>
-		<AssemblyVersion>1.7.1.0</AssemblyVersion>
-		<FileVersion>1.7.1.0</FileVersion>
+		<Version>1.7.2</Version>
+		<AssemblyVersion>1.7.2.0</AssemblyVersion>
+		<FileVersion>1.7.2.0</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
