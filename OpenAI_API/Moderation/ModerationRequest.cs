@@ -2,6 +2,7 @@
 using OpenAI_API.Models;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 
@@ -22,8 +23,27 @@ namespace OpenAI_API.Moderation
 		/// <summary>
 		/// The input text to classify
 		/// </summary>
+		[JsonIgnore]
+		public string Input
+		{
+			get
+			{
+				if (Inputs == null)
+					return null;
+				else
+					return Inputs.FirstOrDefault();
+			}
+			set
+			{
+				Inputs = new string[] { value };
+			}
+		}
+
+		/// <summary>
+		/// An array of inputs to classify
+		/// </summary>
 		[JsonProperty("input")]
-		public string Input { get; set; }
+		public string[] Inputs { get; set; }
 
 		/// <summary>
 		/// Cretes a new, empty <see cref="ModerationRequest"/>
@@ -45,13 +65,24 @@ namespace OpenAI_API.Moderation
 		}
 
 		/// <summary>
-		/// Creates a new <see cref="ModerationRequest"/> with the specified input and the <see cref="Model.TextModerationLatest"/> model.
+		/// Creates a new <see cref="ModerationRequest"/> with the specified parameters
 		/// </summary>
-		/// <param name="input">The prompt to classify</param>
-		public ModerationRequest(string input)
+		/// <param name="inputs">An array of prompts to classify</param>
+		/// <param name="model">The model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync()"/> to see all of your available models, or use a standard model like <see cref="Model.TextModerationLatest"/>.</param>
+		public ModerationRequest(string[] inputs, Model model)
+		{
+			Model = model;
+			this.Inputs = inputs;
+		}
+
+		/// <summary>
+		/// Creates a new <see cref="ModerationRequest"/> with the specified input(s) and the <see cref="Model.TextModerationLatest"/> model.
+		/// </summary>
+		/// <param name="input">One or more prompts to classify</param>
+		public ModerationRequest(params string[] input)
 		{
 			Model = OpenAI_API.Models.Model.TextModerationLatest;
-			this.Input = input;
+			this.Inputs = input;
 		}
 	}
 }

@@ -53,5 +53,11 @@ namespace OpenAI_API.Chat
 		/// </summary>
 		[JsonProperty("content")]
 		public string Content { get; set; }
+
+		/// <summary>
+		/// An optional name of the user in a multi-user chat 
+		/// </summary>
+		[JsonProperty("name")]
+		public string Name { get; set; }
 	}
 }
