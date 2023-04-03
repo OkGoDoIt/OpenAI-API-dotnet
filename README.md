@@ -277,9 +277,9 @@ The DALL-E Image Generation API is accessed via `OpenAIAPI.ImageGenerations`:
 async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
 
 // for example
-var result = await api.Images.CreateImageAsync(new ImageGenerationRequest("A drawing of a computer writing a test", 1, ImageSize._512));
+var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A drawing of a computer writing a test", 1, ImageSize._512));
 // or
-var result = await api.Images.CreateImageAsync("A drawing of a computer writing a test");
+var result = await api.ImageGenerations.CreateImageAsync("A drawing of a computer writing a test");
 
 Console.WriteLine(result.Data[0].Url);
 ```
