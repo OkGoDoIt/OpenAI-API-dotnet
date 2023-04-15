@@ -42,7 +42,7 @@ namespace OpenAI_API.Chat
 		/// <summary>
 		/// After calling <see cref="GetResponseFromChatbotAsync"/>, this contains the full response object which can contain useful metadata like token usages, <see cref="ChatChoice.FinishReason"/>, etc.  This is overwritten with every call to <see cref="GetResponseFromChatbotAsync"/> and only contains the most recent result.
 		/// </summary>
-		public ChatResult MostResentAPIResult { get; private set; }
+		public ChatResult MostRecentApiResult { get; private set; }
 
 		/// <summary>
 		/// Creates a new conversation with ChatGPT chat
@@ -123,7 +123,7 @@ namespace OpenAI_API.Chat
 			req.Messages = _Messages.ToList();
 
 			var res = await _endpoint.CreateChatCompletionAsync(req);
-			MostResentAPIResult = res;
+			MostRecentApiResult = res;
 
 			if (res.Choices.Count > 0)
 			{
@@ -201,7 +201,7 @@ namespace OpenAI_API.Chat
 						yield return deltaContent;
 					}
 				}
-				MostResentAPIResult = res;
+				MostRecentApiResult = res;
 			}
 
 			if (responseRole != null)
