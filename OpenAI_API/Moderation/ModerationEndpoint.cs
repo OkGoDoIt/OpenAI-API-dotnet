@@ -45,7 +45,7 @@ namespace OpenAI_API.Moderation
 		/// <returns>Asynchronously returns the classification result</returns>
 		public async Task<ModerationResult> CallModerationAsync(ModerationRequest request)
 		{
-			return await HttpPost<ModerationResult>(postData: request);
+			return await HttpPostAsync<ModerationResult>(postData: request);
 		}
 	}
 }

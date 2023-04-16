@@ -163,7 +163,7 @@ namespace OpenAI_API
 		/// Tests the api key against the OpenAI API, to ensure it is valid.  This hits the models endpoint so should not be charged for usage.
 		/// </summary>
 		/// <returns><see langword="true"/> if the api key is valid, or <see langword="false"/> if empty or not accepted by the OpenAI API.</returns>
-		public async Task<bool> ValidateAPIKey()
+		public async Task<bool> ValidateAPIKeyAsync()
 		{
 			if (string.IsNullOrEmpty(ApiKey))
 				return false;

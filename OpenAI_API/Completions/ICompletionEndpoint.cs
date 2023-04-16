@@ -123,13 +123,13 @@ namespace OpenAI_API.Completions
         /// </summary>
         /// <param name="request">The request to send to the API.  This does not fall back to default values specified in <see cref="DefaultCompletionRequestArgs"/>.</param>
         /// <returns>A string of the prompt followed by the best completion</returns>
-        Task<string> CreateAndFormatCompletion(CompletionRequest request);
+        Task<string> CreateAndFormatCompletionAsync(CompletionRequest request);
 
         /// <summary>
         /// Simply returns the best completion
         /// </summary>
         /// <param name="prompt">The prompt to complete</param>
         /// <returns>The best completion</returns>
-        Task<string> GetCompletion(string prompt);
+        Task<string> GetCompletionAsync(string prompt);
     }
 }

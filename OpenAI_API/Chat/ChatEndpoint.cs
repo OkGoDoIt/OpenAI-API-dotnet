@@ -48,7 +48,7 @@ namespace OpenAI_API.Chat
 		/// <returns>Asynchronously returns the completion result. Look in its <see cref="ChatResult.Choices"/> property for the results.</returns>
 		public async Task<ChatResult> CreateChatCompletionAsync(ChatRequest request)
 		{
-			return await HttpPost<ChatResult>(postData: request);
+			return await HttpPostAsync<ChatResult>(postData: request);
 		}
 
 		/// <summary>
@@ -168,7 +168,7 @@ namespace OpenAI_API.Chat
 		public IAsyncEnumerable<ChatResult> StreamChatEnumerableAsync(ChatRequest request)
 		{
 			request = new ChatRequest(request) { Stream = true };
-			return HttpStreamingRequest<ChatResult>(Url, HttpMethod.Post, request);
+			return HttpStreamingRequestAsync<ChatResult>(Url, HttpMethod.Post, request);
 		}
 
 		/// <summary>

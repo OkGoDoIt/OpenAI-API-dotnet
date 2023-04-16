@@ -29,7 +29,7 @@ namespace OpenAI_API.Files
 		/// <exception cref="HttpRequestException"></exception>
 		public async Task<List<File>> GetFilesAsync()
 		{
-			return (await HttpGet<FilesData>()).Data;
+			return (await HttpGetAsync<FilesData>()).Data;
 		}
 
 		/// <summary>
@@ -39,7 +39,7 @@ namespace OpenAI_API.Files
 		/// <returns></returns>
 		public async Task<File> GetFileAsync(string fileId)
 		{
-			return await HttpGet<File>($"{Url}/{fileId}");
+			return await HttpGetAsync<File>($"{Url}/{fileId}");
 		}
 
 
@@ -50,7 +50,7 @@ namespace OpenAI_API.Files
 		/// <returns></returns>
 		public async Task<string> GetFileContentAsStringAsync(string fileId)
 		{
-			return await HttpGetContent<File>($"{Url}/{fileId}/content");
+			return await HttpGetContentAsync<File>($"{Url}/{fileId}/content");
 		}
 
 		/// <summary>
@@ -60,7 +60,7 @@ namespace OpenAI_API.Files
 		/// <returns></returns>
 		public async Task<File> DeleteFileAsync(string fileId)
 		{
-			return await HttpDelete<File>($"{Url}/{fileId}");
+			return await HttpDeleteAsync<File>($"{Url}/{fileId}");
 		}
 
 
@@ -77,7 +77,7 @@ namespace OpenAI_API.Files
 				{ new ByteArrayContent(System.IO.File.ReadAllBytes(filePath)), "file", Path.GetFileName(filePath) }
 			};
 
-			return await HttpPost<File>(Url, content);
+			return await HttpPostAsync<File>(Url, content);
 		}
 
 		/// <summary>
