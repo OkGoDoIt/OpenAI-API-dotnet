@@ -67,6 +67,20 @@ namespace OpenAI_API
 			return api;
 		}
 
+        /// <summary>
+        /// Instantiate an API version for connecting to a custom OpenAI endpoint instead of the main OpenAI endpoint.
+        /// </summary>
+        /// <param name="host">Custom host</param>
+        /// <param name="apiKey">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.  Currently this library only supports the api-key flow, not the AD-Flow.</param>
+        /// <returns></returns>
+        public static OpenAIAPI ForCustomHost(string host, APIAuthentication apiKey = null) {
+            OpenAIAPI api = new OpenAIAPI(apiKey) {
+                ApiUrlFormat = $"https://{host}/" + "{0}/{1}"
+            };
+
+            return api;
+        }
+
 		/// <summary>
 		/// Text generation is the core function of the API. You give the API a prompt, and it generates a completion. The way you “program” the API to do a task is by simply describing the task in plain english or providing a few written examples. This simple approach works for a wide range of use cases, including summarization, translation, grammar correction, question answering, chatbots, composing emails, and much more (see the prompt library for inspiration).
 		/// </summary>
