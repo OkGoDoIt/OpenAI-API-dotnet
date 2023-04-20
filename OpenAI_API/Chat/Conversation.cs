@@ -190,7 +190,7 @@ namespace OpenAI_API.Chat
 			{
 				if (res.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
 				{
-					if (delta.Role != null)
+					if (responseRole == null && delta.Role != null)
 						responseRole = delta.Role;
 
 					string deltaContent = delta.Content;
