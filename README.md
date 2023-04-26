@@ -26,6 +26,7 @@ Console.WriteLine(result);
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
  * [Image APIs (DALL-E)](#images)
+ * [Audio](#Audio)
  * [Azure](#azure)
  * [Additonal Documentation](#documentation)
  * [License](#license)
