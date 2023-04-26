@@ -294,7 +294,6 @@ namespace OpenAI_API
 		}
 
 
-
 		/*
 		/// <summary>
 		/// Sends an HTTP request and handles a streaming response.  Does basic line splitting and error handling.
