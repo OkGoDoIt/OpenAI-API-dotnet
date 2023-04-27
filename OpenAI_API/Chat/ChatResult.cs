@@ -1,14 +1,12 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OpenAI_API.Chat
 {
-	/// <summary>
-	/// Represents a result from calling the Chat API
-	/// </summary>
-	public class ChatResult : ApiResultBase
+    /// <summary>
+    /// Represents a result from calling the Chat API
+    /// </summary>
+    public class ChatResult : ApiResultBase
 	{
 		/// <summary>
 		/// The identifier of the result, which may be used during troubleshooting

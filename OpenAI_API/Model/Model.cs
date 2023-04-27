@@ -164,6 +164,10 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model TextModerationLatest => new Model("text-moderation-latest") { OwnedBy = "openai" };
 
+		/// <summary>
+		/// Whisper model. This model generates transcript from audio.
+		/// </summary>
+		public static Model Whisper_1 => new Model("whisper-1") { OwnedBy = "openai" };
 
 		/// <summary>
 		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.

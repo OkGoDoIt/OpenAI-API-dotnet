@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Chat;
+﻿using OpenAI_API.Audio;
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -50,6 +51,7 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			Audio = new AudioEndpoint(this);
 		}
 
 		/// <summary>
@@ -101,5 +103,10 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public IImageGenerationEndpoint ImageGenerations { get; }
+
+		/// <summary>
+		/// Manages audio operations such as transcipt,translate.
+		/// </summary>
+		public IAudioEndpoint Audio { get; }
 	}
 }
