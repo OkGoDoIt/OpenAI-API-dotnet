@@ -19,12 +19,31 @@ namespace OpenAI_API.Audio
         /// <summary>
         /// Audio endpoint.
         /// </summary>
-        protected override string Endpoint { get { return "audio/transcriptions"; } }
+        protected override string Endpoint { get { return "audio"; } }
 
         /// <summary>
         /// Sends transcript request to openai and returns verbose_json result.
         /// </summary>
         public Task<TranscriptionVerboseJsonResult> CreateTranscriptionAsync(TranscriptionRequest request)
+        {
+            return PostAudioAsync($"{Url}/transcriptions", request);
+        }
+
+        /// <summary>
+        /// Translates audio into English.
+        /// </summary>
+        public Task<TranscriptionVerboseJsonResult> CreateTranslationAsync(TranslationRequest request) 
+        {
+            return PostAudioAsync($"{Url}/translations",new TranscriptionRequest { 
+                File = request.File,
+                Model = request.Model,
+                Prompt = request.Prompt,
+                ResponseFormat = request.ResponseFormat,
+                Temperature = request.Temperature}
+            );
+        }
+
+        private Task<TranscriptionVerboseJsonResult> PostAudioAsync(string url, TranscriptionRequest request)
         {
             var content = new MultipartFormDataContent();
 
@@ -48,21 +67,7 @@ namespace OpenAI_API.Audio
             if (!IsNullOrWhiteSpace(request.Language))
                 content.Add(new StringContent(request.Language), "language");
 
-            return HttpPost<TranscriptionVerboseJsonResult>(postData: content);
-        }
-
-        /// <summary>
-        /// Translates audio into into English.
-        /// </summary>
-        public Task<TranscriptionVerboseJsonResult> CreateTranslationAsync(TranslationRequest request) 
-        {
-            return CreateTranscriptionAsync(new TranscriptionRequest { 
-                File = request.File,
-                Model = request.Model,
-                Prompt = request.Prompt,
-                ResponseFormat = request.ResponseFormat,
-                Temperature = request.Temperature}
-            );
+            return HttpPost<TranscriptionVerboseJsonResult>(url, postData: content);
         }
 
         private bool IsNullOrWhiteSpace(string str) => string.IsNullOrWhiteSpace(str);
