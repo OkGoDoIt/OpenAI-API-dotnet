@@ -26,6 +26,7 @@ Console.WriteLine(result);
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
  * [Image APIs (DALL-E)](#images)
+ * [Audio](#Audio)
  * [Azure](#azure)
  * [Additonal Documentation](#documentation)
  * [License](#license)
@@ -287,6 +288,23 @@ Console.WriteLine(result.Data[0].Url);
 The image result contains a URL for an online image or a base64-encoded image, depending on the ImageGenerationRequest.ResponseFormat (url is the default).
 
 Image edits and variations are not yet implemented.
+
+### Audio
+The audio API endpoint is accessed via `OpenAIAPI.Audio`:
+
+```csharp
+///Transcript
+Task<TranscriptionVerboseJsonResult> CreateTranscriptionAsync(TranscriptionRequest request);
+
+///Translate
+Task<TranscriptionVerboseJsonResult> CreateTranslationAsync(TranslationRequest request);
+
+//for example
+var request = new TranscriptionRequest { File = new AudioFile { File = new FileStream(TEST_FILE_NAME, FileMode.Open), Name = TEST_FILE_NAME, ContentType = "audio/mp3" } };
+var result = await api.Audio.CreateTranscriptionAsync(request);
+
+Console.WriteLine(result.Text);
+```
 
 ## Azure
 
