@@ -50,6 +50,7 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			ImageEdit= new ImageEditEndpoint(this);
 		}
 
 		/// <summary>
@@ -100,6 +101,11 @@ namespace OpenAI_API
 		/// <summary>
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
-		public IImageGenerationEndpoint ImageGenerations { get; }
-	}
+        public IImageGenerationEndpoint ImageGenerations { get; }
+
+        /// <summary>
+        /// The API lets you do operations with images. Given a prompt and an input image, the model will edit a new image.
+        /// </summary>
+        public IImageEditEndpoint ImageEdit { get; }
+    }
 }

@@ -1,10 +1,13 @@
 ﻿using Newtonsoft.Json;
+using OpenAI_API.Moderation;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Net.Mime;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
@@ -119,21 +122,35 @@ namespace OpenAI_API
 
 			if (postData != null)
 			{
-				if (postData is HttpContent)
-				{
-					req.Content = postData as HttpContent;
-				}
-				else
-				{
-					string jsonContent = JsonConvert.SerializeObject(postData, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
-					var stringContent = new StringContent(jsonContent, UnicodeEncoding.UTF8, "application/json");
-					req.Content = stringContent;
-				}
-			}
-			response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
+                if (postData is HttpContent)
+                {
+                    req.Content = postData as HttpContent;
+                    response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
+                }
+                else if (postData is OpenAI_API.Images.ImageEditRequest)
+                {
+                    var data = postData as Images.ImageEditRequest;
+                    byte[] byes_array = File.ReadAllBytes(data.Image);
 
-			if (response.IsSuccessStatusCode)
-			{
+                    MultipartFormDataContent formData = new MultipartFormDataContent
+                    {
+                        { new ByteArrayContent(byes_array, 0, byes_array.Length), "image", "image.png"},
+                        { new StringContent(data.Prompt), "prompt" },
+                    };
+
+                    response = await client.PostAsync(url, formData);
+                }
+                else
+                {
+                    string jsonContent = JsonConvert.SerializeObject(postData, new JsonSerializerSettings() { NullValueHandling = NullValueHandling.Ignore });
+                    var stringContent = new StringContent(jsonContent, UnicodeEncoding.UTF8, "application/json");
+                    req.Content = stringContent;
+                    response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
+                }
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
 				return response;
 			}
 			else
