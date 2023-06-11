@@ -164,13 +164,22 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model TextModerationLatest => new Model("text-moderation-latest") { OwnedBy = "openai" };
 
+		/// <summary>
+		/// A specialized model in GTP-3 series, that can be used to edit the text. Provide some text and an instruction, and the model will attempt to modify it accordingly.
+		/// </summary>
+		public static Model TextDavinciEdit => new Model("text-davinci-edit-001") { OwnedBy = "openai" };
 
 		/// <summary>
-		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
+		/// A specialized model in Codex series, that can be used to edit the code. Provide some code and an instruction, and the model will attempt to modify it accordingly.
 		/// </summary>
-		/// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
-		/// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
-		public async Task<Model> RetrieveModelDetailsAsync(OpenAI_API.OpenAIAPI api)
+        public static Model CodeDavinciEdit => new Model("code-davinci-edit-001") { OwnedBy = "openai" };
+
+        /// <summary>
+        /// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
+        /// </summary>
+        /// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
+        /// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
+        public async Task<Model> RetrieveModelDetailsAsync(OpenAI_API.OpenAIAPI api)
 		{
 			return await api.Models.RetrieveModelDetailsAsync(this.ModelID);
 		}

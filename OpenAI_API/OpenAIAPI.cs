@@ -1,11 +1,13 @@
 ﻿using OpenAI_API.Chat;
 using OpenAI_API.Completions;
+using OpenAI_API.Edits;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
 using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
 using System.Net.Http;
+using static System.Net.WebRequestMethods;
 
 namespace OpenAI_API
 {
@@ -50,6 +52,7 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			Edit = new EditEndpoint(this);
 		}
 
 		/// <summary>
@@ -101,5 +104,10 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public IImageGenerationEndpoint ImageGenerations { get; }
-	}
+
+        /// <summary>
+        /// This API lets you edit the prompt. Given a prompt and instruction, this will return an edited version of the prompt. <see href="https://platform.openai.com/docs/api-reference/edits"/>
+        /// </summary>
+        public IEditEndpoint Edit { get; }
+    }
 }
