@@ -1,8 +1,7 @@
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using OpenAI_API.Completions;
 
 namespace OpenAI_API.Chat
 {
@@ -16,7 +15,7 @@ namespace OpenAI_API.Chat
 		/// The model to use for this request
 		/// </summary>
 		[JsonProperty("model")]
-		public string Model { get; set; } = OpenAI_API.Models.Model.ChatGPTTurbo;
+		public string Model { get; set; } = Models.Model.ChatGPTTurbo;
 
 		/// <summary>
 		/// The messages to send with this Chat Request
@@ -46,7 +45,7 @@ namespace OpenAI_API.Chat
 		/// Specifies where the results should stream and be returned at one time.  Do not set this yourself, use the appropriate methods on <see cref="CompletionEndpoint"/> instead.
 		/// </summary>
 		[JsonProperty("stream")]
-		public bool Stream { get; internal set; } = false;
+		public bool Stream { get; internal set; }
 
 		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
@@ -77,7 +76,7 @@ namespace OpenAI_API.Chat
 		[JsonIgnore]
 		public string StopSequence
 		{
-			get => MultipleStopSequences?.FirstOrDefault() ?? null;
+			get => MultipleStopSequences?.FirstOrDefault();
 			set
 			{
 				if (value != null)

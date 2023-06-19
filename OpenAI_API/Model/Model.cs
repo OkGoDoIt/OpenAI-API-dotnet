@@ -230,6 +230,9 @@ namespace OpenAI_API.Models
 		[JsonProperty("allow_search_indices")]
 		public bool AllowSearchIndices { get; set; }
 
+		/// <summary>
+		/// Does the model allow viewing?
+		/// </summary>
 		[JsonProperty("allow_view")]
 		public bool AllowView { get; set; }
 
@@ -252,6 +255,9 @@ namespace OpenAI_API.Models
 		[JsonProperty("group")]
 		public string Group { get; set; }
 
+		/// <summary>
+		/// Is the model allowed to be used for blocking? May not be implemented yet.
+		/// </summary>
 		[JsonProperty("is_blocking")]
 		public bool IsBlocking { get; set; }
 	}
