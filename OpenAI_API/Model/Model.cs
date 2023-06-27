@@ -137,6 +137,11 @@ namespace OpenAI_API.Models
 		/// Most capable GPT-3.5 model and optimized for chat at 1/10th the cost of text-davinci-003. Will be updated with the latest model iteration.
 		/// </summary>
 		public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
+		
+		/// <summary>
+		/// Same capabilities as the base gpt-3.5-turbo mode but with 4x the context length. Will be updated with the latest model iteration.
+		/// </summary>
+		public static Model ChatGPTTurbo_16k => new Model("gpt-3.5-turbo-16k") { OwnedBy = "openai" };
 
 		/// <summary>
 		/// Snapshot of gpt-3.5-turbo from March 1st 2023. Unlike gpt-3.5-turbo, this model will not receive updates, and will only be supported for a three month period ending on June 1st 2023.
