@@ -14,16 +14,16 @@ namespace OpenAI_API.Embedding
 		[JsonProperty("model")]
 		public string Model { get; set; }
 
-		/// <summary>
-		/// Main text to be embedded
-		/// </summary>
-		[JsonProperty("input")]
-		public string Input { get; set; }
+        /// <summary>
+        /// Main text to be embedded
+        /// </summary>
+        [JsonProperty("input")]
+        public object Input { get; set; }
 
-		/// <summary>
-		/// Cretes a new, empty <see cref="EmbeddingRequest"/>
-		/// </summary>
-		public EmbeddingRequest()
+        /// <summary>
+        /// Cretes a new, empty <see cref="EmbeddingRequest"/>
+        /// </summary>
+        public EmbeddingRequest()
 		{
 
 		}
@@ -38,15 +38,33 @@ namespace OpenAI_API.Embedding
 			Model = model;
 			this.Input = input;
 		}
-
-		/// <summary>
-		/// Creates a new <see cref="EmbeddingRequest"/> with the specified input and the <see cref="Model.AdaTextEmbedding"/> model.
-		/// </summary>
-		/// <param name="input">The prompt to transform</param>
-		public EmbeddingRequest(string input)
+        /// <summary>
+        /// Creates a new <see cref="EmbeddingRequest"/> with the specified parameters
+        /// </summary>
+        /// <param name="model">The model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync()"/> to see all of your available models, or use a standard model like <see cref="Model.AdaTextEmbedding"/>.</param>
+        /// <param name="batchInput">The prompt to transform</param>
+        public EmbeddingRequest(Model model, string[] batchInput)
+        {
+            Model = model;
+            Input = batchInput;
+        }
+        /// <summary>
+        /// Creates a new <see cref="EmbeddingRequest"/> with the specified input and the <see cref="Model.AdaTextEmbedding"/> model.
+        /// </summary>
+        /// <param name="input">The prompt to transform</param>
+        public EmbeddingRequest(string input)
 		{
 			Model = OpenAI_API.Models.Model.AdaTextEmbedding;
 			this.Input = input;
 		}
-	}
+        /// <summary>
+        /// Creates a new <see cref="EmbeddingRequest"/> with the specified input and the <see cref="Model.AdaTextEmbedding"/> model.
+        /// </summary>
+        /// <param name="batchInput">The prompt to transform</param>
+        public EmbeddingRequest(string[] batchInput)
+        {
+            Model = OpenAI_API.Models.Model.AdaTextEmbedding;
+            Input = batchInput;
+        }
+    }
 }
