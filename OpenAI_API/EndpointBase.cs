@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
@@ -192,12 +193,30 @@ namespace OpenAI_API
 			var res = JsonConvert.DeserializeObject<T>(resultAsString);
 			try
 			{
-				res.Organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
-				res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
-				res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
-				res.OpenaiVersion = response.Headers.GetValues("Openai-Version").FirstOrDefault();
+				response.Headers.TryGetHeaderEntry("Openai-Organization", headerEntry =>
+				{
+					res.Organization = headerEntry.FirstOrDefault();
+				});
+				response.Headers.TryGetHeaderEntry("X-Request-ID", headerEntry =>
+				{
+					res.RequestId = headerEntry.FirstOrDefault();
+				});
+				response.Headers.TryGetHeaderEntry("Openai-Processing-Ms", headerEntry =>
+				{
+					res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(headerEntry.FirstOrDefault() ?? "0"));
+				});
+				response.Headers.TryGetHeaderEntry("Openai-Version", headerEntry =>
+				{
+					res.OpenaiVersion = headerEntry.FirstOrDefault();
+				});
+
 				if (string.IsNullOrEmpty(res.Model))
-					res.Model = response.Headers.GetValues("Openai-Model").FirstOrDefault();
+				{
+					response.Headers.TryGetHeaderEntry("Openai-Model", headerEntry =>
+					{
+						res.Model = headerEntry.FirstOrDefault();
+					});
+				}
 			}
 			catch (Exception e)
 			{
@@ -329,7 +348,6 @@ namespace OpenAI_API
 		}
 		*/
 
-
 		/// <summary>
 		/// Sends an HTTP request and handles a streaming response.  Does basic line splitting and error handling.
 		/// </summary>
@@ -350,11 +368,26 @@ namespace OpenAI_API
 
 			try
 			{
-				organization = response.Headers.GetValues("Openai-Organization").FirstOrDefault();
-				requestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
-				processingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
-				openaiVersion = response.Headers.GetValues("Openai-Version").FirstOrDefault();
-				modelFromHeaders = response.Headers.GetValues("Openai-Model").FirstOrDefault();
+				response.Headers.TryGetHeaderEntry("Openai-Organization", headerEntry =>
+				{
+					organization = headerEntry.FirstOrDefault();
+				});
+				response.Headers.TryGetHeaderEntry("X-Request-ID", headerEntry =>
+				{
+					requestId = headerEntry.FirstOrDefault();
+				});
+				response.Headers.TryGetHeaderEntry("Openai-Processing-Ms", headerEntry =>
+				{
+					processingTime = TimeSpan.FromMilliseconds(int.Parse(headerEntry.FirstOrDefault() ?? "0"));
+				});
+				response.Headers.TryGetHeaderEntry("Openai-Version", headerEntry =>
+				{
+					openaiVersion = headerEntry.FirstOrDefault();
+				});
+				response.Headers.TryGetHeaderEntry("Openai-Model", headerEntry =>
+				{
+					modelFromHeaders = headerEntry.FirstOrDefault();
+				});
 			}
 			catch (Exception e)
 			{
@@ -396,6 +429,27 @@ namespace OpenAI_API
 						yield return res;
 					}
 				}
+			}
+		}
+	}
+	
+	/// <summary>
+	/// Utilities for the HTTP response
+	/// </summary>
+	internal static class HttpResponseUtils
+	{
+		/// <summary>
+		/// Util method to try parsing the header with the given key and perform the action onto the values if the
+		/// header exists.
+		/// </summary>
+		/// <param name="headers"></param>
+		/// <param name="headerKey"></param>
+		/// <param name="action"></param>
+		public static void TryGetHeaderEntry(this HttpResponseHeaders headers, string headerKey, System.Action<System.Collections.Generic.IEnumerable<string>> action)
+		{
+			if (headers.TryGetValues(headerKey, out var testValue))
+			{
+				action(testValue);
 			}
 		}
 	}
