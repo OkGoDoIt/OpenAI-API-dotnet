@@ -118,6 +118,11 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model DavinciText => new Model("text-davinci-003") { OwnedBy = "openai" };
 
+        /// <summary>
+        /// Similar capabilities to text-davinci-003 but trained with supervised fine-tuning instead of reinforcement learning
+        /// </summary>
+        public static Model DavinciText002 => new Model("text-davinci-002") { OwnedBy = "openai" };
+
 		/// <summary>
 		/// Almost as capable as Davinci Codex, but slightly faster. This speed advantage may make it preferable for real-time applications.
 		/// </summary>
