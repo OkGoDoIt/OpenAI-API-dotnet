@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Chat;
+﻿using OpenAI_API.Audio;
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -50,16 +51,17 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
-		}
+            AudioSpeech = new AudioSpeechEndpoint(this);
+        }
 
-		/// <summary>
-		/// Instantiates a version of the API for connecting to the Azure OpenAI endpoint instead of the main OpenAI endpoint.
-		/// </summary>
-		/// <param name="YourResourceName">The name of your Azure OpenAI Resource</param>
-		/// <param name="deploymentId">The name of your model deployment. You're required to first deploy a model before you can make calls.</param>
-		/// <param name="apiKey">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.  Currently this library only supports the api-key flow, not the AD-Flow.</param>
-		/// <returns></returns>
-		public static OpenAIAPI ForAzure(string YourResourceName, string deploymentId, APIAuthentication apiKey = null)
+        /// <summary>
+        /// Instantiates a version of the API for connecting to the Azure OpenAI endpoint instead of the main OpenAI endpoint.
+        /// </summary>
+        /// <param name="YourResourceName">The name of your Azure OpenAI Resource</param>
+        /// <param name="deploymentId">The name of your model deployment. You're required to first deploy a model before you can make calls.</param>
+        /// <param name="apiKey">The API authentication information to use for API calls, or <see langword="null"/> to attempt to use the <see cref="APIAuthentication.Default"/>, potentially loading from environment vars or from a config file.  Currently this library only supports the api-key flow, not the AD-Flow.</param>
+        /// <returns></returns>
+        public static OpenAIAPI ForAzure(string YourResourceName, string deploymentId, APIAuthentication apiKey = null)
 		{
 			OpenAIAPI api = new OpenAIAPI(apiKey);
 			api.ApiVersion = "2022-12-01";
@@ -101,5 +103,10 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public IImageGenerationEndpoint ImageGenerations { get; }
-	}
+    
+		/// <summary>
+        /// The API lets you create speech. Given a prompt, the model will generate an audio file.
+        /// </summary>
+        public IAudioSpeechEndpoint AudioSpeech { get; }
+    }
 }
