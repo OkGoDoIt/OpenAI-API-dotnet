@@ -207,7 +207,25 @@ namespace OpenAI_API
 			return res;
 		}
 
-		/*
+        /// <summary>
+        /// Sends an HTTP Request and does initial parsing
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ApiResultBase"/>-derived class for the result</typeparam>
+        /// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
+        /// <param name="verb">(optional) The HTTP verb to use, for example "<see cref="HttpMethod.Get"/>".  If omitted, then "GET" is assumed.</param>
+        /// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
+        /// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
+        /// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
+        private async Task<byte[]> ByteDataHttpRequest(string url = null, HttpMethod verb = null, object postData = null)
+        {
+            var response = await HttpRequestRaw(url, verb, postData);
+            Stream byteStream = await response.Content.ReadAsStreamAsync();
+            byte[] streamBytes = new byte[byteStream.Length];
+            byteStream.Read(streamBytes, 0, (int)byteStream.Length);
+            return streamBytes;
+        }
+
+        /*
 		/// <summary>
 		/// Sends an HTTP Request, supporting a streaming response
 		/// </summary>
@@ -241,14 +259,14 @@ namespace OpenAI_API
 		}
 		*/
 
-		/// <summary>
-		/// Sends an HTTP Get request and does initial parsing
-		/// </summary>
-		/// <typeparam name="T">The <see cref="ApiResultBase"/>-derived class for the result</typeparam>
-		/// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
-		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
-		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		internal async Task<T> HttpGet<T>(string url = null) where T : ApiResultBase
+        /// <summary>
+        /// Sends an HTTP Get request and does initial parsing
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ApiResultBase"/>-derived class for the result</typeparam>
+        /// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
+        /// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
+        /// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
+        internal async Task<T> HttpGet<T>(string url = null) where T : ApiResultBase
 		{
 			return await HttpRequest<T>(url, HttpMethod.Get);
 		}
@@ -266,15 +284,28 @@ namespace OpenAI_API
 			return await HttpRequest<T>(url, HttpMethod.Post, postData);
 		}
 
-		/// <summary>
-		/// Sends an HTTP Delete request and does initial parsing
-		/// </summary>
-		/// <typeparam name="T">The <see cref="ApiResultBase"/>-derived class for the result</typeparam>
-		/// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
-		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
-		/// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
-		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
-		internal async Task<T> HttpDelete<T>(string url = null, object postData = null) where T : ApiResultBase
+        /// <summary>
+        /// Sends an HTTP Post request and does initial parsing
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ApiResultBase"/>-derived class for the result</typeparam>
+        /// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
+        /// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
+        /// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
+        /// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
+        internal async Task<byte[]> ByteDataHttpPost(string url = null, object postData = null)
+        {
+            return await ByteDataHttpRequest(url, HttpMethod.Post, postData);
+        }
+
+        /// <summary>
+        /// Sends an HTTP Delete request and does initial parsing
+        /// </summary>
+        /// <typeparam name="T">The <see cref="ApiResultBase"/>-derived class for the result</typeparam>
+        /// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
+        /// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
+        /// <returns>An awaitable Task with the parsed result of type <typeparamref name="T"/></returns>
+        /// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned or if the result couldn't be parsed.</exception>
+        internal async Task<T> HttpDelete<T>(string url = null, object postData = null) where T : ApiResultBase
 		{
 			return await HttpRequest<T>(url, HttpMethod.Delete, postData);
 		}

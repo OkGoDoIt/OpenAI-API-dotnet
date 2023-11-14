@@ -6,6 +6,9 @@ using System.Text;
 
 namespace OpenAI_API.Audio
 {
+    /// <summary>
+    /// Represents a request to the audio speech endpoint
+    /// </summary>
     public class AudioSpeechRequest
     {
         /// <summary>

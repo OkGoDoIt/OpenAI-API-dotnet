@@ -2,9 +2,25 @@
 
 namespace OpenAI_API.Audio
 {
+    /// <summary>
+    /// Interface for the Audio Speech endpoint
+    /// </summary>
     public interface IAudioSpeechEndpoint
     {
-        Task<AudioSpeechResult> CreateSpeechAsync(AudioSpeechModel model, string input, AudioSpeechVoice voice);
-        Task<AudioSpeechResult> CreateSpeechAsync(AudioSpeechRequest request);
+        /// <summary>
+        /// Creates a speech from the given input.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <param name="input"></param>
+        /// <param name="voice"></param>
+        /// <returns></returns>
+        Task<byte[]> CreateSpeechAsync(AudioSpeechModel model, string input, AudioSpeechVoice voice);
+
+        /// <summary>
+        /// Creates a speech from the given input.
+        /// </summary>
+        /// <param name="request"></param>
+        /// <returns></returns>
+        Task<byte[]> CreateSpeechAsync(AudioSpeechRequest request);
     }
 }

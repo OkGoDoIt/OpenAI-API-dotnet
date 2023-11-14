@@ -29,7 +29,7 @@ namespace OpenAI_API.Audio
         /// <param name="input">The text to generate audio for. The maximum length is 4096 characters.</param>
         /// <param name="voice">The voice to use when generating the audio. Supported voices are alloy, echo, fable, onyx, nova, and shimmer.</param>
         /// <returns>Asynchronously returns the image result. Look in its <see cref="Data.Url"/> </returns>
-        public async Task<AudioSpeechResult> CreateSpeechAsync(AudioSpeechModel model,
+        public async Task<byte[]> CreateSpeechAsync(AudioSpeechModel model,
             string input,
             AudioSpeechVoice voice)
         {
@@ -42,9 +42,9 @@ namespace OpenAI_API.Audio
         /// </summary>
         /// <param name="request">Request to be send</param>
         /// <returns>Asynchronously returns the image result. Look in its <see cref="Data.Url"/> </returns>
-        public async Task<AudioSpeechResult> CreateSpeechAsync(AudioSpeechRequest request)
+        public async Task<byte[]> CreateSpeechAsync(AudioSpeechRequest request)
         {
-            return await HttpPost<AudioSpeechResult>(postData: request);
+            return await ByteDataHttpPost(postData: request);
         }
 
     }
