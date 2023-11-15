@@ -52,6 +52,8 @@ namespace OpenAI_API
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
             AudioSpeech = new AudioSpeechEndpoint(this);
+			AudioTranslation = new AudioTranslationEndpoint(this);
+			AudioTranscription = new AudioTranscriptionEndpoint(this);
         }
 
         /// <summary>
@@ -108,5 +110,15 @@ namespace OpenAI_API
         /// The API lets you create speech. Given a prompt, the model will generate an audio file.
         /// </summary>
         public IAudioSpeechEndpoint AudioSpeech { get; }
+
+        /// <summary>
+        /// The API lets you create speech. Given a prompt, the model will generate an audio file.
+        /// </summary>
+        public IAudioTranslationEndpoint AudioTranslation { get; }
+
+        /// <summary>
+        /// The API lets you create speech. Given a prompt, the model will generate an audio file.
+        /// </summary>
+        public IAudioTranscriptionEndpoint AudioTranscription { get; }
     }
 }
