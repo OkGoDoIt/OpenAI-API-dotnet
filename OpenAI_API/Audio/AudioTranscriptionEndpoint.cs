@@ -102,35 +102,7 @@ namespace OpenAI_API.Audio
             {
                 throw new ArgumentNullException(nameof(request.fileData));
             }
-            MultipartFormDataContent audioContent = new MultipartFormDataContent
-            {
-                {  new ByteArrayContent(request.fileData), "file", $"audio.{request.fileFormat}" }
-            };
-            if (audioContent != null)
-            {
-                if (request.model==null)
-                {
-                    request.model = OpenAI_API.Audio.AudioTransModel.Whisper1;
-                }
-                audioContent.Add(new StringContent(request.model), "model");
-
-                if (request.language!=null)
-                {
-                    audioContent.Add(new StringContent(request.language), "language");
-                }
-                if (!string.IsNullOrEmpty(request.prompt))
-                {
-                    audioContent.Add(new StringContent(request.prompt), "prompt");
-                }
-                if (request.response_format!=null)
-                {
-                    audioContent.Add(new StringContent(request.response_format), "response_format");
-                }
-                if (request.temperature != null)
-                {
-                    audioContent.Add(new StringContent(((float)request.temperature).ToString()), "temperature");
-                }
-            }
+            var audioContent = request.GetMultipartFormDataContent();
             return await StringHttpRequest(postData: audioContent, verb: HttpMethod.Post);
         }
 

@@ -5,6 +5,9 @@ using System.Text;
 
 namespace OpenAI_API.Audio
 {
+    /// <summary>
+    /// Represents available models for audio translation and transcription endpoints
+    /// </summary>
     public class AudioTransModel
     {
         private AudioTransModel(string value) { Value = value; }

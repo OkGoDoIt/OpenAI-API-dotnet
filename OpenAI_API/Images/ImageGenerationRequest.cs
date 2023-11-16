@@ -18,11 +18,22 @@ namespace OpenAI_API.Images
 		[JsonProperty("prompt")]
 		public string Prompt { get; set; }
 
-		/// <summary>
-		/// How many different choices to request for each prompt.  Defaults to 1.
-		/// </summary>
-		[JsonProperty("n")]
+        /// <summary>
+        /// The model to use for generating the images.  Defaults to <see cref="ImageModel.Dalle2"/>.  See <see cref="ImageModel"/> for more information.
+        /// </summary>
+        [JsonProperty("model")]
+        public ImageModel Model { get; set; }
+
+        /// <summary>
+        /// How many different choices to request for each prompt.  Defaults to 1.
+        /// </summary>
+        [JsonProperty("n")]
 		public int? NumOfImages { get; set; } = 1;
+
+		/// <summary>
+		/// The quality of the generated images. Defaults to <see cref="ImageQuality.Standard"/>.
+		/// </summary>
+		public ImageQuality Quality { get; set; }
 
 		/// <summary>
 		/// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. Optional.
@@ -31,10 +42,16 @@ namespace OpenAI_API.Images
 		public string User { get; set; }
 
 		/// <summary>
-		/// The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024. Defauls to 1024x1024
+		/// The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024. Dall-e 3 expands this to 1792x1024 and 1024x1792. Defauls to 1024x1024
 		/// </summary>
 		[JsonProperty("size"), JsonConverter(typeof(ImageSize.ImageSizeJsonConverter))]
 		public ImageSize Size { get; set; }
+
+		/// <summary>
+		/// The style of the generated images. Defaults to <see cref="ImageStyle.Vivid"/>.
+		/// </summary>
+		[JsonProperty("style"), JsonConverter(typeof(ImageStyle.ImageStyleJsonConverter))]
+		public ImageStyle Style { get; set; }
 
 		/// <summary>
 		/// The format in which the generated images are returned. Must be one of url or b64_json. Defaults to Url.
@@ -63,13 +80,19 @@ namespace OpenAI_API.Images
 			int? numOfImages = 1,
 			ImageSize size = null,
 			string user = null,
-			ImageResponseFormat responseFormat = null)
+			ImageResponseFormat responseFormat = null,
+			ImageModel model = null,
+			ImageQuality quality = null,
+			ImageStyle style = null)
 		{
 			this.Prompt = prompt;
 			this.NumOfImages = numOfImages;
 			this.User = user;
 			this.Size = size ?? ImageSize._1024;
 			this.ResponseFormat = responseFormat ?? ImageResponseFormat.Url;
+			this.Model = model ?? ImageModel.Dalle2;
+			this.Quality = quality ?? ImageQuality.Standard;
+			this.Style = style ?? ImageStyle.Vivid;
 		}
 
 	}

@@ -26,17 +26,23 @@ namespace OpenAI_API.Images
 		/// Requests and image that is 1024x1024
 		/// </summary>
 		public static ImageSize _1024 { get { return new ImageSize("1024x1024"); } }
+        /// <summary>
+        /// Requests and image that is 1792x1024 (Dall-e 3)
+        /// </summary>
+        public static ImageSize _1792Landscape { get { return new ImageSize("1792x1024"); } }
+        /// <summary>
+        /// Requests and image that is 1024x1792 (Dall-e 3)
+        /// </summary>
+        public static ImageSize _1792Portrait { get { return new ImageSize("1024x1792"); } }
 
-		/// <summary>
-		/// Gets the string value for this size to pass to the API
-		/// </summary>
-		/// <returns>The size as a string</returns>
-		public override string ToString()
+        /// <summary>
+        /// Gets the string value for this size to pass to the API
+        /// </summary>
+        /// <returns>The size as a string</returns>
+        public override string ToString()
 		{
 			return Value;
 		}
-
-
 
 		/// <summary>
 		/// Gets the string value for this size to pass to the API
