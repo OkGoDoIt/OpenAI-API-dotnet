@@ -84,11 +84,26 @@ namespace OpenAI_API.Images
             var content = new MultipartFormDataContent();
 
             content.Add(new ByteArrayContent(Image), "image", "image.png");
-            content.Add(new StringContent(NumOfImages.ToString()), "n");
-            content.Add(new StringContent(Model.ToString()), "model");
-            content.Add(new StringContent(Size.ToString()), "size");
-            content.Add(new StringContent(ResponseFormat.ToString()), "response_format");
-            content.Add(new StringContent(User), "user");
+            if (NumOfImages != null)
+            {
+                content.Add(new StringContent(NumOfImages.ToString()), "n");
+            }
+            if (Model != null)
+            {
+                content.Add(new StringContent(Model.ToString()), "model");
+            }
+            if (Size != null)
+            {
+                content.Add(new StringContent(Size.ToString()), "size");
+            }
+            if (ResponseFormat != null)
+            {
+                content.Add(new StringContent(ResponseFormat.ToString()), "response_format");
+            }
+            if (!string.IsNullOrWhiteSpace(User))
+            {
+                content.Add(new StringContent(User), "user");
+            }
 
             return content;
         }

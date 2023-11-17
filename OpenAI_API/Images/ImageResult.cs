@@ -51,5 +51,11 @@ namespace OpenAI_API.Images
 		[JsonProperty("b64_json")]
 		public string Base64Data { get; set; }
 
-	}
+        /// <summary>
+        /// A revised prompt that can be used to generate a new image
+        /// </summary>
+        [JsonProperty("revised_prompt")]
+        public string RevisedPrompt { get; set; }
+
+    }
 }

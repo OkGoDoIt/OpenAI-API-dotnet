@@ -51,6 +51,8 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			ImageEdits = new ImageEditEndpoint(this);
+			ImageVariations = new ImageVariationEndpoint(this);
             AudioSpeech = new AudioSpeechEndpoint(this);
 			AudioTranslation = new AudioTranslationEndpoint(this);
 			AudioTranscription = new AudioTranscriptionEndpoint(this);
@@ -105,6 +107,16 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public IImageGenerationEndpoint ImageGenerations { get; }
+
+		/// <summary>
+		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
+		/// </summary>
+		public IImageEditEndpoint ImageEdits { get; }
+
+		/// <summary>
+		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
+		/// </summary>
+		public IImageVariationEndpoint ImageVariations { get; }
     
 		/// <summary>
         /// The API lets you create speech. Given a prompt, the model will generate an audio file.

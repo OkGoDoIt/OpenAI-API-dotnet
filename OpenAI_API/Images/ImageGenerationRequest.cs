@@ -18,10 +18,10 @@ namespace OpenAI_API.Images
 		[JsonProperty("prompt")]
 		public string Prompt { get; set; }
 
-        /// <summary>
-        /// The model to use for generating the images.  Defaults to <see cref="ImageModel.Dalle2"/>.  See <see cref="ImageModel"/> for more information.
-        /// </summary>
-        [JsonProperty("model")]
+		/// <summary>
+		/// The model to use for generating the images.  Defaults to <see cref="ImageModel.Dalle2"/>.  See <see cref="ImageModel"/> for more information.
+		/// </summary>
+		[JsonProperty("model"), JsonConverter(typeof(ImageModel.ImageModelJsonConverter))]
         public ImageModel Model { get; set; }
 
         /// <summary>
@@ -33,7 +33,8 @@ namespace OpenAI_API.Images
 		/// <summary>
 		/// The quality of the generated images. Defaults to <see cref="ImageQuality.Standard"/>.
 		/// </summary>
-		public ImageQuality Quality { get; set; }
+		[JsonProperty("quality"), JsonConverter(typeof(ImageQuality.ImageQualityJsonConverter))]
+        public ImageQuality Quality { get; set; }
 
 		/// <summary>
 		/// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse. Optional.

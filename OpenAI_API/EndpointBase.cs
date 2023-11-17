@@ -132,7 +132,25 @@ namespace OpenAI_API
 			}
 			response = await client.SendAsync(req, streaming ? HttpCompletionOption.ResponseHeadersRead : HttpCompletionOption.ResponseContentRead);
 
-			if (response.IsSuccessStatusCode)
+            if (response.StatusCode == (System.Net.HttpStatusCode)200 &&
+                                !response.Headers.Contains("Openai-Organization"))
+            {
+                response.Headers.Add("Openai-Organization", "dummy");
+                response.Headers.Add("Openai-Version", "dummy");
+				if (!response.Headers.Contains("Openai-Model"))
+				{
+                    response.Headers.Add("Openai-Model", "dummy");
+                }
+
+                float ms = 1;
+				if (response.Headers.Contains("Openai-Processing-Ms"))
+				{
+					ms = float.Parse(response.Headers.GetValues("Openai-Processing-Ms").First());
+                    response.Headers.Remove("Openai-Processing-Ms");
+                }
+                response.Headers.Add("Openai-Processing-Ms", ((int)ms).ToString());
+            }
+            if (response.IsSuccessStatusCode)
 			{
 				return response;
 			}
@@ -171,7 +189,7 @@ namespace OpenAI_API
 		internal async Task<string> HttpGetContent<T>(string url = null)
 		{
 			var response = await HttpRequestRaw(url);
-			return await response.Content.ReadAsStringAsync();
+            return await response.Content.ReadAsStringAsync();
 		}
 
 
@@ -187,7 +205,7 @@ namespace OpenAI_API
 		private async Task<T> HttpRequest<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
 		{
 			var response = await HttpRequestRaw(url, verb, postData);
-			string resultAsString = await response.Content.ReadAsStringAsync();
+            string resultAsString = await response.Content.ReadAsStringAsync();
 
 			var res = JsonConvert.DeserializeObject<T>(resultAsString);
 			try
@@ -196,8 +214,10 @@ namespace OpenAI_API
 				res.RequestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
 				res.ProcessingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
 				res.OpenaiVersion = response.Headers.GetValues("Openai-Version").FirstOrDefault();
-				if (string.IsNullOrEmpty(res.Model))
+				if (string.IsNullOrEmpty(res.Model) && response.Headers.Contains("Openai-Model"))
+				{
 					res.Model = response.Headers.GetValues("Openai-Model").FirstOrDefault();
+				}
 			}
 			catch (Exception e)
 			{
@@ -395,7 +415,14 @@ namespace OpenAI_API
 				requestId = response.Headers.GetValues("X-Request-ID").FirstOrDefault();
 				processingTime = TimeSpan.FromMilliseconds(int.Parse(response.Headers.GetValues("Openai-Processing-Ms").First()));
 				openaiVersion = response.Headers.GetValues("Openai-Version").FirstOrDefault();
-				modelFromHeaders = response.Headers.GetValues("Openai-Model").FirstOrDefault();
+				if (string.IsNullOrEmpty(modelFromHeaders) && response.Headers.Contains("Openai-Model"))
+				{
+					modelFromHeaders = response.Headers.GetValues("Openai-Model").FirstOrDefault();
+				}
+				else
+				{
+					modelFromHeaders = "unknown";
+				}
 			}
 			catch (Exception e)
 			{

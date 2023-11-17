@@ -13,7 +13,7 @@ namespace OpenAI_API.Images
         /// <summary>
         /// The name of the endpoint, which is the final path segment in the API URL.  For example, "image".
         /// </summary>
-        protected override string Endpoint { get { return "images/edits"; } }
+        protected override string Endpoint { get { return "images/variations"; } }
 
         /// <summary>
         /// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.ImageGenerations"/>.
