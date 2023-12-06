@@ -6,20 +6,18 @@
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<Authors>OkGoDoIt (Roger Pincombe)</Authors>
 		<Product>OpenAI API</Product>
-		<Description>A simple C# / .NET library to use with OpenAI's GPT-3 API, as well as ChatGPT, GPT-4, DALL·E, etc.  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI or Azure OpenAI account is required.</Description>
+		<Description>A simple C# / .NET library to use with OpenAI's APIs, including GPT 3.5, GPT 4, ChatGPT, DALL-E, etc.  Independently developed, this is not an official library and I am not affiliated with OpenAI.  An OpenAI or Azure OpenAI account is required.</Description>
 		<Copyright>This library is licensed CC-0, in the public domain</Copyright>
 		<PackageLicenseExpression>CC0-1.0</PackageLicenseExpression>
 		<PackageProjectUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</PackageProjectUrl>
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API, ChatGPT, DALLE, GPT3, GPT-3, GPT4, GPT-4, DALL-E</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>
-			Added support for GPT4, streaming conversations with ChatGPT, IHttpClientFactory, and various bug fixes.
-		</PackageReleaseNotes>
+		<PackageReleaseNotes>Added and updated models as of December 6, 2023, including the new GPT 4 Turbo and DALL-E 3.  (Support for vision, text-to-speech, and all the new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.)</PackageReleaseNotes>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.7.2</Version>
-		<AssemblyVersion>1.7.2.0</AssemblyVersion>
-		<FileVersion>1.7.2.0</FileVersion>
+		<Version>1.8</Version>
+		<AssemblyVersion>1.8.0.0</AssemblyVersion>
+		<FileVersion>1.8.0.0</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
@@ -48,10 +46,6 @@
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>
 		</None>
-	</ItemGroup>
-	
-	<ItemGroup>
-		<InternalsVisibleTo Include="OpenAI_Tests" />
 	</ItemGroup>
 
 	<ItemGroup>

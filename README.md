@@ -1,4 +1,4 @@
-# C#/.NET SDK for accessing the OpenAI API's, including GPT-3.5/4, GPT-3.5/4-Turbo, and DALL-E 2/3
+# C#/.NET SDK for accessing the OpenAI APIs, including GPT-3.5/4, GPT-3.5/4-Turbo, and DALL-E 2/3
 
 A simple C# .NET wrapper library to use with OpenAI's API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API.  I am not affiliated with OpenAI and this library is not endorsed or supported by them.
 
@@ -33,7 +33,7 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Added and updated models as of December 6, 2023, including the new GPT 4 Turbo and DALLE-3.  Support for vision, text-to-speech, and all the new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
+Added and updated models as of December 6, 2023, including the new GPT 4 Turbo and DALL-E 3.  Support for vision, text-to-speech, and all the new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
 
 ## Requirements
 
