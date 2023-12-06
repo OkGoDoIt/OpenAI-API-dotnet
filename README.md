@@ -1,14 +1,14 @@
-# C#/.NET SDK for accessing the OpenAI GPT-3 API, ChatGPT, and DALL-E 2
+# C#/.NET SDK for accessing the OpenAI API's, including GPT-3.5/4, GPT-3.5/4-Turbo, and DALL-E 2/3
 
-A simple C# .NET wrapper library to use with OpenAI's GPT-3 API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API.  I am not affiliated with OpenAI and this library is not endorsed or supported by them.
+A simple C# .NET wrapper library to use with OpenAI's API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API.  I am not affiliated with OpenAI and this library is not endorsed or supported by them.
 
 ## Quick Example
 
 ```csharp
 var api = new OpenAI_API.OpenAIAPI("YOUR_API_KEY");
-var result = await api.Completions.GetCompletion("One Two Three One Two");
+var result = await api.Chat.CreateChatCompletionAsync("Hello!");
 Console.WriteLine(result);
-// should print something starting with "Three"
+// should print something like "Hi! How can I help you?"
 ```
 
 ## Readme
@@ -33,11 +33,7 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Added support for GPT4, streaming conversations with ChatGPT, and supporting [`IHttpClientFactory`](#ihttpclientfactory).
-
-Should work with the Azure OpenAI Service. See the [Azure](#azure) section for further details.
-
-Thank you [@babrekel](https://github.com/babrekel), [@JasonWei512](https://github.com/JasonWei512), [@GotMike](https://github.com/gotmike), [@megalon](https://github.com/megalon), [@stonelv](https://github.com/stonelv), [@ncface](https://github.com/ncface), [@KeithHenry](https://github.com/KeithHenry), [@gmilano](https://github.com/gmilano), [@metjuperry](https://github.com/metjuperry), [@pandapknaepel](https://github.com/pandapknaepel), and [@Alexei000](https://github.com/Alexei000) for your contributions!
+Added and updated models as of December 6, 2023, including the new GPT 4 Turbo and DALLE-3.  Support for vision, text-to-speech, and all the new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
 
 ## Requirements
 
@@ -81,13 +77,15 @@ You may optionally include an openAIOrganization (OPENAI_ORGANIZATION in env or 
 OpenAIAPI api = new OpenAIAPI(new APIAuthentication("YOUR_API_KEY","org-yourOrgHere"));
 ```
 
-### ChatGPT
+### Chat API
 The Chat API is accessed via `OpenAIAPI.Chat`.  There are two ways to use the Chat Endpoint, either via simplified conversations or with the full Request/Response methods.
 
 #### Chat Conversations
 The Conversation Class allows you to easily interact with ChatGPT by adding messages to a chat and asking ChatGPT to reply.
 ```csharp
 var chat = api.Chat.CreateConversation();
+chat.Model = Model.GPT4_Turbo;
+chat.RequestParameters.Temperature = 0;
 
 /// give instruction as System
 chat.AppendSystemMessage("You are a teacher who helps children understand if things are animals or not.  If the user tells you an animal, you say \"yes\".  If the user tells you something that is not an animal, you say \"no\".  You only ever respond with \"yes\" or \"no\".  You do not say anything else.");
@@ -98,7 +96,7 @@ chat.AppendExampleChatbotOutput("Yes");
 chat.AppendUserInput("Is this an animal? House");
 chat.AppendExampleChatbotOutput("No");
 
-// now let's ask it a question'
+// now let's ask it a question
 chat.AppendUserInput("Is this an animal? Dog");
 // and get the response
 string response = await chat.GetResponseFromChatbotAsync();
@@ -143,6 +141,29 @@ await chat.StreamResponseFromChatbotAsync(res =>
 });
 ```
 
+#### Conversation History Context Length Management
+If the chat conversation history gets too long, it may not fit into the context length of the model.  By default, the earliest non-system message(s) will be removed from the chat history and the API call will be retried.  You may disable this by setting `chat.AutoTruncateOnContextLengthExceeded = false`, or you can override the truncation algorithm like this:
+
+```csharp
+chat.OnTruncationNeeded += (sender, args) =>
+{
+	// args is a List<ChatMessage> with the current chat history.  Remove or edit as nessisary.
+	// replace this with more sophisticated logic for your use-case, such as summarizing the chat history
+	for (int i = 0; i < args.Count; i++)
+	{
+		if (args[i].Role != ChatMessageRole.System)
+		{
+			args.RemoveAt(i);
+			return;
+		}
+	}
+};
+```
+
+You may also wish to use a new model with a larger context length.  You can do this by setting `chat.Model = Model.GPT4_Turbo` or `chat.Model = Model.ChatGPTTurbo_16k`, etc.
+
+You can see token usage via `chat.MostRecentApiResult.Usage.PromptTokens` and related properties. 
+
 ### Chat Endpoint Requests
 You can access full control of the Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
 
@@ -172,8 +193,8 @@ It returns a `ChatResult` which is mostly metadata, so use its `.ToString()` met
 
 There's also an async streaming API which works similarly to the [Completions endpoint streaming results](#streaming). 
 
-### Completions
-The Completion API is accessed via `OpenAIAPI.Completions`:
+### Completions API
+Completions are considered legacy by OpenAI.  The Completion API is accessed via `OpenAIAPI.Completions`:
 
 ```csharp
 async Task<CompletionResult> CreateCompletionAsync(CompletionRequest request);
@@ -286,7 +307,18 @@ Console.WriteLine(result.Data[0].Url);
 
 The image result contains a URL for an online image or a base64-encoded image, depending on the ImageGenerationRequest.ResponseFormat (url is the default).
 
-Image edits and variations are not yet implemented.
+Use DALL-E 3 like this:
+
+```csharp
+async Task<ImageResult> CreateImageAsync(ImageGenerationRequest request);
+
+// for example
+var result = await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A drawing of a computer writing a test", OpenAI_API.Models.Model.DALLE3, ImageSize._1024x1792, "hd"));
+// or
+var result = await api.ImageGenerations.CreateImageAsync("A drawing of a computer writing a test", OpenAI_API.Models.Model.DALLE3);
+
+Console.WriteLine(result.Data[0].Url);
+```
 
 ## Azure
 
@@ -308,7 +340,7 @@ You may then use the `api` object like normal.  You may also specify the `APIAut
 As of April 2, 2023, you need to manually select api version `2023-03-15-preview` as shown above to access the chat endpoint on Azure.  Once this is out of preview I will update the default.
 
 ## IHttpClientFactory
-While this library does not fully support dependancy injection at this time, you may specify an `IHttpClientFactory` to be used for HTTP requests, which allows for tweaking http request properties, connection pooling, and mocking.  Details in [#103](https://github.com/OkGoDoIt/OpenAI-API-dotnet/pull/103).
+You may specify an `IHttpClientFactory` to be used for HTTP requests, which allows for tweaking http request properties, connection pooling, and mocking.  Details in [#103](https://github.com/OkGoDoIt/OpenAI-API-dotnet/pull/103).
 
 ```csharp
 OpenAIAPI api = new OpenAIAPI();

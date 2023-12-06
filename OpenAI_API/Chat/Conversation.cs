@@ -49,7 +49,7 @@ namespace OpenAI_API.Chat
 		/// Creates a new conversation with ChatGPT chat
 		/// </summary>
 		/// <param name="endpoint">A reference to the API endpoint, needed for API requests.  Generally should be <see cref="OpenAIAPI.Chat"/>.</param>
-		/// <param name="model">Optionally specify the model to use for ChatGPT requests.  If not specified, used <paramref name="defaultChatRequestArgs"/>.Model or falls back to <see cref="OpenAI_API.Models.Model.ChatGPTTurbo"/></param>
+		/// <param name="model">Optionally specify the model to use for ChatGPT requests.  If not specified, used <paramref name="defaultChatRequestArgs"/>.Model or falls back to <see cref="OpenAI_API.Models.Model.DefaultChatModel"/></param>
 		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  See <see href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI documentation for a list of possible parameters to tweak.</see></param>
 		public Conversation(ChatEndpoint endpoint, OpenAI_API.Models.Model model = null, ChatRequest defaultChatRequestArgs = null)
 		{
@@ -57,7 +57,7 @@ namespace OpenAI_API.Chat
 			if (model != null)
 				RequestParameters.Model = model;
 			if (RequestParameters.Model == null)
-				RequestParameters.Model = Models.Model.ChatGPTTurbo;
+				RequestParameters.Model = Models.Model.DefaultChatModel;
 
 			_Messages = new List<ChatMessage>();
 			_endpoint = endpoint;
@@ -66,9 +66,9 @@ namespace OpenAI_API.Chat
 		}
 
 		/// <summary>
-		/// A list of messages exchanged so far.  Do not modify this list directly.  Instead, use <see cref="AppendMessage(ChatMessage)"/>, <see cref="AppendUserInput(string)"/>, <see cref="AppendSystemMessage(string)"/>, or <see cref="AppendExampleChatbotOutput(string)"/>.
+		/// A list of messages exchanged so far. To append to this list, use <see cref="AppendMessage(ChatMessage)"/>, <see cref="AppendUserInput(string)"/>, <see cref="AppendSystemMessage(string)"/>, or <see cref="AppendExampleChatbotOutput(string)"/>.
 		/// </summary>
-		public IReadOnlyList<ChatMessage> Messages { get => _Messages; }
+		public IList<ChatMessage> Messages { get => _Messages; }
 		private List<ChatMessage> _Messages;
 
 		/// <summary>

@@ -16,7 +16,7 @@ namespace OpenAI_API.Chat
 		/// <summary>
 		/// This allows you to set default parameters for every request, for example to set a default temperature or max tokens.  For every request, if you do not have a parameter set on the request but do have it set here as a default, the request will automatically pick up the default value.
 		/// </summary>
-		public ChatRequest DefaultChatRequestArgs { get; set; } = new ChatRequest() { Model = Model.ChatGPTTurbo };
+		public ChatRequest DefaultChatRequestArgs { get; set; } = new ChatRequest() { Model = Model.DefaultChatModel };
 
 		/// <summary>
 		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "completions".
@@ -33,7 +33,7 @@ namespace OpenAI_API.Chat
 		/// Creates an ongoing chat which can easily encapsulate the conversation.  This is the simplest way to use the Chat endpoint.
 		/// </summary>
 		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  See <see href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI documentation for a list of possible parameters to tweak.</see></param>
-		/// <returns>A <see cref="Conversation"/> which encapulates a back and forth chat betwen a user and an assistant.</returns>
+		/// <returns>A <see cref="Conversation"/> which encapsulates a back and forth chat between a user and an assistant.</returns>
 		public Conversation CreateConversation(ChatRequest defaultChatRequestArgs = null)
 		{
 			return new Conversation(this, defaultChatRequestArgs: defaultChatRequestArgs ?? DefaultChatRequestArgs);

@@ -43,7 +43,7 @@ namespace OpenAI_API.Chat
 		public int? NumChoicesPerMessage { get; set; }
 
 		/// <summary>
-		/// Specifies where the results should stream and be returned at one time.  Do not set this yourself, use the appropriate methods on <see cref="CompletionEndpoint"/> instead.
+		/// Specifies where the results should stream and be returned at one time.  Do not set this yourself, use the appropriate methods on <see cref="OpenAI_API.Completions.CompletionEndpoint"/> instead.
 		/// </summary>
 		[JsonProperty("stream")]
 		public bool Stream { get; internal set; } = false;

@@ -57,7 +57,7 @@ namespace OpenAI_API.Models
 		public string Parent { get; set; }
 
 		/// <summary>
-		/// Allows an model to be implicitly cast to the string of its <see cref="ModelID"/>
+		/// Allows a model to be implicitly cast to the string of its <see cref="ModelID"/>
 		/// </summary>
 		/// <param name="model">The <see cref="Model"/> to cast to a string.</param>
 		public static implicit operator string(Model model)
@@ -95,9 +95,77 @@ namespace OpenAI_API.Models
 		/// <summary>
 		/// The default model to use in requests if no other model is specified.
 		/// </summary>
-		public static Model DefaultModel { get; set; } = DavinciText;
+		public static Model DefaultModel { get; set; } = ChatGPTTurboInstruct;
+
+		/// <summary>
+		/// The default model to use in chat requests if no other model is specified.
+		/// </summary>
+		public static Model DefaultChatModel { get; set; } = ChatGPTTurbo;
+
+		/// <summary>
+		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
+		/// </summary>
+		/// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
+		/// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
+		public async Task<Model> RetrieveModelDetailsAsync(OpenAI_API.OpenAIAPI api)
+		{
+			return await api.Models.RetrieveModelDetailsAsync(this.ModelID);
+		}
 
 
+#region GPT-4 and GPT-4 Turbo
+		/// <summary>
+		/// More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with the latest model iteration.
+		/// </summary>
+		public static Model GPT4 => new Model("gpt-4") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// Same capabilities as the base gpt-4 model but with 4x the context length. Will be updated with the latest model iteration.
+		/// </summary>
+		public static Model GPT4_32k_Context => new Model("gpt-4-32k") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// Ability to understand images, in addition to all other GPT-4 Turbo capabilities. Returns a maximum of 4,096 output tokens. This is a preview model version and not suited yet for production traffic.
+		/// </summary>
+		public static Model GPT4_Vision => new Model("gpt-4-vision-preview") { OwnedBy = "openai" };
+
+		/// <summary>
+		///	The latest GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This preview model is not yet suited for production traffic. 
+		/// </summary>
+		public static Model GPT4_Turbo => new Model("gpt-4-1106-preview") { OwnedBy = "openai" };
+#endregion
+
+#region GPT-3.5
+		/// <summary>
+		/// Most capable GPT-3.5 model and optimized for chat at 1/10th the cost of text-davinci-003. Will be updated with the latest model iteration.
+		/// </summary>
+		public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// The latest GPT-3.5 Turbo model with 16k context window, improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens.
+		/// </summary>
+		public static Model ChatGPTTurbo_16k => new Model("gpt-3.5-turbo-16k") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// Similar capabilities as text-davinci-003 but compatible with legacy Completions endpoint and not Chat Completions.
+		/// </summary>
+		public static Model ChatGPTTurboInstruct => new Model("gpt-3.5-turbo-instruct") { OwnedBy = "openai" };
+#endregion
+
+#region GPT Base
+		/// <summary>
+		/// Replacement for the GPT-3 ada and babbage base models. GPT base models can understand and generate natural language or code but are not trained with instruction following. These models are made to be replacements for our original GPT-3 base models and use the legacy Completions API. Most customers should use GPT-3.5 or GPT-4.
+		/// </summary>
+		public static Model Babbage => new Model("babbage-002") { OwnedBy = "openai" };
+
+
+		/// <summary>
+		/// Replacement for the GPT-3 curie and davinci base model. GPT base models can understand and generate natural language or code but are not trained with instruction following. These models are made to be replacements for our original GPT-3 base models and use the legacy Completions API. Most customers should use GPT-3.5 or GPT-4.
+		/// </summary>
+		public static Model Davinci => new Model("davinci-002") { OwnedBy = "openai" };
+#endregion
+
+#region GPT-3 Legacy
 		/// <summary>
 		/// Capable of very simple tasks, usually the fastest model in the GPT-3 series, and lowest cost
 		/// </summary>
@@ -114,45 +182,32 @@ namespace OpenAI_API.Models
 		public static Model CurieText => new Model("text-curie-001") { OwnedBy = "openai" };
 
 		/// <summary>
-		/// Most capable GPT-3 model. Can do any task the other models can do, often with higher quality, longer output and better instruction-following. Also supports inserting completions within text.
+		/// Will be deprecated by OpenAI on Jan 4th 2024. Use <see cref="Davinci"/> ("davinci-002") instead.
 		/// </summary>
+		[Obsolete("Will be deprecated by OpenAI on Jan 4th 2024. Use Davinci (\"davinci-002\") instead")]
 		public static Model DavinciText => new Model("text-davinci-003") { OwnedBy = "openai" };
 
 		/// <summary>
 		/// Almost as capable as Davinci Codex, but slightly faster. This speed advantage may make it preferable for real-time applications.
 		/// </summary>
+		[Obsolete("No longer supported by OpenAI", true)]
 		public static Model CushmanCode => new Model("code-cushman-001") { OwnedBy = "openai" };
 
 		/// <summary>
-		/// Most capable Codex model. Particularly good at translating natural language to code. In addition to completing code, also supports inserting completions within code.
+		/// Will be deprecated by OpenAI on Jan 4th 2024.
 		/// </summary>
+		[Obsolete("Will be deprecated by OpenAI on Jan 4th 2024.")]
 		public static Model DavinciCode => new Model("code-davinci-002") { OwnedBy = "openai" };
+#endregion
 
+#region Embeddings
 		/// <summary>
 		/// OpenAI offers one second-generation embedding model for use with the embeddings API endpoint.
 		/// </summary>
 		public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
+#endregion
 
-		/// <summary>
-		/// Most capable GPT-3.5 model and optimized for chat at 1/10th the cost of text-davinci-003. Will be updated with the latest model iteration.
-		/// </summary>
-		public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
-
-		/// <summary>
-		/// Snapshot of gpt-3.5-turbo from March 1st 2023. Unlike gpt-3.5-turbo, this model will not receive updates, and will only be supported for a three month period ending on June 1st 2023.
-		/// </summary>
-		public static Model ChatGPTTurbo0301 => new Model("gpt-3.5-turbo-0301") { OwnedBy = "openai" };
-
-		/// <summary>
-		/// More capable than any GPT-3.5 model, able to do more complex tasks, and optimized for chat. Will be updated with the latest model iteration.  Currently in limited beta so your OpenAI account needs to be whitelisted to use this.
-		/// </summary>
-		public static Model GPT4 => new Model("gpt-4") { OwnedBy = "openai" };
-
-		/// <summary>
-		/// Same capabilities as the base gpt-4 mode but with 4x the context length. Will be updated with the latest model iteration.  Currently in limited beta so your OpenAI account needs to be whitelisted to use this.
-		/// </summary>
-		public static Model GPT4_32k_Context => new Model("gpt-4-32k") { OwnedBy = "openai" };
-
+#region Moderation
 		/// <summary>
 		/// Stable text moderation model that may provide lower accuracy compared to TextModerationLatest.
 		/// OpenAI states they will provide advanced notice before updating this model.
@@ -163,19 +218,33 @@ namespace OpenAI_API.Models
 		/// The latest text moderation model. This model will be automatically upgraded over time.
 		/// </summary>
 		public static Model TextModerationLatest => new Model("text-moderation-latest") { OwnedBy = "openai" };
+#endregion
 
+#region DALL-E
+		/// <summary>
+		/// The previous DALL·E model released in Nov 2022. The 2nd iteration of DALL·E with more realistic, accurate, and 4x greater resolution images than the original model.
+		/// </summary>
+		public static Model DALLE2 => new Model("dall-e-2") { OwnedBy = "openai" };
 
 		/// <summary>
-		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
+		/// The latest DALL·E model released in Nov 2023.
 		/// </summary>
-		/// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
-		/// <returns>Asynchronously returns an Model with all relevant properties filled in</returns>
-		public async Task<Model> RetrieveModelDetailsAsync(OpenAI_API.OpenAIAPI api)
-		{
-			return await api.Models.RetrieveModelDetailsAsync(this.ModelID);
-		}
+		public static Model DALLE3 => new Model("dall-e-3") { OwnedBy = "openai" };
+#endregion
 
-	}
+#region TTS
+		/// <summary>
+		/// The latest text to speech model, optimized for speed and real time text to speech use cases.
+		/// </summary>
+		public static Model TTS_Speed => new Model("tts-1") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// The latest text to speech model, optimized for quality.
+		/// </summary>
+		public static Model TTS_HD=> new Model("tts-1-hd") { OwnedBy = "openai" };
+#endregion
+
+}
 
 	/// <summary>
 	/// Permissions for using the model

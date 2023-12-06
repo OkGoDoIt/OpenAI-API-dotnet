@@ -125,6 +125,7 @@ namespace OpenAI_Tests
 
 		[TestCase("gpt-3.5-turbo")]
 		[TestCase("gpt-4")]
+		[TestCase("gpt-4-1106-preview")]
 		public void ChatBackAndForth(string model)
 		{
 			var api = new OpenAI_API.OpenAIAPI();
@@ -362,12 +363,15 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			chat.AppendUserInput("Explain why the sky is blue in great detail");
 		}
 
-		[Test]
-		public void ChatWithNames()
+		[TestCase("gpt-3.5-turbo")]
+		[TestCase("gpt-4")]
+		[TestCase("gpt-4-1106-preview")]
+		public void ChatWithNames(string model)
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
 			var chat = api.Chat.CreateConversation();
+			chat.Model = model;
 			chat.RequestParameters.Temperature = 0;
 
 			chat.AppendSystemMessage("You are the moderator in this workplace chat.  Answer any questions asked of the participants.");
@@ -388,8 +392,9 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 		}
 
 
-		[Test]
-		public async Task StreamCompletionEnumerableAsync_ShouldStreamData()
+		[TestCase("gpt-3.5-turbo")]
+		[TestCase("gpt-4-1106-preview")]
+		public async Task StreamCompletionEnumerableAsync_ShouldStreamData(string model)
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
@@ -397,7 +402,7 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 
 			var req = new ChatRequest()
 			{
-				Model = Model.ChatGPTTurbo,
+				Model = model,
 				Temperature = 0.2,
 				MaxTokens = 500,
 				Messages = new ChatMessage[] {
@@ -415,15 +420,16 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			Assert.That(chatResults.Select(cr => cr.Choices[0].Delta.Content).Count(c => !string.IsNullOrEmpty(c)) > 50);
 		}
 
-		[Test]
-		public async Task StreamingConversation()
+		[TestCase("gpt-3.5-turbo")]
+		[TestCase("gpt-4-1106-preview")]
+		public async Task StreamingConversation(string model)
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
 			var chat = api.Chat.CreateConversation();
 			chat.RequestParameters.MaxTokens = 500;
 			chat.RequestParameters.Temperature = 0.2;
-			chat.Model = Model.ChatGPTTurbo;
+			chat.Model = model;
 
 			chat.AppendSystemMessage("You are a helpful assistant who is really good at explaining things to students.");
 			chat.AppendUserInput("Please explain to me how mountains are formed in great detail.");

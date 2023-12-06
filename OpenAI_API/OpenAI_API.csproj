@@ -49,6 +49,10 @@
 			<PackagePath>\</PackagePath>
 		</None>
 	</ItemGroup>
+	
+	<ItemGroup>
+		<InternalsVisibleTo Include="OpenAI_Tests" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="1.1.1" />
