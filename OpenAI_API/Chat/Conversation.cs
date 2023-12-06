@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -111,6 +112,16 @@ namespace OpenAI_API.Chat
 		/// <param name="content">Text content written by a developer to help give examples of desired behavior</param>
 		public void AppendExampleChatbotOutput(string content) => this.AppendMessage(new ChatMessage(ChatMessageRole.Assistant, content));
 
+		/// <summary>
+		/// An event called when the chat message history is too long, which should reduce message history length through whatever means is appropriate for your use case.  You may want to remove the first entry in the <see cref="List{ChatMessage}"/> in the <see cref="EventArgs"/>
+		/// </summary>
+		public event EventHandler<List<ChatMessage>> OnTruncationNeeded;
+
+		/// <summary>
+		/// Sometimes the total length of your conversation can get too long to fit in the ChatGPT context window.  In this case, the <see cref="OnTruncationNeeded"/> event will be called, if supplied.  If not supplied and this is <see langword="true"/>, then the first one or more user or assistant messages will be automatically deleted from the beginning of the conversation message history until the API call succeeds.  This may take some time as it may need to loop several times to clear enough messages.  If this is set to false and no <see cref="OnTruncationNeeded"/> is supplied, then an <see cref="ArgumentOutOfRangeException"/> will be raised when the API returns a context_length_exceeded error.
+		/// </summary>
+		public bool AutoTruncateOnContextLengthExceeded { get; set; } = true;
+
 		#region Non-streaming
 
 		/// <summary>
@@ -119,19 +130,70 @@ namespace OpenAI_API.Chat
 		/// <returns>The string of the response from the chatbot API</returns>
 		public async Task<string> GetResponseFromChatbotAsync()
 		{
-			ChatRequest req = new ChatRequest(RequestParameters);
-			req.Messages = _Messages.ToList();
-
-			var res = await _endpoint.CreateChatCompletionAsync(req);
-			MostRecentApiResult = res;
-
-			if (res.Choices.Count > 0)
+			try
 			{
-				var newMsg = res.Choices[0].Message;
-				AppendMessage(newMsg);
-				return newMsg.Content;
+				ChatRequest req = new ChatRequest(RequestParameters);
+				req.Messages = _Messages.ToList();
+
+				var res = await _endpoint.CreateChatCompletionAsync(req);
+				MostRecentApiResult = res;
+
+				if (res.Choices.Count > 0)
+				{
+					var newMsg = res.Choices[0].Message;
+					AppendMessage(newMsg);
+					return newMsg.Content;
+				}
+			}
+			catch (HttpRequestException ex)
+			{
+				if (ex.Data.Contains("code") && (!string.IsNullOrEmpty(ex.Data["code"] as string)) && ex.Data["code"].Equals("context_length_exceeded"))
+				{
+					string message = "The context length of this conversation is too long for the OpenAI API to handle.  Consider shortening the message history by handling the OnTruncationNeeded event and removing some of the messages in the argument.";
+					if (ex.Data.Contains("message"))
+					{
+						message += "  " + ex.Data["message"].ToString();
+					}
+
+					if (OnTruncationNeeded != null)
+					{
+						var prevLength = this.Messages.Sum(m => m.Content.Length);
+						OnTruncationNeeded(this, this._Messages);
+						if (prevLength > this.Messages.Sum(m => m.Content.Length))
+						{
+							// the messages have been truncated, so try again
+							return await GetResponseFromChatbotAsync();
+						}
+						else
+						{
+							// no truncation happened, so throw error instead
+							throw new ArgumentOutOfRangeException("OnTruncationNeeded was called but it did not reduce the message history length.  " + message, ex);
+						}
+					}
+					else if (AutoTruncateOnContextLengthExceeded)
+					{
+						for (int i = 0; i < _Messages.Count; i++)
+						{
+							if (_Messages[i].Role != ChatMessageRole.System)
+							{
+								_Messages.RemoveAt(i);
+								// the messages have been truncated, so try again
+								return await GetResponseFromChatbotAsync();
+							}
+						}
+					}
+					else
+					{
+						throw new ArgumentOutOfRangeException(message, ex);
+					}
+				}
+				else
+				{
+					throw ex;
+				}
 			}
 			return null;
+
 		}
 
 		/// <summary>
@@ -180,13 +242,109 @@ namespace OpenAI_API.Chat
 		/// <returns>An async enumerable with each of the results as they come in.  See <see href="https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-8#asynchronous-streams"/> for more details on how to consume an async enumerable.</returns>
 		public async IAsyncEnumerable<string> StreamResponseEnumerableFromChatbotAsync()
 		{
-			ChatRequest req = new ChatRequest(RequestParameters);
-			req.Messages = _Messages.ToList();
+			ChatRequest req = null;
 
 			StringBuilder responseStringBuilder = new StringBuilder();
 			ChatMessageRole responseRole = null;
 
-			await foreach (var res in _endpoint.StreamChatEnumerableAsync(req))
+			IAsyncEnumerable<ChatResult> resStream = null;
+
+			bool retrying = true;
+			ChatResult firstStreamedResult = null;
+
+			while (retrying)
+			{
+				retrying = false;
+				req = new ChatRequest(RequestParameters);
+				req.Messages = _Messages.ToList();
+				try
+				{
+					resStream = _endpoint.StreamChatEnumerableAsync(req);
+					await foreach (var res in resStream)
+					{
+						if (res != null)
+						{
+							firstStreamedResult = res;
+							break;
+						}
+					}
+				}
+				catch (HttpRequestException ex)
+				{
+					if (ex.Data.Contains("code") && (!string.IsNullOrEmpty(ex.Data["code"] as string)) && ex.Data["code"].Equals("context_length_exceeded"))
+					{
+						string message = "The context length of this conversation is too long for the OpenAI API to handle.  Consider shortening the message history by handling the OnTruncationNeeded event and removing some of the messages in the argument.";
+						if (ex.Data.Contains("message"))
+						{
+							message += "  " + ex.Data["message"].ToString();
+						}
+
+						if (OnTruncationNeeded != null)
+						{
+							var prevLength = this.Messages.Sum(m => m.Content.Length);
+							OnTruncationNeeded(this, this._Messages);
+							if (prevLength > this.Messages.Sum(m => m.Content.Length))
+							{
+								// the messages have been truncated, so try again
+								retrying = true;
+							}
+							else
+							{
+								// no truncation happened, so throw error instead
+								retrying = false;
+								throw new ArgumentOutOfRangeException("OnTruncationNeeded was called but it did not reduce the message history length.  " + message, ex);
+							}
+						}
+						else if (AutoTruncateOnContextLengthExceeded)
+						{
+							for (int i = 0; i < _Messages.Count; i++)
+							{
+								if (_Messages[i].Role != ChatMessageRole.System)
+								{
+									_Messages.RemoveAt(i);
+									// the messages have been truncated, so try again
+									retrying = true;
+									break;
+								}
+							}
+						}
+						else
+						{
+							retrying = false;
+							throw new ArgumentOutOfRangeException(message, ex);
+						}
+					}
+					else
+					{
+						throw ex;
+					}
+				}
+			}
+
+			if (resStream == null)
+			{
+				throw new Exception("The chat result stream is null, but it shouldn't be");
+			}
+
+			if (firstStreamedResult != null)
+			{
+				if (firstStreamedResult.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
+				{
+					if (delta.Role != null)
+						responseRole = delta.Role;
+
+					string deltaContent = delta.Content;
+
+					if (!string.IsNullOrEmpty(deltaContent))
+					{
+						responseStringBuilder.Append(deltaContent);
+						yield return deltaContent;
+					}
+				}
+				MostRecentApiResult = firstStreamedResult;
+			}
+
+			await foreach (var res in resStream)
 			{
 				if (res.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
 				{
