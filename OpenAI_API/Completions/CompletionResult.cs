@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using OpenAI_API.Embedding;
 using System.Collections.Generic;
 
 namespace OpenAI_API.Completions
@@ -89,18 +88,32 @@ namespace OpenAI_API.Completions
 		}
 	}
 
-
+	/// <summary>
+	/// Represents the logprobs property of a completion choice
+	/// </summary>
 	public class Logprobs
 	{
+		/// <summary>
+		/// The tokens that were used to generate the completion
+		/// </summary>
 		[JsonProperty("tokens")]
 		public List<string> Tokens { get; set; }
 
+		/// <summary>
+		/// The log probabilities of each token
+		/// </summary>
 		[JsonProperty("token_logprobs")]
 		public List<double?> TokenLogprobs { get; set; }
 
+		/// <summary>
+		/// The top log probabilities for each token
+		/// </summary>
 		[JsonProperty("top_logprobs")]
 		public IList<IDictionary<string, double>> TopLogprobs { get; set; }
 
+		/// <summary>
+		/// The token ids of the tokens
+		/// </summary>
 		[JsonProperty("text_offset")]
 		public List<int> TextOffsets { get; set; }
 	}

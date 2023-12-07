@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 namespace OpenAI_API.Files
@@ -40,7 +41,7 @@ namespace OpenAI_API.Files
         /// Upload a file that contains document(s) to be used across various endpoints/features. Currently, the size of all the files uploaded by one organization can be up to 1 GB. Please contact OpenAI if you need to increase the storage limit
         /// </summary>
         /// <param name="filePath">The name of the file to use for this request</param>
-        /// <param name="purpose">The intendend purpose of the uploaded documents. Use "fine-tune" for Fine-tuning. This allows us to validate the format of the uploaded file.</param>
+        /// <param name="purpose">The intended purpose of the uploaded documents. Use "fine-tune" for Fine-tuning. This allows us to validate the format of the uploaded file.</param>
         Task<File> UploadFileAsync(string filePath, string purpose = "fine-tune");
     }
 }
