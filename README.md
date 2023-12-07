@@ -117,7 +117,7 @@ foreach (ChatMessage msg in chat.Messages)
 
 #### Streaming
 
-Streaming allows you to get results are they are generated, which can help your application feel more responsive.
+Streaming allows you to retrieve generated results, which can help your application feel more responsive.
 
 Using the new C# 8.0 async iterators:
 ```csharp
@@ -165,7 +165,7 @@ You may also wish to use a new model with a larger context length.  You can do t
 You can see token usage via `chat.MostRecentApiResult.Usage.PromptTokens` and related properties. 
 
 ### Chat Endpoint Requests
-You can access full control of the Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
+You can have full-access control of Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
 
 ```csharp
 async Task<ChatResult> CreateChatCompletionAsync(ChatRequest request);
@@ -208,7 +208,7 @@ var result = await api.Completions.CreateCompletionAsync("One Two Three One Two"
 You can create your `CompletionRequest` ahead of time or use one of the helper overloads for convenience.  It returns a `CompletionResult` which is mostly metadata, so use its `.ToString()` method to get the text if all you want is the completion.
 
 #### Streaming
-Streaming allows you to get results are they are generated, which can help your application feel more responsive, especially on slow models like Davinci.
+Streaming allows you to retrieve generated results, which can help your application feel more responsive, especially on slow models like Davinci.
 
 Using the new C# 8.0 async iterators:
 ```csharp
@@ -322,7 +322,7 @@ Console.WriteLine(result.Data[0].Url);
 
 ## Azure
 
-For using the Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.
+To use Azure OpenAI Service, you need to specify the name of your Azure OpenAI resource as well as your model deployment id.
 
 _I do not have access to the Microsoft Azure OpenAI service, so I am unable to test this functionality.  If you have access and can test, please submit an issue describing your results.  A PR with integration tests would also be greatly appreciated.  Specifically, it is unclear to me that specifying models works the same way with Azure._
 
