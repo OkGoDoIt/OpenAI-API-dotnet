@@ -254,7 +254,7 @@ namespace OpenAI_API.Chat
 
 			bool retrying = true;
 			ChatResult firstStreamedResult = null;
-
+			IAsyncEnumerator<ChatResult> enumerator = null;
 			while (retrying)
 			{
 				retrying = false;
@@ -263,14 +263,9 @@ namespace OpenAI_API.Chat
 				try
 				{
 					resStream = _endpoint.StreamChatEnumerableAsync(req);
-					await foreach (var res in resStream)
-					{
-						if (res != null)
-						{
-							firstStreamedResult = res;
-							break;
-						}
-					}
+					enumerator = resStream.GetAsyncEnumerator();
+					await enumerator.MoveNextAsync();
+					firstStreamedResult = enumerator.Current;
 				}
 				catch (HttpRequestException ex)
 				{
@@ -329,26 +324,9 @@ namespace OpenAI_API.Chat
 				throw new Exception("The chat result stream is null, but it shouldn't be");
 			}
 
-			if (firstStreamedResult != null)
+			do
 			{
-				if (firstStreamedResult.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
-				{
-					if (delta.Role != null)
-						responseRole = delta.Role;
-
-					string deltaContent = delta.Content;
-
-					if (!string.IsNullOrEmpty(deltaContent))
-					{
-						responseStringBuilder.Append(deltaContent);
-						yield return deltaContent;
-					}
-				}
-				MostRecentApiResult = firstStreamedResult;
-			}
-
-			await foreach (var res in resStream)
-			{
+				ChatResult res = enumerator.Current;
 				if (res.Choices.FirstOrDefault()?.Delta is ChatMessage delta)
 				{
 					if (delta.Role != null)
@@ -363,8 +341,8 @@ namespace OpenAI_API.Chat
 					}
 				}
 				MostRecentApiResult = res;
-			}
-
+			} while (await enumerator.MoveNextAsync());
+			
 			if (responseRole != null)
 			{
 				AppendMessage(responseRole, responseStringBuilder.ToString());
