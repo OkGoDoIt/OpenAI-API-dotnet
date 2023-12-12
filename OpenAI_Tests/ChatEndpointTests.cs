@@ -1,10 +1,12 @@
-﻿using NUnit.Framework;
+﻿using Newtonsoft.Json;
+using NUnit.Framework;
 using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -453,5 +455,46 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			Assert.AreEqual(result, chat.Messages.Last().Content);
 		}
 
+		[TestCase("gpt-4-1106-preview")]
+		[TestCase("gpt-3.5-turbo-1106")]
+		public void ChatJsonFormat(string model)
+		{
+			var api = new OpenAI_API.OpenAIAPI();
+			ChatRequest chatRequest = new ChatRequest()
+			{
+				Model = model,
+				Temperature = 0.0,
+				MaxTokens = 500,
+				ResponseFormat = ChatRequest.ResponseFormats.JsonObject,
+				Messages = new ChatMessage[] {
+					new ChatMessage(ChatMessageRole.System, "You are a helpful assistant designed to output JSON."),
+					new ChatMessage(ChatMessageRole.User, "Who won the world series in 2020?  Return JSON of a 'wins' dictionary with the year as the numeric key and the winning team as the string value.")
+				}
+			};
+
+			var results = api.Chat.CreateChatCompletionAsync(chatRequest).Result;
+			Assert.IsNotNull(results);
+			
+			Assert.NotNull(results.Object);
+			Assert.NotNull(results.Choices);
+			Assert.NotZero(results.Choices.Count);
+			Assert.AreEqual(ChatMessageRole.Assistant, results.Choices[0].Message.Role);
+			Assert.That(results.Choices.All(c => c.Message.Content.Length > 1));
+			Assert.AreEqual("stop", results.Choices[0].FinishReason);
+
+			using (StringReader stringReader = new StringReader(results.Choices[0].Message.Content))
+			{
+				using (JsonTextReader jsonReader= new JsonTextReader(stringReader))
+				{
+					var serializer = new JsonSerializer();
+					var json = serializer.Deserialize<Dictionary<string, Dictionary<int, string>>>(jsonReader);
+					Assert.NotNull(json);
+					Assert.IsTrue(json.ContainsKey("wins"));
+					Assert.IsTrue(json["wins"].ContainsKey(2020));
+					Assert.AreEqual("Los Angeles Dodgers", json["wins"][2020]);
+				}
+			}
+
+		}
 	}
 }

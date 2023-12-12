@@ -1,6 +1,10 @@
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using OpenAI_API.Models;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -120,6 +124,28 @@ namespace OpenAI_API.Chat
 		public string user { get; set; }
 
 		/// <summary>
+		/// An object specifying the format that the model must output. Setting to <see cref="ResponseFormats.JsonObject"/> enables JSON mode, which guarantees the message the model generates is valid JSON, assuming that the <see cref="ChatChoice.FinishReason"/> is not "length".
+		/// Important: when using JSON mode, you must also instruct the model to produce JSON yourself via a system or user message. Without this, the model may generate an unending stream of whitespace until the generation reaches the token limit, resulting in a long-running and seemingly "stuck" request.Also note that the message content may be partially cut off if `finish_reason= "length"`, which indicates the generation exceeded `max_tokens` or the conversation exceeded the max context length.
+		/// </summary>
+		[JsonIgnore]
+		public string ResponseFormat { get; set; } = "text";
+
+		/// <summary>
+		/// This is only used for serializing the request into JSON, do not use it directly.
+		/// </summary>
+		[JsonProperty("response_format", DefaultValueHandling=DefaultValueHandling.Ignore)]
+		public Dictionary<string, string> ResponseFormatRaw
+		{
+			get
+			{
+				if (ResponseFormat == null || ResponseFormat == ResponseFormats.Text)
+					return null;
+				else
+					return new Dictionary<string, string>() { { "type", ResponseFormat } };
+			}
+		}
+
+		/// <summary>
 		/// Creates a new, empty <see cref="ChatRequest"/>
 		/// </summary>
 		public ChatRequest()
@@ -133,7 +159,6 @@ namespace OpenAI_API.Chat
 		{
 			if (basedOn == null)
 				return;
-
 			this.Model = basedOn.Model;
 			this.Messages = basedOn.Messages;
 			this.Temperature = basedOn.Temperature;
@@ -144,6 +169,21 @@ namespace OpenAI_API.Chat
 			this.FrequencyPenalty = basedOn.FrequencyPenalty;
 			this.PresencePenalty = basedOn.PresencePenalty;
 			this.LogitBias = basedOn.LogitBias;
+		}
+
+		/// <summary>
+		/// Options for the <see cref="ChatRequest.ResponseFormat"/> property
+		/// </summary>
+		public static class ResponseFormats
+		{
+			/// <summary>
+			/// The default response format, which is may be any type of text
+			/// </summary>
+			public const string Text = "text";
+			/// <summary>
+			/// The response format is guaranteed to be valid JSON, assuming that the <see cref="ChatChoice.FinishReason"/> is not "length"
+			/// </summary>
+			public const string JsonObject = "json_object";
 		}
 	}
 }
