@@ -17,9 +17,12 @@ Console.WriteLine(result);
  * [Requirements](#requirements)
  * [Installation](#install-from-nuget)
  * [Authentication](#authentication)
- * [ChatGPT API](#chatgpt)
+ * [Chat API](#chatapi)
 	* [Conversations](#chat-conversations)
+	* [Streaming Results](#chat-streaming)
+	* [GPT Vision](#gpt-vision)
 	* [Chat Endpoint](#chat-endpoint-requests)
+	* [Conversation History Context Length Management](#Conversation-History-Context-Length-Management)
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
@@ -27,13 +30,13 @@ Console.WriteLine(result);
  * [Files API](#files-for-fine-tuning)
  * [Image APIs (DALL-E)](#images)
  * [Azure](#azure)
- * [Additonal Documentation](#documentation)
+ * [Additional Documentation](#documentation)
  * [License](#license)
 
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Added and updated models as of December 6, 2023, including the new GPT 4 Turbo and DALL-E 3.  Support for vision, text-to-speech, and all the new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
+Added and updated models as of December 11, 2023, including the new GPT-4 Vision, GPT-4 Turbo, and DALL-E 3.  Support for text-to-speech, and the other new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
 
 ## Requirements
 
@@ -115,7 +118,7 @@ foreach (ChatMessage msg in chat.Messages)
 }
 ```
 
-#### Streaming
+#### Chat Streaming
 
 Streaming allows you to get results are they are generated, which can help your application feel more responsive.
 
@@ -141,6 +144,35 @@ await chat.StreamResponseFromChatbotAsync(res =>
 });
 ```
 
+#### GPT Vision
+
+You can send images to the chat to use the new GPT-4 Vision model.  This only works with the `Model.GPT4_Vision` model.  Please see https://platform.openai.com/docs/guides/vision for more information and limitations.
+
+```csharp
+// the simplest form
+var result = await api.Chat.CreateChatCompletionAsync("What is the primary non-white color in this logo?", ImageInput.FromFile("path/to/logo.png"));
+
+// or in a conversation
+var chat = api.Chat.CreateConversation();
+chat.Model = Model.GPT4_Vision;
+chat.AppendSystemMessage("You are a graphic design assistant who helps identify colors.");
+chat.AppendUserInput("What are the primary non-white colors in this logo?", ImageInput.FromFile("path/to/logo.png"));
+string response = await chat.GetResponseFromChatbotAsync();
+Console.WriteLine(response); // "Blue and purple"
+chat.AppendUserInput("What are the primary non-white colors in this logo?", ImageInput.FromImageUrl("https://rogerpincombe.com/templates/rp/center-aligned-no-shadow-small.png"));
+response = await chat.GetResponseFromChatbotAsync();
+Console.WriteLine(response); // "Blue, red, and yellow"
+
+// or when manually creating the ChatMessage
+messageWithImage = new ChatMessage(ChatMessageRole.User, "What colors do these logos have in common?");
+messageWithImage.images.Add(ImageInput.FromFile("path/to/logo.png"));
+messageWithImage.images.Add(ImageInput.FromImageUrl("https://rogerpincombe.com/templates/rp/center-aligned-no-shadow-small.png"));
+
+// you can specify multiple images at once
+chat.AppendUserInput("What colors do these logos have in common?", ImageInput.FromFile("path/to/logo.png"), ImageInput.FromImageUrl("https://rogerpincombe.com/templates/rp/center-aligned-no-shadow-small.png"));
+```
+
+
 #### Conversation History Context Length Management
 If the chat conversation history gets too long, it may not fit into the context length of the model.  By default, the earliest non-system message(s) will be removed from the chat history and the API call will be retried.  You may disable this by setting `chat.AutoTruncateOnContextLengthExceeded = false`, or you can override the truncation algorithm like this:
 
@@ -164,7 +196,7 @@ You may also wish to use a new model with a larger context length.  You can do t
 
 You can see token usage via `chat.MostRecentApiResult.Usage.PromptTokens` and related properties. 
 
-### Chat Endpoint Requests
+#### Chat Endpoint Requests
 You can access full control of the Chat API by using the `OpenAIAPI.Chat.CreateChatCompletionAsync()` and related methods.
 
 ```csharp

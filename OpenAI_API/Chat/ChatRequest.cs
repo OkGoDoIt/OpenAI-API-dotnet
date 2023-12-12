@@ -134,7 +134,7 @@ namespace OpenAI_API.Chat
 		/// This is only used for serializing the request into JSON, do not use it directly.
 		/// </summary>
 		[JsonProperty("response_format", DefaultValueHandling=DefaultValueHandling.Ignore)]
-		public Dictionary<string, string> ResponseFormatRaw
+		internal Dictionary<string, string> ResponseFormatRaw
 		{
 			get
 			{

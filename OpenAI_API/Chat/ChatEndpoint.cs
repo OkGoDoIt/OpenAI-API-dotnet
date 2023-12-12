@@ -125,6 +125,23 @@ namespace OpenAI_API.Chat
 		/// <returns>The <see cref="ChatResult"/> with the API response.</returns>
 		public Task<ChatResult> CreateChatCompletionAsync(params string[] userMessages) => CreateChatCompletionAsync(userMessages.Select(m => new ChatMessage(ChatMessageRole.User, m)).ToArray());
 
+
+		/// <summary>
+		/// Ask the API to complete the request using the specified message and image(s).  Any parameters will fall back to default values specified in <see cref="DefaultChatRequestArgs"/> if present, except for <see cref="ChatRequest.Model"/>, which will default to <see cref="Model.GPT4_Vision"/>.
+		/// </summary>
+		/// <param name="userMessage">The user message text to use in the generation.</param>
+		/// <param name="images">The images to use in the generation.</param>
+		/// <returns>The <see cref="ChatResult"/> with the API response.</returns>
+		public Task<ChatResult> CreateChatCompletionAsync(string userMessage, params ChatMessage.ImageInput[] images)
+		{
+			ChatRequest request = new ChatRequest(DefaultChatRequestArgs)
+			{
+				Model = Model.GPT4_Vision,
+				Messages = new ChatMessage[] { new ChatMessage(ChatMessageRole.User, userMessage, images) },
+			};
+			return CreateChatCompletionAsync(request);
+		}
+
 		#endregion
 
 		#region Streaming

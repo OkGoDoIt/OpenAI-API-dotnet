@@ -54,7 +54,7 @@ namespace OpenAI_Tests
 			Assert.NotZero(results.Choices.Count);
 			Assert.AreEqual(ChatMessageRole.Assistant, results.Choices[0].Message.Role);
 			Assert.That(results.Choices.All(c => c.Message.Role.Equals(ChatMessageRole.Assistant)));
-			Assert.That(results.Choices.All(c => c.Message.Content.Length > 1));
+			Assert.That(results.Choices.All(c => c.Message.TextContent.Length > 1));
 		}
 		[Test]
 		public void BasicCompletionWithNames()
@@ -92,7 +92,7 @@ namespace OpenAI_Tests
 			Assert.NotZero(results.Choices.Count);
 			Assert.AreEqual(ChatMessageRole.Assistant, results.Choices[0].Message.Role);
 			Assert.That(results.Choices.All(c => c.Message.Role.Equals(ChatMessageRole.Assistant)));
-			Assert.That(results.Choices.All(c => c.Message.Content.Length > 1));
+			Assert.That(results.Choices.All(c => c.Message.TextContent.Length > 1));
 			Assert.That(results.ToString().ToLower().Contains("yes"));
 		}
 		[Test]
@@ -121,7 +121,7 @@ namespace OpenAI_Tests
 			Assert.AreEqual(ChatMessageRole.Assistant, results.Choices[0].Message.Role);
 			Assert.That(results.Choices.All(c => c.Message.Role.Equals(ChatMessageRole.Assistant)));
 			Assert.That(results.Choices.All(c => c.Message.Role == ChatMessageRole.Assistant));
-			Assert.That(results.Choices.All(c => c.Message.Content.Length > 1));
+			Assert.That(results.Choices.All(c => c.Message.TextContent.Length > 1));
 			Assert.IsNotEmpty(results.ToString());
 		}
 
@@ -254,7 +254,7 @@ namespace OpenAI_Tests
 				Assert.Greater(streamParts, 5);
 
 				Assert.AreEqual(ChatMessageRole.User, chat.Messages.Last().Role);
-				Assert.AreEqual(result, chat.Messages.Last().Content);
+				Assert.AreEqual(result, chat.Messages.Last().TextContent);
 			}
 		}
 
@@ -419,7 +419,7 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			}
 
 			Assert.Greater(chatResults.Count, 100);
-			Assert.That(chatResults.Select(cr => cr.Choices[0].Delta.Content).Count(c => !string.IsNullOrEmpty(c)) > 50);
+			Assert.That(chatResults.Select(cr => cr.Choices[0].Delta.TextContent).Count(c => !string.IsNullOrEmpty(c)) > 50);
 		}
 
 		[TestCase("gpt-3.5-turbo")]
@@ -452,7 +452,7 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			Assert.Greater(streamParts, 5);
 
 			Assert.AreEqual(ChatMessageRole.User, chat.Messages.Last().Role);
-			Assert.AreEqual(result, chat.Messages.Last().Content);
+			Assert.AreEqual(result, chat.Messages.Last().TextContent);
 		}
 
 		[TestCase("gpt-4-1106-preview")]
@@ -479,10 +479,10 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			Assert.NotNull(results.Choices);
 			Assert.NotZero(results.Choices.Count);
 			Assert.AreEqual(ChatMessageRole.Assistant, results.Choices[0].Message.Role);
-			Assert.That(results.Choices.All(c => c.Message.Content.Length > 1));
+			Assert.That(results.Choices.All(c => c.Message.TextContent.Length > 1));
 			Assert.AreEqual("stop", results.Choices[0].FinishReason);
 
-			using (StringReader stringReader = new StringReader(results.Choices[0].Message.Content))
+			using (StringReader stringReader = new StringReader(results.Choices[0].Message.TextContent))
 			{
 				using (JsonTextReader jsonReader= new JsonTextReader(stringReader))
 				{
