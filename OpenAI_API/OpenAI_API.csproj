@@ -13,11 +13,11 @@
 		<RepositoryUrl>https://github.com/OkGoDoIt/OpenAI-API-dotnet</RepositoryUrl>
 		<PackageTags>OpenAI, AI, ML, API, ChatGPT, DALLE, GPT3, GPT-3, GPT4, GPT-4, DALL-E</PackageTags>
 		<Title>OpenAI API</Title>
-		<PackageReleaseNotes>Added and updated models as of December 6, 2023, including the new GPT 4 Turbo and DALL-E 3.  (Support for vision, text-to-speech, and all the new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.)</PackageReleaseNotes>
+		<PackageReleaseNotes>Adds updated models as of December 11, 2023, including the new GPT-4 Vision, GPT-4 Turbo, and DALL-E 3. Adds json result format. Fixes chat result streaming bug.</PackageReleaseNotes>
 		<PackageId>OpenAI</PackageId>
-		<Version>1.8</Version>
-		<AssemblyVersion>1.8.0.0</AssemblyVersion>
-		<FileVersion>1.8.0.0</FileVersion>
+		<Version>1.9</Version>
+		<AssemblyVersion>1.9.0.0</AssemblyVersion>
+		<FileVersion>1.9.0.0</FileVersion>
 		<GenerateDocumentationFile>True</GenerateDocumentationFile>
 		<PackageReadmeFile>README.md</PackageReadmeFile>
 		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
