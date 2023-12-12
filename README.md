@@ -23,12 +23,14 @@ Console.WriteLine(result);
 	* [GPT Vision](#gpt-vision)
 	* [Chat Endpoint](#chat-endpoint-requests)
 	* [Conversation History Context Length Management](#Conversation-History-Context-Length-Management)
+	* [JSON Mode](#json-mode)
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
  * [Embeddings API](#embeddings)
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
  * [Image APIs (DALL-E)](#images)
+	* [DALLE-E 3](#dall-e-3)
  * [Azure](#azure)
  * [Additional Documentation](#documentation)
  * [License](#license)
@@ -36,7 +38,8 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Added and updated models as of December 11, 2023, including the new GPT-4 Vision, GPT-4 Turbo, and DALL-E 3.  Support for text-to-speech, and the other new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
+Adds updated models as of December 11, 2023, including the new [GPT-4 Vision](#gpt-vision), GPT-4 Turbo, and [DALL-E 3](#dall-e-3). Adds [json result format](#json-mode). Fixes chat result streaming bug.
+Support for text-to-speech, and the other new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
 
 ## Requirements
 
@@ -225,6 +228,38 @@ It returns a `ChatResult` which is mostly metadata, so use its `.ToString()` met
 
 There's also an async streaming API which works similarly to the [Completions endpoint streaming results](#streaming). 
 
+#### JSON Mode
+
+With the new `Model.GPT4_Turbo` or `gpt-3.5-turbo-1106` models, you can set the `ChatRequest.ResponseFormat` to `ChatRequest.ResponseFormats.JsonObject` to enable JSON mode.
+When JSON mode is enabled, the model is constrained to only generate strings that parse into valid JSON object.
+See https://platform.openai.com/docs/guides/text-generation/json-mode for more details.
+
+```csharp
+ChatRequest chatRequest = new ChatRequest()
+{
+	Model = model,
+	Temperature = 0.0,
+	MaxTokens = 500,
+	ResponseFormat = ChatRequest.ResponseFormats.JsonObject,
+	Messages = new ChatMessage[] {
+		new ChatMessage(ChatMessageRole.System, "You are a helpful assistant designed to output JSON."),
+		new ChatMessage(ChatMessageRole.User, "Who won the world series in 2020?  Return JSON of a 'wins' dictionary with the year as the numeric key and the winning team as the string value.")
+	}
+};
+
+var results = await api.Chat.CreateChatCompletionAsync(chatRequest);
+Console.WriteLine(results);
+/* prints:
+{
+  "wins": {
+	2020: "Los Angeles Dodgers"
+  }
+}
+*/
+```
+
+
+
 ### Completions API
 Completions are considered legacy by OpenAI.  The Completion API is accessed via `OpenAIAPI.Completions`:
 
@@ -338,6 +373,8 @@ Console.WriteLine(result.Data[0].Url);
 ```
 
 The image result contains a URL for an online image or a base64-encoded image, depending on the ImageGenerationRequest.ResponseFormat (url is the default).
+
+#### DALL-E 3
 
 Use DALL-E 3 like this:
 
