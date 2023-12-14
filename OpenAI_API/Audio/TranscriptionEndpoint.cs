@@ -136,7 +136,7 @@ namespace OpenAI_API.Audio
 		/// </summary>
 		/// <param name="audioStream">The stream containing audio data, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.</param>
 		/// <param name="filename">The name of the audio file in the stream.  This does not have to be real, but it must contain the correct file extension.  For example, "file.mp3" if you are supplying an mp3 audio stream.</param>
-		/// <param name="responseFormat">The format of the response.  Suggested value are <see cref="AudioRequest.ResponseFormats.SRT"/> or <see cref="AudioRequest.ResponseFormats.VTT"/>.  For text and Json formats, try <see cref="GetTranscriptionTextAsync(Stream, string, string, double?)"/> or <see cref="GetTranscriptionDetailsAsync(Stream, string, string, double?)"/> instead.</param>
+		/// <param name="responseFormat">The format of the response.  Suggested value are <see cref="AudioRequest.ResponseFormats.SRT"/> or <see cref="AudioRequest.ResponseFormats.VTT"/>.  For text and Json formats, try <see cref="GetTextAsync(Stream, string, string, string, double?)"/> or <see cref="GetWithDetailsAsync(Stream, string, string, string, double?)"/> instead.</param>
 		/// <param name="language">The language of the input audio. Supplying the input language in ISO-639-1 format will improve accuracy and latency.</param>
 		/// <param name="prompt">An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.</param>
 		/// <param name="temperature">The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.</param>
@@ -175,7 +175,7 @@ namespace OpenAI_API.Audio
 		/// Gets the transcription of the audio file, in the specified format
 		/// </summary>
 		/// <param name="audioFilePath">The local path to the audio file, in one of these formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, or webm.</param>
-		/// <param name="responseFormat">The format of the response.  Suggested value are <see cref="AudioRequest.ResponseFormats.SRT"/> or <see cref="AudioRequest.ResponseFormats.VTT"/>.  For text and Json formats, try <see cref="GetTranscriptionTextAsync(Stream, string, string, double?)"/> or <see cref="GetTranscriptionDetailsAsync(Stream, string, string, double?)"/> instead.</param>
+		/// <param name="responseFormat">The format of the response.  Suggested value are <see cref="AudioRequest.ResponseFormats.SRT"/> or <see cref="AudioRequest.ResponseFormats.VTT"/>.  For text and Json formats, try <see cref="GetTextAsync(string, string, string, double?)"/> or <see cref="GetWithDetailsAsync(string, string, string, double?)"/> instead.</param>
 		/// <param name="language">The language of the input audio. Supplying the input language in ISO-639-1 format will improve accuracy and latency.</param>
 		/// <param name="prompt">An optional text to guide the model's style or continue a previous audio segment. The prompt should match the audio language.</param>
 		/// <param name="temperature">The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.</param>

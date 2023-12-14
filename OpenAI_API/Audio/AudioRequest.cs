@@ -6,6 +6,9 @@ using static OpenAI_API.Audio.TextToSpeechRequest;
 
 namespace OpenAI_API.Audio
 {
+	/// <summary>
+	/// Parameters for requests made by the <see cref="TranscriptionEndpoint"/>.
+	/// </summary>
 	public class AudioRequest
 	{
 		/// <summary>

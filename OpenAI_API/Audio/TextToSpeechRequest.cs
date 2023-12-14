@@ -5,6 +5,9 @@ using Newtonsoft.Json;
 
 namespace OpenAI_API.Audio
 {
+	/// <summary>
+	/// A request to the <see cref="TextToSpeechEndpoint"/>.
+	/// </summary>
 	public class TextToSpeechRequest
 	{
 		/// <summary>

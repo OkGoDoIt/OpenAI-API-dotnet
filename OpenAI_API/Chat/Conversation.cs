@@ -66,7 +66,7 @@ namespace OpenAI_API.Chat
 		}
 
 		/// <summary>
-		/// A list of messages exchanged so far. To append to this list, use <see cref="AppendMessage(ChatMessage)"/>, <see cref="AppendUserInput(string)"/>, <see cref="AppendSystemMessage(string)"/>, or <see cref="AppendExampleChatbotOutput(string)"/>.
+		/// A list of messages exchanged so far. To append to this list, use <see cref="AppendMessage(ChatMessage)"/>, <see cref="AppendUserInput(string, ChatMessage.ImageInput[])"/>, <see cref="AppendSystemMessage(string)"/>, or <see cref="AppendExampleChatbotOutput(string)"/>.
 		/// </summary>
 		public IList<ChatMessage> Messages { get => _Messages; }
 		private List<ChatMessage> _Messages;

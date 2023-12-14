@@ -26,10 +26,10 @@ Console.WriteLine(result);
 	* [JSON Mode](#json-mode)
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
- * Audio
-	* Text to Speech
-	* Transcribe Audio to Text
-	* Translate Audio to English Text
+ * [Audio](#audio)
+	* [Text to Speech](#text-to-speech-tts)
+	* [Transcribe Audio to Text](#transcription-speech-to-text)
+	* [Translate Audio to English Text](#translations-non-english-speech-to-english-text)
  * [Embeddings API](#embeddings)
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
@@ -42,7 +42,7 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Adds updated models as of December 13, 2023, including the new [GPT-4 Vision](#gpt-vision), GPT-4 Turbo, and [DALL-E 3](#dall-e-3). Adds text-to-speech as well as audio transcription and translation (Whisper).  Adds [json result format](#json-mode). Fixes chat result streaming bug.
+Adds updated models as of December 13, 2023, including the new [GPT-4 Vision](#gpt-vision), GPT-4 Turbo, and [DALL-E 3](#dall-e-3). Adds [text-to-speech](#text-to-speech-tts) as well as [audio transcriptions](#transcription-speech-to-text) and [translations](#translations-non-english-speech-to-english-text) (Whisper).  Adds [json result format](#json-mode). Fixes chat result streaming bug.
 Support for assistants and other new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
 
 ## Requirements
