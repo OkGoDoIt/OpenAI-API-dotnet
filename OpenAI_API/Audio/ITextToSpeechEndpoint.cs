@@ -30,7 +30,7 @@ namespace OpenAI_API.Audio
 		/// <param name="responseFormat">The default response format is "mp3", but other formats are available in <see cref="TextToSpeechRequest.ResponseFormats"/>.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech/supported-output-formats"/></param>
 		/// <param name="model">TTS is an AI model that converts text to natural sounding spoken text. OpenAI offers two different model variates, <see cref="Model.TTS_Speed"/> is optimized for real time text to speech use cases and <see cref="Model.TTS_HD"/> is optimized for quality.</param>
 		/// <returns>A stream of the audio file in the requested format.</returns>
-		Task<Stream> GetSpeechAsStreamAsync(string input, string voice = null, decimal? speed = null, string responseFormat = null, Model model = null);
+		Task<Stream> GetSpeechAsStreamAsync(string input, string voice = null, double? speed = null, string responseFormat = null, Model model = null);
 
 		/// <summary>
 		/// Calls the API to create speech from text, and saves the audio file to disk.
@@ -50,7 +50,7 @@ namespace OpenAI_API.Audio
 		/// <param name="responseFormat">The default response format is "mp3", but other formats are available in <see cref="TextToSpeechRequest.ResponseFormats"/>.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech/supported-output-formats"/></param>
 		/// <param name="model">TTS is an AI model that converts text to natural sounding spoken text. OpenAI offers two different model variates, <see cref="Model.TTS_Speed"/> is optimized for real time text to speech use cases and <see cref="Model.TTS_HD"/> is optimized for quality.</param>
 		/// <returns>A stream of the audio file in the requested format.</returns>
-		Task<FileInfo> SaveSpeechToFileAsync(string input, string localPath, string voice = null, decimal? speed = null, string responseFormat = null, Model model = null);
+		Task<FileInfo> SaveSpeechToFileAsync(string input, string localPath, string voice = null, double? speed = null, string responseFormat = null, Model model = null);
 
 		
 	}

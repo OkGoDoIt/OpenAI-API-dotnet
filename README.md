@@ -26,6 +26,10 @@ Console.WriteLine(result);
 	* [JSON Mode](#json-mode)
  * [Completions API](#completions)
 	* [Streaming completion results](#streaming)
+ * Audio
+	* Text to Speech
+	* Transcribe Audio to Text
+	* Translate Audio to English Text
  * [Embeddings API](#embeddings)
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
@@ -38,8 +42,8 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Adds updated models as of December 11, 2023, including the new [GPT-4 Vision](#gpt-vision), GPT-4 Turbo, and [DALL-E 3](#dall-e-3). Adds [json result format](#json-mode). Fixes chat result streaming bug.
-Support for text-to-speech, and the other new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
+Adds updated models as of December 13, 2023, including the new [GPT-4 Vision](#gpt-vision), GPT-4 Turbo, and [DALL-E 3](#dall-e-3). Adds text-to-speech as well as audio transcription and translation (Whisper).  Adds [json result format](#json-mode). Fixes chat result streaming bug.
+Support for assistants and other new features shown at OpenAI DevDay will be coming soon, but are not yet implemented.
 
 ## Requirements
 
@@ -296,6 +300,95 @@ async Task StreamCompletionAsync(CompletionRequest request, Action<CompletionRes
 await api.Completions.StreamCompletionAsync(
 	new CompletionRequest("My name is Roger and I am a principal software engineer at Salesforce.  This is my resume:", Model.DavinciText, 200, 0.5, presencePenalty: 0.1, frequencyPenalty: 0.1),
 	res => ResumeTextbox.Text += res.ToString());
+```
+
+### Audio
+The Audio API's are Text to Speech, Transcription (speech to text), and Translation (non-English speech to English text).
+
+#### Text to Speech (TTS)
+The TTS API is accessed via `OpenAIAPI.TextToSpeech`:
+
+```csharp
+await api.TextToSpeech.SaveSpeechToFileAsync("Hello, brave new world!  This is a test.", outputPath);
+// You can open it in the defaul audio player like this:
+Process.Start(outputPath);
+```
+
+You can also specify all of the request parameters with a `TextToSpeechRequest` object:
+
+```csharp
+var request = new TextToSpeechRequest()
+{
+	Input = "Hello, brave new world!  This is a test.",
+	ResponseFormat = ResponseFormats.AAC,
+	Model = Model.TTS_HD,
+	Voice = Voices.Nova,
+	Speed = 0.9
+};
+await api.TextToSpeech.SaveSpeechToFileAsync(request, "test.aac");
+```
+
+Instead of saving to a file, you can get audio byte stream with `api.TextToSpeech.GetSpeechAsStreamAsync(request)`:
+
+```csharp
+using (Stream result = await api.TextToSpeech.GetSpeechAsStreamAsync("Hello, brave new world!", Voices.Fable))
+using (StreamReader reader = new StreamReader(result))
+{
+	// do something with the audio stream here
+}
+```
+
+#### Transcription (Speech to Text)
+
+The Audio Transcription API allows you to generate text from audio, in any of the supported languages.  It is accessed via `OpenAIAPI.Transcriptions`:
+
+```csharp
+string resultText = await api.Transcriptions.GetTextAsync("path/to/file.mp3");
+```
+
+You can ask for verbose results, which will give you segment and token-level information, as well as the standard OpenAI metadata such as processing time:
+
+```csharp
+AudioResultVerbose result = await api.Transcriptions.GetWithDetailsAsync("path/to/file.m4a");
+Console.WriteLine(result.ProcessingTime.TotalMilliseconds); // 496ms
+Console.WriteLine(result.text); // "Hello, this is a test of the transcription function."
+Console.WriteLine(result.language); // "english"
+Console.WriteLine(result.segments[0].no_speech_prob); // 0.03712
+// etc
+```
+
+You can also ask for results in SRT or VTT format, which is useful for generating subtitles for videos:
+
+```csharp
+string result = await api.Transcriptions.GetAsFormatAsync("path/to/file.m4a", AudioRequest.ResponseFormats.SRT);
+```
+
+Additional parameters such as temperature, prompt, language, etc can be specified either per-request or as a default:
+
+```csharp
+// inline
+result = await api.Transcriptions.GetTextAsync("conversation.mp3", "en", "This is a transcript of a conversation between a medical doctor and her patient: ", 0.3);
+
+// set defaults
+api.Transcriptions.DefaultTranscriptionRequestArgs.Language = "en";
+```
+
+Instead of providing a local file on disk, you can provide a stream of audio bytes.  This can be useful for streaming audio from the microphone or another source without having to first write to disk.  Please not you must specify a filename, which does not have to exist, but which must have an accurate extension for the type of audio that you are sending.  OpenAI uses the filename extension to determine what format your audio stream is in.
+
+```csharp
+using (var audioStream = File.OpenRead("path-here.mp3"))
+{
+	return await api.Transcriptions.GetTextAsync(audioStream, "file.mp3");
+}
+```
+
+#### Translations (Non-English Speech to English Text)
+
+Translations allow you to transcribe text from any of the supported languages to English.  OpenAI does not support translating into any other language, only English.  It is accessed via `OpenAIAPI.Translations`.
+It supports all of the same functionality as the Transcriptions.
+
+```csharp
+string result = await api.Translations.GetTextAsync("chinese-example.m4a");
 ```
 
 ### Embeddings

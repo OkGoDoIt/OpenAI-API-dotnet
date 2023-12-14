@@ -7,6 +7,7 @@ using OpenAI_API.Models;
 using OpenAI_API.Moderation;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -29,16 +30,16 @@ namespace OpenAI_Tests
 		[TestCase("fable", false, 1)]
 		[TestCase("onyx", true, 1.25)]
 		[TestCase("nova", false, 0.5)]
-		public async Task SimpleTTSStreamTest(string voice, bool hd, decimal? speed)
+		public async Task SimpleTTSStreamTest(string voice, bool hd, double? speed)
 		{
 			var api = new OpenAI_API.OpenAIAPI();
-			using (var result = await api.TextToSpeech.GetSpeechAsStreamAsync("Hello, brave new world!  This is a test.", voice, speed, TextToSpeechRequest.ResponseFormats.FLAC, hd ? Model.TTS_HD : null))
+			using (Stream result = await api.TextToSpeech.GetSpeechAsStreamAsync("Hello, brave new world!  This is a test.", voice, speed, TextToSpeechRequest.ResponseFormats.FLAC, hd ? Model.TTS_HD : null))
 			{
 				Assert.IsNotNull(result);
-				using (TextReader reader = new StreamReader(result))
+				using (StreamReader reader = new StreamReader(result))
 				{
 					Assert.Greater(result.Length, 10000);
-					string asString = reader.ReadLine();
+					string asString = await reader.ReadToEndAsync();
 					Assert.AreEqual("fLaC", asString.Substring(0, 4));
 				}
 			}
@@ -63,12 +64,13 @@ namespace OpenAI_Tests
 		[TestCase("aac")]
 		public async Task ManualTTSStreamTest(string format)
 		{
+			var api = new OpenAI_API.OpenAIAPI();
+
 			var request = new TextToSpeechRequest()
 			{
 				Input = "Hello, brave new world!  This is a test.",
 				ResponseFormat = format,
 			};
-			var api = new OpenAI_API.OpenAIAPI();
 			using (var result = await api.TextToSpeech.GetSpeechAsStreamAsync(request))
 			{
 				Assert.IsNotNull(result);

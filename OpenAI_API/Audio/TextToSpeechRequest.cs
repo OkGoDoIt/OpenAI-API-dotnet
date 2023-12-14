@@ -35,7 +35,7 @@ namespace OpenAI_API.Audio
 		/// The speed of the generated audio. Select a value from 0.25 to 4.0. 1.0 is the default.
 		/// </summary>
 		[JsonProperty("speed", DefaultValueHandling = DefaultValueHandling.Ignore)]
-		public decimal? Speed { get; set; } = null;
+		public double? Speed { get; set; } = null;
 
 		/// <summary>
 		/// Supported voices are alloy, echo, fable, onyx, nova, and shimmer. Previews of the voices are available in the Text to speech guide. See <seealso href="https://platform.openai.com/docs/guides/text-to-speech/voice-options"/>.

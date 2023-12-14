@@ -67,8 +67,18 @@ namespace OpenAI_API
         IImageGenerationEndpoint ImageGenerations { get; }
 
 		/// <summary>
-		/// The Endpoint for the Text to Speech API.  This allows you to generate audio from text.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech"/>
+		/// The endpoint for the Text to Speech API.  This allows you to generate audio from text.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech"/>
 		/// </summary>
 		ITextToSpeechEndpoint TextToSpeech { get; }
-    }
+
+		/// <summary>
+		/// The endpoint for the audio transcription API.  This allows you to generate text from audio.  See <seealso href="https://platform.openai.com/docs/guides/speech-to-text"/>
+		/// </summary>
+		ITranscriptionEndpoint Transcriptions { get; }
+
+		/// <summary>
+		/// The endpoint for the audio translation API.  This allows you to generate English text from audio in other languages.  See <seealso href="https://platform.openai.com/docs/guides/speech-to-text/translations"/>
+		/// </summary>
+		ITranscriptionEndpoint Translations { get; }
+	}
 }

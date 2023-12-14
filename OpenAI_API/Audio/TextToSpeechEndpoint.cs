@@ -24,7 +24,7 @@ namespace OpenAI_API.Audio
 		public TextToSpeechRequest DefaultTTSRequestArgs { get; set; } = new TextToSpeechRequest();
 
 		/// <summary>
-		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.Completions"/>.
+		/// Constructor of the api endpoint.  Rather than instantiating this yourself, access it through an instance of <see cref="OpenAIAPI"/> as <see cref="OpenAIAPI.TextToSpeech"/>.
 		/// </summary>
 		/// <param name="api">Pass in the instance of the api</param>
 		internal TextToSpeechEndpoint(OpenAIAPI api) : base(api) { }
@@ -48,7 +48,7 @@ namespace OpenAI_API.Audio
 		/// <param name="responseFormat">The default response format is "mp3", but other formats are available in <see cref="TextToSpeechRequest.ResponseFormats"/>.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech/supported-output-formats"/></param>
 		/// <param name="model">TTS is an AI model that converts text to natural sounding spoken text. OpenAI offers two different model variates, <see cref="Model.TTS_Speed"/> is optimized for real time text to speech use cases and <see cref="Model.TTS_HD"/> is optimized for quality.</param>
 		/// <returns>A stream of the audio file in the requested format.</returns>
-		public async Task<Stream> GetSpeechAsStreamAsync(string input, string voice = null, decimal? speed = null, string responseFormat = null, Model model = null)
+		public async Task<Stream> GetSpeechAsStreamAsync(string input, string voice = null, double? speed = null, string responseFormat = null, Model model = null)
 		{
 			var request = new TextToSpeechRequest()
 			{
@@ -87,7 +87,7 @@ namespace OpenAI_API.Audio
 		/// <param name="responseFormat">The default response format is "mp3", but other formats are available in <see cref="TextToSpeechRequest.ResponseFormats"/>.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech/supported-output-formats"/></param>
 		/// <param name="model">TTS is an AI model that converts text to natural sounding spoken text. OpenAI offers two different model variates, <see cref="Model.TTS_Speed"/> is optimized for real time text to speech use cases and <see cref="Model.TTS_HD"/> is optimized for quality.</param>
 		/// <returns>A stream of the audio file in the requested format.</returns>
-		public async Task<FileInfo> SaveSpeechToFileAsync(string input, string localPath, string voice = null, decimal? speed = null, string responseFormat = null, Model model = null)
+		public async Task<FileInfo> SaveSpeechToFileAsync(string input, string localPath, string voice = null, double? speed = null, string responseFormat = null, Model model = null)
 		{
 			var request = new TextToSpeechRequest()
 			{
