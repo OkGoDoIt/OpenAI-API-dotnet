@@ -146,6 +146,12 @@ namespace OpenAI_API.Chat
 		}
 
 		/// <summary>
+		/// If specified, OpenAI will make a best effort to sample deterministically, such that repeated requests with the same seed and parameters should return the same result. Determinism is not guaranteed, and you should refer to the <see cref="ChatResult.SystemFingerprint"/> response parameter to monitor changes in the backend.
+		/// </summary>
+		[JsonProperty("seed", DefaultValueHandling=DefaultValueHandling.Ignore)]
+		public int? Seed { get; set; }
+
+		/// <summary>
 		/// Creates a new, empty <see cref="ChatRequest"/>
 		/// </summary>
 		public ChatRequest()

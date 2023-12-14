@@ -162,7 +162,7 @@ namespace OpenAI_API.Completions
 		public string user { get; set; }
 
 		/// <summary>
-		/// Cretes a new, empty <see cref="CompletionRequest"/>
+		/// Creates a new, empty <see cref="CompletionRequest"/>
 		/// </summary>
 		public CompletionRequest()
 		{

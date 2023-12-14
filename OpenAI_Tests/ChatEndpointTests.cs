@@ -496,5 +496,75 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 			}
 
 		}
+
+		[Test]
+		public async Task SameSeedShouldBeSameOutput() {
+			var api = new OpenAI_API.OpenAIAPI();
+			ChatRequest chatRequest = new ChatRequest()
+			{
+				Model = Model.ChatGPTTurbo_1106,
+				Temperature = 0,
+				MaxTokens = 100,
+				Seed = 5,
+				Messages = new ChatMessage[] {
+					new ChatMessage(ChatMessageRole.System, "You are a very creative comedian."),
+					new ChatMessage(ChatMessageRole.User, "Tell me a joke.")
+				}
+			};
+			var resultA = await api.Chat.CreateChatCompletionAsync(chatRequest);
+			string jokeA = resultA.ToString();
+			string systemFingerprintA = resultA.SystemFingerprint;
+			Assert.IsNotNull(systemFingerprintA);
+			Assert.IsNotEmpty(systemFingerprintA);
+			Assert.IsNotEmpty(jokeA);
+
+			var resultB = await api.Chat.CreateChatCompletionAsync(chatRequest);
+			string jokeB = resultB.ToString();
+			string systemFingerprintB = resultB.SystemFingerprint;
+			Assert.IsNotNull(systemFingerprintB);
+			Assert.IsNotEmpty(systemFingerprintB);
+			Assert.IsNotEmpty(jokeB);
+
+			if (systemFingerprintA == systemFingerprintB)
+			{
+				Assert.AreEqual(jokeA, jokeB);
+			}
+		}
+
+		[Test]
+		public async Task DifferentSeedShouldBeDifferentOutput()
+		{
+			var api = new OpenAI_API.OpenAIAPI();
+			ChatRequest chatRequest = new ChatRequest()
+			{
+				Model = Model.ChatGPTTurbo_1106,
+				Temperature = 0,
+				MaxTokens = 100,
+				Seed = 5,
+				Messages = new ChatMessage[] {
+					new ChatMessage(ChatMessageRole.System, "You are a very creative comedian."),
+					new ChatMessage(ChatMessageRole.User, "Tell me a joke.")
+				}
+			};
+			var resultA = await api.Chat.CreateChatCompletionAsync(chatRequest);
+			string jokeA = resultA.ToString();
+			string systemFingerprintA = resultA.SystemFingerprint;
+			Assert.IsNotNull(systemFingerprintA);
+			Assert.IsNotEmpty(systemFingerprintA);
+			Assert.IsNotEmpty(jokeA);
+
+			chatRequest.Seed = 99;
+			var resultB = await api.Chat.CreateChatCompletionAsync(chatRequest);
+			string jokeB = resultB.ToString();
+			string systemFingerprintB = resultB.SystemFingerprint;
+			Assert.IsNotNull(systemFingerprintB);
+			Assert.IsNotEmpty(systemFingerprintB);
+			Assert.IsNotEmpty(jokeB);
+
+			if (systemFingerprintA == systemFingerprintB)
+			{
+				Assert.AreNotEqual(jokeA, jokeB);
+			}
+		}
 	}
 }
