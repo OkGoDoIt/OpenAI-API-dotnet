@@ -1,3 +1,4 @@
+using OpenAI_API.Audio;
 using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
@@ -64,5 +65,10 @@ namespace OpenAI_API
         /// The API lets you do operations with images. You can Given a prompt and/or an input image, the model will generate a new image.
         /// </summary>
         IImageGenerationEndpoint ImageGenerations { get; }
+
+		/// <summary>
+		/// The Endpoint for the Text to Speech API.  This allows you to generate audio from text.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech"/>
+		/// </summary>
+		ITextToSpeechEndpoint TextToSpeech { get; }
     }
 }

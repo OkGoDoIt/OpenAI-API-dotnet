@@ -103,6 +103,17 @@ namespace OpenAI_API.Models
 		public static Model DefaultChatModel { get; set; } = ChatGPTTurbo;
 
 		/// <summary>
+		/// The default model to use in text-to-speech requests if no other model is specified.
+		/// </summary>
+		public static Model DefaultTTSModel { get; set; } = TTS_Speed;
+
+		/// <summary>
+		/// The default model to use in transcription requests if no other model is specified.
+		/// </summary>
+		public static Model DefaultTranscriptionModel { get; set; } = Whisper1;
+
+
+		/// <summary>
 		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
 		/// </summary>
 		/// <param name="api">An instance of the API with authentication in order to call the endpoint.</param>
@@ -244,7 +255,14 @@ namespace OpenAI_API.Models
 		public static Model TTS_HD=> new Model("tts-1-hd") { OwnedBy = "openai" };
 #endregion
 
-}
+#region Transcriptions
+		/// <summary>
+		/// Currently Whisper-1 is the only speech recognition model available.
+		/// </summary>
+		public static Model Whisper1 => new Model("whisper-1") { OwnedBy = "openai" };
+#endregion
+
+	}
 
 	/// <summary>
 	/// Permissions for using the model

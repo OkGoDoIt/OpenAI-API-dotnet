@@ -1,4 +1,5 @@
-﻿using OpenAI_API.Chat;
+﻿using OpenAI_API.Audio;
+using OpenAI_API.Chat;
 using OpenAI_API.Completions;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
@@ -50,6 +51,7 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			TextToSpeech = new TextToSpeechEndpoint(this);
 		}
 
 		/// <summary>
@@ -62,7 +64,7 @@ namespace OpenAI_API
 		public static OpenAIAPI ForAzure(string YourResourceName, string deploymentId, APIAuthentication apiKey = null)
 		{
 			OpenAIAPI api = new OpenAIAPI(apiKey);
-			api.ApiVersion = "2022-12-01";
+			api.ApiVersion = "2023-05-15";
 			api.ApiUrlFormat = $"https://{YourResourceName}.openai.azure.com/openai/deployments/{deploymentId}/" + "{1}?api-version={0}";
 			return api;
 		}
@@ -101,5 +103,10 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public IImageGenerationEndpoint ImageGenerations { get; }
+
+		/// <summary>
+		/// The Endpoint for the Text to Speech API.  This allows you to generate audio from text.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech"/>
+		/// </summary>
+		public ITextToSpeechEndpoint TextToSpeech { get; }
 	}
 }
