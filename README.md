@@ -17,14 +17,14 @@ Console.WriteLine(result);
  * [Requirements](#requirements)
  * [Installation](#install-from-nuget)
  * [Authentication](#authentication)
- * [Chat API](#chatapi)
+ * [Chat API](#chat-api)
 	* [Conversations](#chat-conversations)
 	* [Streaming Results](#chat-streaming)
 	* [GPT Vision](#gpt-vision)
 	* [Chat Endpoint](#chat-endpoint-requests)
 	* [Conversation History Context Length Management](#Conversation-History-Context-Length-Management)
 	* [JSON Mode](#json-mode)
- * [Completions API](#completions)
+ * [Completions API](#completions-api)
 	* [Streaming completion results](#streaming)
  * [Audio](#audio)
 	* [Text to Speech](#text-to-speech-tts)
@@ -47,7 +47,7 @@ Support for assistants and other new features shown at OpenAI DevDay will be com
 
 ## Requirements
 
-This library is based on .NET Standard 2.0, so it should work across .NET Framework >=4.7.2 and .NET Core >= 3.0.  It should work across console apps, winforms, wpf, asp.net, etc (although I have not yet tested with asp.net).  It should work across Windows, Linux, and Mac, although I have only tested on Windows so far.
+This library is based on .NET Standard 2.0, so it should work across all versions of .Net, from the traditional .NET Framework >=4.7.2 to .NET (Core) >= 3.0.  It should work across console apps, winforms, wpf, asp.net, unity, Xamarin, etc.  It should work across Windows, Linux, and Mac, and possibly even mobile.  There are minimal dependencies, and it's licensed in the public domain.
 
 ## Getting started
 
