@@ -35,12 +35,23 @@ namespace OpenAI_API.Embedding
 			return await CreateEmbeddingAsync(req);
 		}
 
-		/// <summary>
-		/// Ask the API to embedd text using a custom request
-		/// </summary>
-		/// <param name="request">Request to be send</param>
-		/// <returns>Asynchronously returns the embedding result. Look in its <see cref="Data.Embedding"/> property of <see cref="EmbeddingResult.Data"/> to find the vector of floating point numbers</returns>
-		public async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request)
+        /// <summary>
+        /// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/>
+        /// </summary>
+        /// <param name="input">Text to be embedded</param>
+        /// <returns>Asynchronously returns the embedding resu
+        public async Task<EmbeddingResult> CreateEmbeddingAsync(string[] batchInput)
+        {
+            EmbeddingRequest req = new EmbeddingRequest(DefaultEmbeddingRequestArgs.Model, batchInput);
+            return await CreateEmbeddingAsync(req);
+        }
+
+        /// <summary>
+        /// Ask the API to embedd text using a custom request
+        /// </summary>
+        /// <param name="request">Request to be send</param>
+        /// <returns>Asynchronously returns the embedding result. Look in its <see cref="Data.Embedding"/> property of <see cref="EmbeddingResult.Data"/> to find the vector of floating point numbers</returns>
+        public async Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request)
 		{
 			return await HttpPost<EmbeddingResult>(postData: request);
 		}
