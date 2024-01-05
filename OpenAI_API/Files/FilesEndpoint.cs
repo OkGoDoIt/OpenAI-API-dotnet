@@ -50,7 +50,7 @@ namespace OpenAI_API.Files
 		/// <returns></returns>
 		public async Task<string> GetFileContentAsStringAsync(string fileId)
 		{
-			return await HttpGetContent<File>($"{Url}/{fileId}/content");
+			return await HttpGetContent($"{Url}/{fileId}/content");
 		}
 
 		/// <summary>

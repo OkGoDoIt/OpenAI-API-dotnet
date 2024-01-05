@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="chinese-test.m4a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="english-test.m4a">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Update="fine-tuning-data.jsonl">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

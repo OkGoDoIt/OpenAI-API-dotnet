@@ -19,7 +19,7 @@ namespace OpenAI_API.Chat
 		/// Creates an ongoing chat which can easily encapsulate the conversation.  This is the simplest way to use the Chat endpoint.
 		/// </summary>
 		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  See <see href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI documentation for a list of possible parameters to tweak.</see></param>
-		/// <returns>A <see cref="Conversation"/> which encapulates a back and forth chat betwen a user and an assistant.</returns>
+		/// <returns>A <see cref="Conversation"/> which encapsulates a back and forth chat between a user and an assistant.</returns>
 		Conversation CreateConversation(ChatRequest defaultChatRequestArgs = null);
 
 
@@ -67,6 +67,14 @@ namespace OpenAI_API.Chat
 		/// <param name="userMessages">The user message or messages to use in the generation.  All strings are assumed to be of Role <see cref="ChatMessageRole.User"/></param>
 		/// <returns>The <see cref="ChatResult"/> with the API response.</returns>
 		Task<ChatResult> CreateChatCompletionAsync(params string[] userMessages);
+
+		/// <summary>
+		/// Ask the API to complete the request using the specified message and image(s).  Any parameters will fall back to default values specified in <see cref="DefaultChatRequestArgs"/> if present, except for <see cref="ChatRequest.Model"/>, which will default to <see cref="Model.GPT4_Vision"/>.
+		/// </summary>
+		/// <param name="userMessage">The user message text to use in the generation.</param>
+		/// <param name="images">The images to use in the generation.</param>
+		/// <returns>The <see cref="ChatResult"/> with the API response.</returns>
+		Task<ChatResult> CreateChatCompletionAsync(string userMessage, params ChatMessage.ImageInput[] images);
 
 
 		/// <summary>

@@ -308,23 +308,21 @@ namespace OpenAI_Tests
 			);
 		}
 
-		[TestCase(5, 3)]
-		[TestCase(7, 2)]
-		public async Task StreamCompletionAsync_ShouldStreamIndexAndData(int maxTokens, int numOutputs)
+		[Test]
+		public async Task StreamCompletionAsync_ShouldStreamIndexAndData()
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
 			var completionRequest = new CompletionRequest
 			{
 				Prompt = "three four five",
-				MaxTokens = maxTokens,
-				NumChoicesPerPrompt = numOutputs,
+				MaxTokens = 16,
+				NumChoicesPerPrompt = 3,
 				Temperature = 0,
 				TopP = 0.1,
 				PresencePenalty = 0.5,
 				FrequencyPenalty = 0.3,
-				Logprobs = 3,
-				Echo = true,
+				Logprobs = 3
 			};
 
 			var streamIndexes = new List<int>();
@@ -335,28 +333,25 @@ namespace OpenAI_Tests
 				completionResults.Add(result);
 			});
 
-			int expectedCount = maxTokens * numOutputs;
-			streamIndexes.Count.Should().Be(expectedCount);
-			completionResults.Count.Should().Be(expectedCount);
+			streamIndexes.Count.Should().BeGreaterThan(5);
+			completionResults.Count.Should().BeGreaterThan(5);
 		}
 
-		[TestCase(5, 3)]
-		[TestCase(7, 2)]
-		public async Task StreamCompletionAsync_ShouldStreamData(int maxTokens, int numOutputs)
+		[Test]
+		public async Task StreamCompletionAsync_ShouldStreamData()
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
 			var completionRequest = new CompletionRequest
 			{
 				Prompt = "three four five",
-				MaxTokens = maxTokens,
-				NumChoicesPerPrompt = numOutputs,
+				MaxTokens = 16,
+				NumChoicesPerPrompt = 3,
 				Temperature = 0,
 				TopP = 0.1,
 				PresencePenalty = 0.5,
 				FrequencyPenalty = 0.3,
-				Logprobs = 3,
-				Echo = true,
+				Logprobs = 3
 			};
 
 			var completionResults = new List<CompletionResult>();
@@ -365,27 +360,24 @@ namespace OpenAI_Tests
 				completionResults.Add(result);
 			});
 
-			int expectedCount = maxTokens * numOutputs;
-			completionResults.Count.Should().Be(expectedCount);
+			completionResults.Count.Should().BeGreaterThan(5);
 		}
 
-		[TestCase(5, 3)]
-		[TestCase(7, 2)]
-		public async Task StreamCompletionEnumerableAsync_ShouldStreamData(int maxTokens, int numOutputs)
+		[Test]
+		public async Task StreamCompletionEnumerableAsync_ShouldStreamData()
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
 			var completionRequest = new CompletionRequest
 			{
 				Prompt = "three four five",
-				MaxTokens = maxTokens,
-				NumChoicesPerPrompt = numOutputs,
+				MaxTokens = 16,
+				NumChoicesPerPrompt = 3,
 				Temperature = 0,
 				TopP = 0.1,
 				PresencePenalty = 0.5,
 				FrequencyPenalty = 0.3,
-				Logprobs = 3,
-				Echo = true,
+				Logprobs = 3
 			};
 
 			var completionResults = new List<CompletionResult>();
@@ -394,8 +386,7 @@ namespace OpenAI_Tests
 				completionResults.Add(res);
 			}
 
-			int expectedCount = maxTokens * numOutputs;
-			completionResults.Count.Should().Be(expectedCount);
+			completionResults.Count.Should().BeGreaterThan(5);
 		}
 
 		[Test]

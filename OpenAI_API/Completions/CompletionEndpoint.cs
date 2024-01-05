@@ -14,7 +14,7 @@ namespace OpenAI_API.Completions
 		/// <summary>
 		/// This allows you to set default parameters for every request, for example to set a default temperature or max tokens.  For every request, if you do not have a parameter set on the request but do have it set here as a default, the request will automatically pick up the default value.
 		/// </summary>
-		public CompletionRequest DefaultCompletionRequestArgs { get; set; } = new CompletionRequest() { Model = Model.DavinciText };
+		public CompletionRequest DefaultCompletionRequestArgs { get; set; } = new CompletionRequest() { Model = Model.DefaultModel };
 
 		/// <summary>
 		/// The name of the endpoint, which is the final path segment in the API URL.  For example, "completions".

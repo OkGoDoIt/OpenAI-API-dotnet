@@ -13,7 +13,7 @@ namespace OpenAI_API.Completions
 		/// ID of the model to use. You can use <see cref="ModelsEndpoint.GetModelsAsync()"/> to see all of your available models, or use a standard model like <see cref="Model.DavinciText"/>.
 		/// </summary>
 		[JsonProperty("model")]
-		public string Model { get; set; } = OpenAI_API.Models.Model.DavinciText;
+		public string Model { get; set; } = OpenAI_API.Models.Model.DefaultModel;
 
 		/// <summary>
 		/// This is only used for serializing the request into JSON, do not use it directly.
@@ -162,7 +162,7 @@ namespace OpenAI_API.Completions
 		public string user { get; set; }
 
 		/// <summary>
-		/// Cretes a new, empty <see cref="CompletionRequest"/>
+		/// Creates a new, empty <see cref="CompletionRequest"/>
 		/// </summary>
 		public CompletionRequest()
 		{

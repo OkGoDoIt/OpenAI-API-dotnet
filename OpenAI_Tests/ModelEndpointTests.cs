@@ -37,7 +37,7 @@ namespace OpenAI_Tests
 
 			Assert.IsNotNull(api.Models);
 
-			var result = api.Models.RetrieveModelDetailsAsync(Model.DavinciText).Result;
+			var result = api.Models.RetrieveModelDetailsAsync(Model.DefaultModel).Result;
 			Assert.IsNotNull(result);
 
 			Assert.NotNull(result.CreatedUnixTime);
@@ -48,7 +48,7 @@ namespace OpenAI_Tests
 
 			Assert.IsNotNull(result.ModelID);
 			Assert.IsNotNull(result.OwnedBy);
-			Assert.AreEqual(Model.DavinciText.ModelID.ToLower(), result.ModelID.ToLower());
+			Assert.AreEqual(Model.DefaultModel.ModelID.ToLower(), result.ModelID.ToLower());
 		}
 
 

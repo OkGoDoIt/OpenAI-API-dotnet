@@ -59,7 +59,7 @@ namespace OpenAI_API
 			{
 				throw new AuthenticationException("You must provide API authentication.  Please refer to https://github.com/OkGoDoIt/OpenAI-API-dotnet#authentication for details.");
 			}
-	
+
 			HttpClient client;
 			var clientFactory = _Api.HttpClientFactory;
 			if (clientFactory != null)
@@ -142,9 +142,9 @@ namespace OpenAI_API
 				{
 					resultAsString = await response.Content.ReadAsStringAsync();
 				}
-				catch (Exception e)
+				catch (Exception readError)
 				{
-					resultAsString = "Additionally, the following error was thrown when attemping to read the response content: " + e.ToString();
+					resultAsString = "Additionally, the following error was thrown when attemping to read the response content: " + readError.ToString();
 				}
 
 				if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
@@ -157,7 +157,21 @@ namespace OpenAI_API
 				}
 				else
 				{
-					throw new HttpRequestException(GetErrorMessage(resultAsString, response, Endpoint, url));
+					var errorToThrow = new HttpRequestException(GetErrorMessage(resultAsString, response, Endpoint, url));
+
+					var parsedError = JsonConvert.DeserializeObject<ApiErrorResponse>(resultAsString);
+					try
+					{
+						errorToThrow.Data.Add("message", parsedError.Error.Message);
+						errorToThrow.Data.Add("type", parsedError.Error.ErrorType);
+						errorToThrow.Data.Add("param", parsedError.Error.Parameter);
+						errorToThrow.Data.Add("code", parsedError.Error.ErrorCode);
+					}
+					catch (Exception parsingError)
+					{
+						throw new HttpRequestException(errorToThrow.Message, parsingError);
+					}
+					throw errorToThrow;
 				}
 			}
 		}
@@ -166,12 +180,28 @@ namespace OpenAI_API
 		/// Sends an HTTP Get request and return the string content of the response without parsing, and does error handling.
 		/// </summary>
 		/// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
+		/// <param name="verb">(optional) The HTTP verb to use, for example "<see cref="HttpMethod.Get"/>".  If omitted, then "GET" is assumed.</param>
+		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
 		/// <returns>The text string of the response, which is confirmed to be successful.</returns>
 		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned</exception>
-		internal async Task<string> HttpGetContent<T>(string url = null)
+		internal async Task<string> HttpGetContent(string url = null, HttpMethod verb = null, object postData = null)
 		{
-			var response = await HttpRequestRaw(url);
+			var response = await HttpRequestRaw(url, verb, postData);
 			return await response.Content.ReadAsStringAsync();
+		}
+
+		/// <summary>
+		/// Sends an HTTP request and return the raw content stream of the response without parsing, and does error handling.
+		/// </summary>
+		/// <param name="url">(optional) If provided, overrides the url endpoint for this request.  If omitted, then <see cref="Url"/> will be used.</param>
+		/// <param name="verb">(optional) The HTTP verb to use, for example "<see cref="HttpMethod.Get"/>".  If omitted, then "GET" is assumed.</param>
+		/// <param name="postData">(optional) A json-serializable object to include in the request body.</param>
+		/// <returns>The response content stream, which is confirmed to be successful.</returns>
+		/// <exception cref="HttpRequestException">Throws an exception if a non-success HTTP response was returned</exception>
+		internal async Task<Stream> HttpRequest(string url = null, HttpMethod verb = null, object postData = null)
+		{
+			var response = await HttpRequestRaw(url, verb, postData);
+			return await response.Content.ReadAsStreamAsync();
 		}
 
 
@@ -341,7 +371,7 @@ namespace OpenAI_API
 		protected async IAsyncEnumerable<T> HttpStreamingRequest<T>(string url = null, HttpMethod verb = null, object postData = null) where T : ApiResultBase
 		{
 			var response = await HttpRequestRaw(url, verb, postData, true);
-
+					   
 			string organization = null;
 			string requestId = null;
 			TimeSpan processingTime = TimeSpan.Zero;
@@ -397,6 +427,43 @@ namespace OpenAI_API
 					}
 				}
 			}
+		}
+
+		internal class ApiErrorResponse
+		{
+			/// <summary>
+			/// The error details
+			/// </summary>
+			[JsonProperty("error")]
+			public ApiErrorResponseError Error { get; set; }
+		}
+		internal class ApiErrorResponseError
+		{
+			/// <summary>
+			/// The error message
+			/// </summary>
+			[JsonProperty("message")]
+
+			public string Message { get; set; }
+
+			/// <summary>
+			/// The type of error
+			/// </summary>
+			[JsonProperty("type")]
+			public string ErrorType { get; set; }
+
+			/// <summary>
+			/// The parameter that caused the error
+			/// </summary>
+			[JsonProperty("param")]
+
+			public string Parameter { get; set; }
+
+			/// <summary>
+			/// The error code
+			/// </summary>
+			[JsonProperty("code")]
+			public string ErrorCode { get; set; }
 		}
 	}
 }

@@ -39,6 +39,12 @@ namespace OpenAI_API.Chat
 			else
 				return null;
 		}
+
+		/// <summary>
+		/// This fingerprint represents the backend configuration that the model runs with. It can be used in conjunction with the seed request parameter to understand when backend changes have been made that might impact determinism.This is the indicator on whether users should expect "almost always the same result".
+		/// </summary>
+		[JsonProperty("system_fingerprint")]
+		public string SystemFingerprint { get; set; }
 	}
 
 	/// <summary>
@@ -77,7 +83,10 @@ namespace OpenAI_API.Chat
 		/// <returns>The content of the message in this response, not including <see cref="ChatMessageRole"/>.</returns>
 		public override string ToString()
 		{
-			return Message.Content;
+			if (Message == null && Delta != null)
+				return Delta.TextContent;
+			else
+				return Message.TextContent;
 		}
 	}
 
