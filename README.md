@@ -33,6 +33,7 @@ Console.WriteLine(result);
  * [Embeddings API](#embeddings)
  * [Moderation API](#moderation)
  * [Files API](#files-for-fine-tuning)
+ * [Edits API](#edits)
  * [Image APIs (DALL-E)](#images)
 	* [DALLE-E 3](#dall-e-3)
  * [Azure](#azure)
@@ -450,6 +451,31 @@ foreach (var file in response)
 There are also methods to get file contents, delete a file, etc.
 
 The fine-tuning endpoint itself has not yet been implemented, but will be added soon.
+
+### Edits
+The Edits API endpoint is accessed via `OpenAIAPI.Edit`:
+
+```csharp
+async Task<EditResult> CreateEditsAsync(EditRequest request);
+
+// for example
+var result = await api.Edit.CreateEditsAsync(new EditRequest("B A D C E G H F", "Correct the alphabets order", model: Model.TextDavinciEdit, temperature: 0.0));
+//or
+var results = await api.Edit.CreateEditsAsync("B A D C E G H F", "correct the lphabets sequence", temperature: 0);
+//or
+var req = new EditRequest
+            {
+                Input = "B A D C E G H F",
+                Instruction = "Correct the alphabets sequence",
+                Temperature = 0,
+                NumChoicesPerPrompt = 2
+            };
+
+```
+
+You can create your `EditRequest` ahead of time or use one of the helper overloads for convenience.  It returns a `EditResult` which is mostly metadata, so use its `.ToString()` method to get the text if all you want is the edited result.
+
+This endpoint currenlty supports `text-davinci-edit-001` and `code-davinci-edit-001` models.
 
 ### Images
 The DALL-E Image Generation API is accessed via `OpenAIAPI.ImageGenerations`:

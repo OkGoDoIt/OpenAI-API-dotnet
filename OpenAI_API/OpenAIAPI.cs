@@ -1,12 +1,14 @@
 ﻿using OpenAI_API.Audio;
 using OpenAI_API.Chat;
 using OpenAI_API.Completions;
+using OpenAI_API.Edits;
 using OpenAI_API.Embedding;
 using OpenAI_API.Files;
 using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
 using System.Net.Http;
+using static System.Net.WebRequestMethods;
 
 namespace OpenAI_API
 {
@@ -51,6 +53,7 @@ namespace OpenAI_API
 			Chat = new ChatEndpoint(this);
 			Moderation = new ModerationEndpoint(this);
 			ImageGenerations = new ImageGenerationEndpoint(this);
+			Edit = new EditEndpoint(this);
 			TextToSpeech = new TextToSpeechEndpoint(this);
 			Transcriptions = new TranscriptionEndpoint(this, false);
 			Translations = new TranscriptionEndpoint(this, true);
@@ -105,6 +108,12 @@ namespace OpenAI_API
 		/// The API lets you do operations with images. Given a prompt and/or an input image, the model will generate a new image.
 		/// </summary>
 		public IImageGenerationEndpoint ImageGenerations { get; }
+
+        /// <summary>
+        /// This API lets you edit the prompt. Given a prompt and instruction, this will return an edited version of the prompt. <see href="https://platform.openai.com/docs/api-reference/edits"/>
+        /// </summary>
+        public IEditEndpoint Edit { get; }
+    
 
 		/// <summary>
 		/// The Endpoint for the Text to Speech API.  This allows you to generate audio from text.  See <seealso href="https://platform.openai.com/docs/guides/text-to-speech"/>
