@@ -217,10 +217,20 @@ namespace OpenAI_API.Models
 #endregion
 
 #region Embeddings
-		/// <summary>
-		/// OpenAI offers one second-generation embedding model for use with the embeddings API endpoint.
-		/// </summary>
-		public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
+	/// <summary>
+	/// This model is not deprecated yet, but OpenAI recommends to use the newer models text-embedding-3-small and text-embedding-3-large.
+	/// </summary>
+	public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
+		
+	/// <summary>
+	/// Highly efficient embedding model which provides a significant upgrade over its predecessor, the text-embedding-ada-002 model
+	/// </summary>
+	public static Model SmallTextEmbedding => new Model("text-embedding-3-small") { OwnedBy = "openai" };
+		
+	/// <summary>
+	/// Next generation larger embedding model which creates embeddings with up to 3072 dimensions
+	/// </summary>
+	public static Model LargeTextEmbedding => new Model("text-embedding-3-large") { OwnedBy = "openai" };
 #endregion
 
 #region Moderation

@@ -17,7 +17,7 @@ namespace OpenAI_Tests
         [Test]
         public void GetBasicEmbedding()
         {
-            var api = new OpenAI_API.OpenAIAPI();
+            var api = new OpenAI_API.OpenAIAPI("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");
 
             Assert.IsNotNull(api.Embeddings);
 
@@ -41,7 +41,7 @@ namespace OpenAI_Tests
         [Test]
         public void ReturnedUsage()
         {
-            var api = new OpenAI_API.OpenAIAPI();
+            var api = new OpenAI_API.OpenAIAPI("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");
 
             Assert.IsNotNull(api.Embeddings);
 
@@ -56,13 +56,27 @@ namespace OpenAI_Tests
         [Test]
         public void GetSimpleEmbedding()
         {
-            var api = new OpenAI_API.OpenAIAPI();
+            var api = new OpenAI_API.OpenAIAPI("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");
 
             Assert.IsNotNull(api.Embeddings);
 
             var results = api.Embeddings.GetEmbeddingsAsync("A test text for embedding").Result;
             Assert.IsNotNull(results);
             Assert.That(results.Length == 1536);
+        }
+
+        [Test]
+        public void GetSimpleEmbeddingWithDimensions()
+        {
+            var api = new OpenAI_API.OpenAIAPI("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");
+
+            Assert.IsNotNull(api.Embeddings);
+
+            var request = new EmbeddingRequest(Model.SmallTextEmbedding, "A test text for embedding");
+            request.Dimensions = 256;
+            var results = api.Embeddings.GetEmbeddingsAsync(request).Result;
+            Assert.IsNotNull(results);
+            Assert.That(results.Length == 256);
         }
     }
 }

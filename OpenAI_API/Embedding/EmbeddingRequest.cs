@@ -21,6 +21,18 @@ namespace OpenAI_API.Embedding
 		public string Input { get; set; }
 
 		/// <summary>
+		/// The number of dimensions the resulting output embeddings should have. Only supported in text-embedding-3 and later models.
+		/// </summary>
+		[JsonProperty("dimensions")]
+		public int? Dimensions { get; set; }
+
+		/// <summary>
+		/// A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.
+		/// </summary>
+		[JsonProperty("user")]
+		public string User { get; set; }
+
+		/// <summary>
 		/// Cretes a new, empty <see cref="EmbeddingRequest"/>
 		/// </summary>
 		public EmbeddingRequest()
