@@ -17,7 +17,7 @@ namespace OpenAI_Tests
         [Test]
         public void GetBasicEmbedding()
         {
-            var api = new OpenAI_API.OpenAIAPI("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");
+            var api = new OpenAI_API.OpenAIAPI();
 
             Assert.IsNotNull(api.Embeddings);
 
@@ -41,7 +41,7 @@ namespace OpenAI_Tests
         [Test]
         public void ReturnedUsage()
         {
-            var api = new OpenAI_API.OpenAIAPI("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");
+            var api = new OpenAI_API.OpenAIAPI();
 
             Assert.IsNotNull(api.Embeddings);
 
@@ -56,7 +56,7 @@ namespace OpenAI_Tests
         [Test]
         public void GetSimpleEmbedding()
         {
-            var api = new OpenAI_API.OpenAIAPI("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");
+            var api = new OpenAI_API.OpenAIAPI();
 
             Assert.IsNotNull(api.Embeddings);
 
@@ -68,7 +68,7 @@ namespace OpenAI_Tests
         [Test]
         public void GetSimpleEmbeddingWithDimensions()
         {
-            var api = new OpenAI_API.OpenAIAPI("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");
+            var api = new OpenAI_API.OpenAIAPI();
 
             Assert.IsNotNull(api.Embeddings);
 
