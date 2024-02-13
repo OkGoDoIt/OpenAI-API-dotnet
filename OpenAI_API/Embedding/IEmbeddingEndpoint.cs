@@ -17,8 +17,9 @@ namespace OpenAI_API.Embedding
         /// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/>
         /// </summary>
         /// <param name="input">Text to be embedded</param>
+        /// <param name="model">Embeddings model to be used</param>
         /// <returns>Asynchronously returns the embedding result. Look in its <see cref="Data.Embedding"/> property of <see cref="EmbeddingResult.Data"/> to find the vector of floating point numbers</returns>
-        Task<EmbeddingResult> CreateEmbeddingAsync(string input);
+        Task<EmbeddingResult> CreateEmbeddingAsync(string input, Model model = null);
 
         /// <summary>
         /// Ask the API to embedd text using a custom request
@@ -28,10 +29,18 @@ namespace OpenAI_API.Embedding
         Task<EmbeddingResult> CreateEmbeddingAsync(EmbeddingRequest request);
 
         /// <summary>
-        /// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/>
+        /// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/> in case no other model is specified
         /// </summary>
         /// <param name="input">Text to be embedded</param>
+        /// <param name="model">Embeddings model to be used</param>
         /// <returns>Asynchronously returns the first embedding result as an array of floats.</returns>
-        Task<float[]> GetEmbeddingsAsync(string input);
+        Task<float[]> GetEmbeddingsAsync(string input, Model model = null);
+
+        /// <summary>
+        /// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/> in case no other model is specified
+        /// </summary>
+        /// <param name="request">Request to be send</param>
+        /// <returns>Asynchronously returns the first embedding result as an array of floats.</returns>
+        Task<float[]> GetEmbeddingsAsync(EmbeddingRequest request);
     }
 }
