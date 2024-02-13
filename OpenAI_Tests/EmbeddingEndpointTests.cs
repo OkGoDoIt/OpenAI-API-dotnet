@@ -64,5 +64,19 @@ namespace OpenAI_Tests
             Assert.IsNotNull(results);
             Assert.That(results.Length == 1536);
         }
+
+        [Test]
+        public void GetSimpleEmbeddingWithDimensions()
+        {
+            var api = new OpenAI_API.OpenAIAPI();
+
+            Assert.IsNotNull(api.Embeddings);
+
+            var request = new EmbeddingRequest(Model.SmallTextEmbedding, "A test text for embedding");
+            request.Dimensions = 256;
+            var results = api.Embeddings.GetEmbeddingsAsync(request).Result;
+            Assert.IsNotNull(results);
+            Assert.That(results.Length == 256);
+        }
     }
 }

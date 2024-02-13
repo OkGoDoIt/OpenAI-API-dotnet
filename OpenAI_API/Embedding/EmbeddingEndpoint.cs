@@ -28,10 +28,11 @@ namespace OpenAI_API.Embedding
 		/// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/>
 		/// </summary>
 		/// <param name="input">Text to be embedded</param>
+		/// <param name="model">Embeddings model to be used</param>
 		/// <returns>Asynchronously returns the embedding result. Look in its <see cref="Data.Embedding"/> property of <see cref="EmbeddingResult.Data"/> to find the vector of floating point numbers</returns>
-		public async Task<EmbeddingResult> CreateEmbeddingAsync(string input)
+		public async Task<EmbeddingResult> CreateEmbeddingAsync(string input, Model model = null)
 		{
-			EmbeddingRequest req = new EmbeddingRequest(DefaultEmbeddingRequestArgs.Model, input);
+			EmbeddingRequest req = new EmbeddingRequest(model ?? DefaultEmbeddingRequestArgs.Model, input);
 			return await CreateEmbeddingAsync(req);
 		}
 
@@ -46,14 +47,25 @@ namespace OpenAI_API.Embedding
 		}
 
 		/// <summary>
-		/// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/>
+		/// Ask the API to embedd text using the default embedding model <see cref="Model.AdaTextEmbedding"/> in case no other model is specified
 		/// </summary>
 		/// <param name="input">Text to be embedded</param>
+		/// <param name="model">Embeddings model to be used</param>
 		/// <returns>Asynchronously returns the first embedding result as an array of floats.</returns>
-		public async Task<float[]> GetEmbeddingsAsync(string input)
+		public async Task<float[]> GetEmbeddingsAsync(string input, Model model = null)
 		{
-			EmbeddingRequest req = new EmbeddingRequest(DefaultEmbeddingRequestArgs.Model, input);
-			var embeddingResult = await CreateEmbeddingAsync(req);
+			EmbeddingRequest req = new EmbeddingRequest(model ?? DefaultEmbeddingRequestArgs.Model, input);
+			return await GetEmbeddingsAsync(req);
+		}
+
+		/// <summary>
+		/// Ask the API to embedd text
+		/// </summary>
+		/// <param name="request">Request to be send</param>
+		/// <returns>Asynchronously returns the first embedding result as an array of floats.</returns>
+		public async Task<float[]> GetEmbeddingsAsync(EmbeddingRequest request)
+		{
+			var embeddingResult = await CreateEmbeddingAsync(request);
 			return embeddingResult?.Data?[0]?.Embedding;
 		}
 	}
