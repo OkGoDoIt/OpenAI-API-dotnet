@@ -52,9 +52,9 @@ namespace OpenAI_API.Images
 		public string Base64Data { get; set; }
 
         /// <summary>
-        /// The prompt that was used to generate the image, if there was any revision to the prompt.
-        /// </summary>
-        [JsonProperty("revised_prompt")]
+		/// The prompt that was used to generate the image, if there was any revision to the prompt.
+		/// </summary>
+		[JsonProperty("revised_prompt")]
         public string RevisedPrompt { get; set; }
 
 	}
