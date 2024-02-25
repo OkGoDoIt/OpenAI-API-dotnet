@@ -49,13 +49,13 @@ namespace OpenAI_API.Images
 		/// The base64-encoded image data as returned by the API
 		/// </summary>
 		[JsonProperty("b64_json")]
-		public string Base64Data { get; set; }
+		public string Base64Data { get; set; } 
 
-        /// <summary>
+		/// <summary>
 		/// The prompt that was used to generate the image, if there was any revision to the prompt.
 		/// </summary>
 		[JsonProperty("revised_prompt")]
-        public string RevisedPrompt { get; set; }
+		public string RevisedPrompt { get; set; }
 
 	}
 }
