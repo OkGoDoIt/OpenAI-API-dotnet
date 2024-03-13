@@ -127,7 +127,7 @@ namespace OpenAI_Tests
 
 		[TestCase("gpt-3.5-turbo")]
 		[TestCase("gpt-4")]
-		[TestCase("gpt-4-1106-preview")]
+		[TestCase("gpt-4-turbo-preview")]
 		public void ChatBackAndForth(string model)
 		{
 			var api = new OpenAI_API.OpenAIAPI();

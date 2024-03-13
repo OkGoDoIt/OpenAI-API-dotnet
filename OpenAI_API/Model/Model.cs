@@ -112,6 +112,11 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model DefaultTranscriptionModel { get; set; } = Whisper1;
 
+		/// <summary>
+		/// The default model to use in embedding requests if no other model is specified.
+		/// </summary>
+		public static Model DefaultEmbeddingModel { get; set; } = AdaTextEmbedding;
+
 
 		/// <summary>
 		/// Gets more details about this Model from the API, specifically properties such as <see cref="OwnedBy"/> and permissions.
@@ -143,7 +148,7 @@ namespace OpenAI_API.Models
 		/// <summary>
 		///	The latest GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This preview model is not yet suited for production traffic. 
 		/// </summary>
-		public static Model GPT4_Turbo => new Model("gpt-4-1106-preview") { OwnedBy = "openai" };
+		public static Model GPT4_Turbo => new Model("gpt-4-turbo-preview") { OwnedBy = "openai" };
 		#endregion
 
 		#region GPT-3.5
@@ -214,16 +219,27 @@ namespace OpenAI_API.Models
 		/// </summary>
 		[Obsolete("Will be deprecated by OpenAI on Jan 4th 2024.")]
 		public static Model DavinciCode => new Model("code-davinci-002") { OwnedBy = "openai" };
-#endregion
+		#endregion
 
-#region Embeddings
+		#region Embeddings
 		/// <summary>
-		/// OpenAI offers one second-generation embedding model for use with the embeddings API endpoint.
+		/// 2nd generation embedding model.
 		/// </summary>
 		public static Model AdaTextEmbedding => new Model("text-embedding-ada-002") { OwnedBy = "openai" };
-#endregion
 
-#region Moderation
+		/// <summary>
+		/// Most capable embedding model for both english and non-english tasks
+		/// </summary>
+		public static Model TextEmbedding3Large => new Model("text-embedding-3-large") { OwnedBy = "openai" };
+
+		/// <summary>
+		/// Increased performance over 2nd generation ada embedding model
+		/// </summary>
+		public static Model TextEmbedding3Small => new Model("text-embedding-3-small") { OwnedBy = "openai" };
+
+		#endregion
+
+		#region Moderation
 		/// <summary>
 		/// Stable text moderation model that may provide lower accuracy compared to TextModerationLatest.
 		/// OpenAI states they will provide advanced notice before updating this model.
