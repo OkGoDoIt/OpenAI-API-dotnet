@@ -72,6 +72,7 @@ namespace OpenAI_API
 			}
 
 			client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", _Api.Auth.ApiKey);
+			client.DefaultRequestHeaders.Add("OpenAI-Beta", "assistants=v1");
 			// Further authentication-header used for Azure openAI service
 			client.DefaultRequestHeaders.Add("api-key", _Api.Auth.ApiKey);
 			client.DefaultRequestHeaders.Add("User-Agent", UserAgent);

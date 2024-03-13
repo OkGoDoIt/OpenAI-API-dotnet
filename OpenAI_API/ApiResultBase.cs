@@ -12,7 +12,7 @@ namespace OpenAI_API
 
 		/// The time when the result was generated
 		[JsonIgnore]
-		public DateTime? Created => CreatedUnixTime.HasValue ? (DateTime?)(DateTimeOffset.FromUnixTimeSeconds(CreatedUnixTime.Value).DateTime) : null;
+		public DateTime? Created => ConvertUnixTime(CreatedUnixTime);
 
 		/// <summary>
 		/// The time when the result was generated in unix epoch format
@@ -55,5 +55,21 @@ namespace OpenAI_API
 		/// </summary>
 		[JsonIgnore]
 		public string OpenaiVersion { get; internal set; }
+
+		/// <summary>
+		/// Converts Unix time.
+		/// </summary>
+		/// 
+		/// <param name="unixTime">
+		/// The Unix time.
+		/// </param>
+		/// 
+		/// <returns>
+		/// The converted Unix time.
+		/// </returns>
+		protected static DateTime? ConvertUnixTime(long? unixTime)
+		{
+			return unixTime.HasValue ? (DateTime?) DateTimeOffset.FromUnixTimeSeconds(unixTime.Value).DateTime : null;
+		}
 	}
 }
