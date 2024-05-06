@@ -51,8 +51,8 @@ namespace OpenAI_Tests
 			var api = new OpenAI_API.OpenAIAPI();
 
 			Assert.IsNotNull(api.ImageGenerations);
-
-			var results = api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A cyberpunk monkey hacker dreaming of a beautiful bunch of bananas, digital art", 2, new ImageSize(size))).Result;
+			
+			var results = api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A cyberpunk monkey hacker dreaming of a beautiful bunch of bananas, digital art", 2, ConstructImageSize(size))).Result;
 			Assert.IsNotNull(results);
 			if (results.CreatedUnixTime.HasValue)
 			{
@@ -108,9 +108,9 @@ namespace OpenAI_Tests
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
-			Assert.IsNotNull(api.ImageGenerations);
+            Assert.IsNotNull(api.ImageGenerations);
 
-			var results = api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A cyberpunk monkey hacker dreaming of a beautiful bunch of bananas, digital art", OpenAI_API.Models.Model.DALLE3, new ImageSize(size), quality)).Result;
+			var results = api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A cyberpunk monkey hacker dreaming of a beautiful bunch of bananas, digital art", OpenAI_API.Models.Model.DALLE3, ConstructImageSize(size), quality)).Result;
 			Assert.IsNotNull(results);
 			if (results.CreatedUnixTime.HasValue)
 			{
@@ -139,9 +139,9 @@ namespace OpenAI_Tests
 		{
 			var api = new OpenAI_API.OpenAIAPI();
 
-			Assert.IsNotNull(api.ImageGenerations);
+            Assert.IsNotNull(api.ImageGenerations);
 
-			Assert.ThrowsAsync<ArgumentException>(async () => await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A cyberpunk monkey hacker dreaming of a beautiful bunch of bananas, digital art", model, new ImageSize(size), quality)));
+            Assert.ThrowsAsync<ArgumentException>(async () => await api.ImageGenerations.CreateImageAsync(new ImageGenerationRequest("A cyberpunk monkey hacker dreaming of a beautiful bunch of bananas, digital art", model, ConstructImageSize(size), quality)));
 		}
 
 		[Test]
@@ -156,6 +156,17 @@ namespace OpenAI_Tests
 
 			Assert.ThrowsAsync<Newtonsoft.Json.JsonSerializationException>(async () => await api.ImageGenerations.CreateImageAsync(req));
 		}
+
+		private ImageSize ConstructImageSize(string size)
+			=> size switch
+			{
+                "256x256" => ImageSize._256,
+                "512x512" => ImageSize._512,
+                "1024x1024" => ImageSize._1024,
+                "1024x1792" => ImageSize._1024x1792,
+                "1792x1024" => ImageSize._1792x1024,
+				_ => ImageSize._256
+            };
 
 
 	}
