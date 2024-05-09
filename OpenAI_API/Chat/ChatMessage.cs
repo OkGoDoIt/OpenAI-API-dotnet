@@ -159,9 +159,12 @@ namespace OpenAI_API.Chat
 
 				set
 				{
-					text = value;
-					image = null;
-					Type = "text";
+					if (value != null)
+					{
+						text = value;
+						image = null;
+						Type = "text";
+					}
 				}
 			}
 
@@ -181,9 +184,12 @@ namespace OpenAI_API.Chat
 
 				set
 				{
-					image = value;
-					text = null;
-					Type = "image_url";
+					if (value != null)
+					{
+						image = value;
+						text = null;
+						Type = "image_url";
+					}
 				}
 			}
 
@@ -243,6 +249,11 @@ namespace OpenAI_API.Chat
 				this.Url = url;
 				this.Detail = detail;
 			}
+
+            /// <summary>
+            /// Creates an empty <see cref="ImageInput"/>
+            /// </summary>
+            public ImageInput() { }
 
 			/// <summary>
 			/// Instantiates a new ImageInput object with the given image data bytes
@@ -312,7 +323,7 @@ namespace OpenAI_API.Chat
 			public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 			{
 				JToken token = JToken.Load(reader);
-				if (token.Type == JTokenType.Object)
+				if (token.Type == JTokenType.Object || token.Type == JTokenType.Array)
 				{
 					return token.ToObject<IList<ContentItem>>();
 				}
