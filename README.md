@@ -1,3 +1,5 @@
+_Hey all, I know there's a bunch of issues and PR's piling up, but there's a reason I haven't made any changes recently. Expect big news in the next couple weeks. Things will be a lot more up to date after that. Sorry for the hassle in the meantime!_
+
 # C#/.NET SDK for accessing the OpenAI APIs, including GPT-3.5/4, GPT-3.5/4-Turbo, and DALL-E 2/3
 
 A simple C# .NET wrapper library to use with OpenAI's API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API.  I am not affiliated with OpenAI and this library is not endorsed or supported by them.
