@@ -46,6 +46,8 @@ Console.WriteLine(result);
 
 Adds new embedding models as of March 2024.
 
+_I know there's a bunch of issues and PR's piling up, but there's a reason I haven't made any changes recently. Expect big news in the next couple weeks. Things will be a lot more up to date after that. Sorry for the hassle in the meantime!_
+
 ## Requirements
 
 This library is based on .NET Standard 2.0, so it should work across all versions of .Net, from the traditional .NET Framework >=4.7.2 to .NET (Core) >= 3.0.  It should work across console apps, winforms, wpf, asp.net, unity, Xamarin, etc.  It should work across Windows, Linux, and Mac, and possibly even mobile.  There are minimal dependencies, and it's licensed in the public domain.
