@@ -27,7 +27,7 @@ namespace OpenAI_API
 		/// Constructor of the api endpoint base, to be called from the contructor of any devived classes.  Rather than instantiating any endpoint yourself, access it through an instance of <see cref="OpenAIAPI"/>.
 		/// </summary>
 		/// <param name="api"></param>
-		internal EndpointBase(OpenAIAPI api)
+		public EndpointBase(OpenAIAPI api)
 		{
 			this._Api = api;
 		}

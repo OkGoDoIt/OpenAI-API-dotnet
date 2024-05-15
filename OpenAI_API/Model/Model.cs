@@ -140,22 +140,27 @@ namespace OpenAI_API.Models
 		/// </summary>
 		public static Model GPT4_32k_Context => new Model("gpt-4-32k") { OwnedBy = "openai" };
 
-		/// <summary>
-		/// Ability to understand images, in addition to all other GPT-4 Turbo capabilities. Returns a maximum of 4,096 output tokens. This is a preview model version and not suited yet for production traffic.
-		/// </summary>
-		public static Model GPT4_Vision => new Model("gpt-4-vision-preview") { OwnedBy = "openai" };
+        /// <summary>
+        /// GPT-4 Turbo model with vision capabilities. Vision requests can now use JSON mode and function calling.
+        /// </summary>
+        public static Model GPT4_Vision => new Model("gpt-4-turbo") { OwnedBy = "openai" };
 
-		/// <summary>
-		///	The latest GPT-4 model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens. This preview model is not yet suited for production traffic. 
-		/// </summary>
-		public static Model GPT4_Turbo => new Model("gpt-4-turbo-preview") { OwnedBy = "openai" };
-		#endregion
+        /// <summary>
+        ///	GPT-4 Turbo model with vision capabilities. Vision requests can now use JSON mode and function calling.
+        /// </summary>
+        public static Model GPT4_Turbo => new Model("gpt-4-turbo") { OwnedBy = "openai" };
 
-		#region GPT-3.5
-		/// <summary>
-		/// GPT-3.5 Turbo model which regularly updates with the latest model iteration.
-		/// </summary>
-		public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
+        /// <summary>
+        ///	Our most advanced, multimodal flagship model that’s cheaper and faster than GPT-4 Turbo.
+        /// </summary>
+        public static Model GPT4_Omni => new Model("gpt-4o") { OwnedBy = "openai" };
+        #endregion
+
+        #region GPT-3.5
+        /// <summary>
+        /// GPT-3.5 Turbo model which regularly updates with the latest model iteration.
+        /// </summary>
+        public static Model ChatGPTTurbo => new Model("gpt-3.5-turbo") { OwnedBy = "openai" };
 
 		/// <summary>
 		/// The latest GPT-3.5 Turbo model with improved instruction following, JSON mode, reproducible outputs, parallel function calling, and more. Returns a maximum of 4,096 output tokens.

@@ -11,7 +11,7 @@ namespace OpenAI_API.Images
 	/// </summary>
 	public class ImageSize
 	{
-		internal ImageSize(string value) { Value = value; }
+		public ImageSize(string value) { Value = value; }
 
 		private string Value { get; set; }
 
