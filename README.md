@@ -1,8 +1,11 @@
-_Hey all, I know there's a bunch of issues and PR's piling up, but there's a reason I haven't made any changes recently. Expect big news in the next couple weeks. Things will be a lot more up to date after that. Sorry for the hassle in the meantime!_
+Microsoft reached out to me about transitioning this library into a new official C# OpenAI library and now it's ready to go!  Starting with [v2.0.0-beta.3](https://www.nuget.org/packages/OpenAI/2.0.0-beta.3), the official library now has full coverage and will stay up-to-date.  More details in the blog post here: https://devblogs.microsoft.com/dotnet/openai-dotnet-library
+
+This github repo will remain here to document my original version of the library through [version 1.11, which is still available on Nuget as well](https://www.nuget.org/packages/OpenAI/1.11.0).
+🎉 
 
 # C#/.NET SDK for accessing the OpenAI APIs, including GPT-3.5/4, GPT-3.5/4-Turbo, and DALL-E 2/3
 
-A simple C# .NET wrapper library to use with OpenAI's API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  This is an unofficial wrapper library around the OpenAI API.  I am not affiliated with OpenAI and this library is not endorsed or supported by them.
+A simple C# .NET wrapper library to use with OpenAI's API.  More context [on my blog](https://rogerpincombe.com/openai-dotnet-api).  **This is my original unofficial wrapper library around the OpenAI API.**
 
 ## Quick Example
 
@@ -44,9 +47,8 @@ Console.WriteLine(result);
 ## Status
 [![OpenAI](https://badgen.net/nuget/v/OpenAI)](https://www.nuget.org/packages/OpenAI/)
 
-Adds new embedding models as of March 2024.
-
-_I know there's a bunch of issues and PR's piling up, but there's a reason I haven't made any changes recently. Expect big news in the next couple weeks. Things will be a lot more up to date after that. Sorry for the hassle in the meantime!_
+Starting with [v2.0.0-beta](https://www.nuget.org/packages/OpenAI/2.0.0-beta.3), this library has been adopted by Microsoft.  The new official version of the library will have full coverage and will stay fully up-to-date. More details in the blog post here: [https://devblogs.microsoft.com/dotnet/openai-dotnet-library/](https://devblogs.microsoft.com/dotnet/openai-dotnet-library/)
+This github repo will remain here to document my original version of the library through [version 1.11, which is still available on Nuget as well](https://www.nuget.org/packages/OpenAI/1.11.0).
 
 ## Requirements
 
@@ -56,9 +58,9 @@ This library is based on .NET Standard 2.0, so it should work across all version
 
 ### Install from NuGet
 
-Install package [`OpenAI` from Nuget](https://www.nuget.org/packages/OpenAI/).  Here's how via commandline:
+Install package [`OpenAI` v1.11 from Nuget](https://www.nuget.org/packages/OpenAI/1.11.0).  Here's how via commandline:
 ```powershell
-Install-Package OpenAI
+Install-Package OpenAI -Version 1.11.0
 ```
 
 ### Authentication
