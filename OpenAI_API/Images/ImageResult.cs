@@ -54,6 +54,7 @@ namespace OpenAI_API.Images
 		/// <summary>
 		/// The prompt that was used to generate the image, if there was any revision to the prompt.
 		/// </summary>
+		[JsonProperty("revised_prompt")]
 		public string RevisedPrompt { get; set; }
 
 	}

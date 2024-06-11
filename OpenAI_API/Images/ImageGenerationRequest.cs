@@ -14,6 +14,7 @@ namespace OpenAI_API.Images
 	{
 		private int? numOfImages = 1;
 		private ImageSize size = ImageSize._1024;
+		private string style = "vivid";
 		private string quality = "standard";
 
 		/// <summary>
@@ -65,10 +66,36 @@ namespace OpenAI_API.Images
 			set => size = value;
 		}
 
-		/// <summary>
-		/// By default, images are generated at `standard` quality, but when using DALL·E 3 you can set quality to `hd` for enhanced detail. Square, standard quality images are the fastest to generate.
-		/// </summary>
-		[JsonProperty("quality", NullValueHandling=NullValueHandling.Ignore)]
+        /// <summary>
+        /// Adding this, upstream is missing this value too. What else is there?? revisedText was VITAL yet not added by upstream yet.
+        /// </summary>
+        [JsonProperty("style", NullValueHandling = NullValueHandling.Ignore)]
+        public string Style
+        {
+            get
+            {
+                return style;
+            }
+            set
+            {
+                switch (value.ToLower().Trim())
+                {
+                    case "vivid":
+                        style = "vivid";
+                        break;
+                    case "natural":
+                        style = "natural";
+                        break;
+                    default:
+                        throw new ArgumentException("Style must be either 'vivid' or 'natural'.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// By default, images are generated at `standard` quality, but when using DALL·E 3 you can set quality to `hd` for enhanced detail. Square, standard quality images are the fastest to generate.
+        /// </summary>
+        [JsonProperty("quality", NullValueHandling=NullValueHandling.Ignore)]
 		public string Quality
 		{
 			get
@@ -109,26 +136,29 @@ namespace OpenAI_API.Images
 
 		}
 
-		/// <summary>
-		/// Creates a new <see cref="ImageGenerationRequest"/> with the specified parameters
-		/// </summary>
-		/// <param name="prompt">A text description of the desired image(s). The maximum length is 1000 characters.</param>
-		/// <param name="model">The model to use for this request. Defaults to DALL-E 2.</param>
-		/// <param name="size">The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.</param>
-		/// <param name="quality">By default, images are generated at `standard` quality, but when using DALL·E 3 you can set quality to `hd` for enhanced detail.</param>
-		/// <param name="user">A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</param>
-		/// <param name="responseFormat">The format in which the generated images are returned. Must be one of url or b64_json.</param>
-		public ImageGenerationRequest(
+        /// <summary>
+        /// Creates a new <see cref="ImageGenerationRequest"/> with the specified parameters
+        /// </summary>
+        /// <param name="prompt">A text description of the desired image(s). The maximum length is 1000 characters.</param>
+        /// <param name="model">The model to use for this request. Defaults to DALL-E 2.</param>
+        /// <param name="size">The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.</param>
+        /// <param name="quality">By default, images are generated at `standard` quality, but when using DALL·E 3 you can set quality to `hd` for enhanced detail.</param>
+        /// <param name="style">natural or vivid, part of the openAI API</param>
+        /// <param name="user">A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.</param>
+        /// <param name="responseFormat">The format in which the generated images are returned. Must be one of url or b64_json.</param>
+        public ImageGenerationRequest(
 			string prompt,
 			Model model,
 			ImageSize size = null,
 			string quality = "standard",
+			string style = "vivid",
 			string user = null,
 			ImageResponseFormat responseFormat = null)
 		{
 			this.Prompt = prompt;
 			this.Model = model ?? OpenAI_API.Models.Model.DALLE2;
 			this.Quality = quality ?? "standard";
+			this.Style = style ?? "vivid";
 			this.User = user;
 			this.Size = size ?? ImageSize._1024;
 			this.ResponseFormat = responseFormat ?? ImageResponseFormat.Url;
