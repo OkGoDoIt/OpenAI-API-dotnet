@@ -7,6 +7,10 @@ using OpenAI_API.Images;
 using OpenAI_API.Models;
 using OpenAI_API.Moderation;
 using System.Net.Http;
+using OpenAI_API.Assistants;
+using OpenAI_API.Messages;
+using OpenAI_API.Runs;
+using OpenAI_API.Threads;
 
 namespace OpenAI_API
 {
@@ -54,6 +58,10 @@ namespace OpenAI_API
 			TextToSpeech = new TextToSpeechEndpoint(this);
 			Transcriptions = new TranscriptionEndpoint(this, false);
 			Translations = new TranscriptionEndpoint(this, true);
+			Assistants = new AssistantsEndpoint(this);
+			Threads = new ThreadsEndpoint(this);
+			Messages = new MessagesEndpoint(this);
+			Runs = new RunsEndpoint(this);
 		}
 
 		/// <summary>
@@ -120,5 +128,25 @@ namespace OpenAI_API
 		/// The endpoint for the audio translation API.  This allows you to generate English text from audio in other languages.  See <seealso href="https://platform.openai.com/docs/guides/speech-to-text/translations"/>
 		/// </summary>
 		public ITranscriptionEndpoint Translations { get; }
+		
+		/// <summary>
+		/// The endpoint for the Assistants API.  This allows you to create and manage assistants.  See <seealso href="https://beta.openai.com/docs/api-reference/assistants"/>
+		/// </summary>
+		public IAssistantsEndpoint Assistants { get; }
+
+		/// <summary>
+		/// The endpoint for the Threads API.  This allows you to create and manage threads.  See <seealso href="https://beta.openai.com/docs/api-reference/threads"/>
+		/// </summary>
+		public IThreadsEndpoint Threads { get; }
+
+		/// <summary>
+		/// The endpoint for the Messages API.  This allows you to create and manage messages.  See <seealso href="https://beta.openai.com/docs/api-reference/messages"/>
+		/// </summary>
+		public IMessagesEndpoint Messages { get; }
+
+		/// <summary>
+		/// The endpoint for the Runs API.  This allows you to create and manage runs.  See <seealso href="https://beta.openai.com/docs/api-reference/runs"/>
+		/// </summary>
+		public IRunsEndpoint Runs { get; }
 	}
 }
