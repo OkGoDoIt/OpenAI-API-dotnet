@@ -18,7 +18,7 @@ namespace OpenAI_API.Chat
 		/// <summary>
 		/// An internal reference to the API endpoint, needed for API requests
 		/// </summary>
-		private ChatEndpoint _endpoint;
+		private IChatEndpoint _endpoint;
 
 		/// <summary>
 		/// Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  <see href="https://platform.openai.com/docs/api-reference/chat/create">Se  OpenAI documentation for a list of possible parameters to tweak.</see>
@@ -51,7 +51,7 @@ namespace OpenAI_API.Chat
 		/// <param name="endpoint">A reference to the API endpoint, needed for API requests.  Generally should be <see cref="OpenAIAPI.Chat"/>.</param>
 		/// <param name="model">Optionally specify the model to use for ChatGPT requests.  If not specified, used <paramref name="defaultChatRequestArgs"/>.Model or falls back to <see cref="OpenAI_API.Models.Model.DefaultChatModel"/></param>
 		/// <param name="defaultChatRequestArgs">Allows setting the parameters to use when calling the ChatGPT API.  Can be useful for setting temperature, presence_penalty, and more.  See <see href="https://platform.openai.com/docs/api-reference/chat/create">OpenAI documentation for a list of possible parameters to tweak.</see></param>
-		public Conversation(ChatEndpoint endpoint, OpenAI_API.Models.Model model = null, ChatRequest defaultChatRequestArgs = null)
+		public Conversation(IChatEndpoint endpoint, OpenAI_API.Models.Model model = null, ChatRequest defaultChatRequestArgs = null)
 		{
 			RequestParameters = new ChatRequest(defaultChatRequestArgs);
 			if (model != null)
