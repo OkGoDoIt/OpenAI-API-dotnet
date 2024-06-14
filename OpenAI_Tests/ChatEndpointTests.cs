@@ -28,7 +28,7 @@ namespace OpenAI_Tests
 
 			Assert.IsNotNull(api.Chat);
 
-			var results = api.Chat.CreateChatCompletionAsync(new ChatRequest()
+            var results = api.Chat.CreateChatCompletionAsync(new ChatRequest()
 			{
 				Model = Model.ChatGPTTurbo,
 				Temperature = 0.1,
@@ -566,5 +566,59 @@ Reciprocating engines in aircraft have three main variants, radial, in-line and 
 				Assert.AreNotEqual(jokeA, jokeB);
 			}
 		}
-	}
+
+        [Test]
+        public void ChatMessageSerializationShouldDeserialzeAsExpected()
+        {
+			var msg = new ChatMessage()
+			{
+				Role = ChatMessageRole.User,
+				TextContent = "This is a test"
+			};
+			var jmsg = JsonConvert.SerializeObject(msg);
+			var deserializedMsg = JsonConvert.DeserializeObject<ChatMessage>(jmsg);
+
+			Assert.IsNotNull(deserializedMsg);
+			Assert.IsTrue(msg.TextContent.Equals(deserializedMsg.TextContent));
+			Assert.IsTrue(deserializedMsg.Images.Count == msg.Images.Count);
+        }
+
+        [Test]
+        public void ChatMessagesContentSerializationShouldDeserialzeAsExpected()
+        {
+           
+            var msg = new ChatMessage(ChatMessageRole.User, "What is this image about?", new ChatMessage.ImageInput[] { new ChatMessage.ImageInput("https://xyz.com/image.png") });
+            
+            var jmsg = JsonConvert.SerializeObject(msg);
+            var deserializedMsg = JsonConvert.DeserializeObject<ChatMessage>(jmsg);
+
+            Assert.IsNotNull(deserializedMsg);
+            Assert.IsTrue(msg.TextContent.Equals(deserializedMsg.TextContent));
+            Assert.IsTrue(deserializedMsg.Images.Count == msg.Images.Count);
+			Assert.IsTrue(deserializedMsg.Images[0].Url.Equals(msg.Images[0].Url));
+        }
+
+        [Test]
+        public void ChatMessagesListSerializationShouldDeserialzeAsExpected()
+        {
+            var messages = new List<ChatMessage>();
+            var msg1 = new ChatMessage(ChatMessageRole.User, "What is this image about?", new ChatMessage.ImageInput[] { new ChatMessage.ImageInput("https://xyz.com/image.png") });
+            messages.Add(msg1);
+            var msg2 = new ChatMessage(ChatMessageRole.User, "And what is this image about?", new ChatMessage.ImageInput[] { new ChatMessage.ImageInput("https://xyz.com/image2.png") });
+            messages.Add(msg2);
+
+            var jmsgs = JsonConvert.SerializeObject(messages);
+            var deserializedMessagesList = JsonConvert.DeserializeObject<List<ChatMessage>>(jmsgs);
+
+            Assert.IsNotNull(deserializedMessagesList);
+			Assert.IsTrue(deserializedMessagesList.Count == messages.Count);
+			Assert.IsTrue(deserializedMessagesList[0].TextContent.Equals(messages[0].TextContent));
+			Assert.IsTrue(deserializedMessagesList[0].Images.Count == messages[0].Images.Count);
+			Assert.IsTrue(deserializedMessagesList[0].Images[0].Url.Equals(messages[0].Images[0].Url));
+
+            Assert.IsTrue(deserializedMessagesList[1].TextContent.Equals(messages[1].TextContent));
+            Assert.IsTrue(deserializedMessagesList[1].Images.Count == messages[1].Images.Count);
+            Assert.IsTrue(deserializedMessagesList[1].Images[0].Url.Equals(messages[1].Images[0].Url));
+        }
+    }
 }
