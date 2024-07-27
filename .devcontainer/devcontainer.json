@@ -1,0 +1,10 @@
+{
+{
+  "image": "mcr.microsoft.com/devcontainers/universal:2-focal",
+  "features": {
+  }
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  }
+  }
+}
