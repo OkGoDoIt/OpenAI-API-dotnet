@@ -223,14 +223,14 @@ var result = await api.Chat.CreateChatCompletionAsync(new ChatRequest()
 		Messages = new ChatMessage[] {
 			new ChatMessage(ChatMessageRole.User, "Hello!")
 		}
-	})
+	});
 // or
-var result = api.Chat.CreateChatCompletionAsync("Hello!");
+var result = await api.Chat.CreateChatCompletionAsync("Hello!");
 
-var reply = results.Choices[0].Message;
-Console.WriteLine($"{reply.Role}: {reply.Content.Trim()}");
+var reply = result.Choices[0].Message;
+Console.WriteLine($"{reply.Role}: {reply.TextContent.Trim()}");
 // or
-Console.WriteLine(results);
+Console.WriteLine(result);
 ```
 
 It returns a `ChatResult` which is mostly metadata, so use its `.ToString()` method to get the text if all you want is assistant's reply text.
