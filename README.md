@@ -1,7 +1,10 @@
+
 Microsoft reached out to me about transitioning this library into a new official C# OpenAI library and now it's ready to go!  Starting with [v2.0.0-beta.3](https://www.nuget.org/packages/OpenAI/2.0.0-beta.3), the official library now has full coverage and will stay up-to-date.  More details in the blog post here: https://devblogs.microsoft.com/dotnet/openai-dotnet-library
 
 This github repo will remain here to document my original version of the library through [version 1.11, which is still available on Nuget as well](https://www.nuget.org/packages/OpenAI/1.11.0).
 🎉 
+
+
 
 # C#/.NET SDK for accessing the OpenAI APIs, including GPT-3.5/4, GPT-3.5/4-Turbo, and DALL-E 2/3
 

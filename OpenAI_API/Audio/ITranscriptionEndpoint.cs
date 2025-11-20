@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.IO;
 using System.Threading.Tasks;
 
 namespace OpenAI_API.Audio
@@ -77,5 +78,6 @@ namespace OpenAI_API.Audio
 		/// <param name="temperature">The sampling temperature, between 0 and 1. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic. If set to 0, the model will use log probability to automatically increase the temperature until certain thresholds are hit.</param>
 		/// <returns>A string of the transcribed text</returns>
 		Task<string> GetTextAsync(string audioFilePath, string language = null, string prompt = null, double? temperature = null);
-	}
+		Task<string> GetWithDetailsAsync2(string fileAddress, string language = null, string prompt = null, string responseFormat = null, List<string> timestamps = null, double? temperature = null);
+    }
 }
